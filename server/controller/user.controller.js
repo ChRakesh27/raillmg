@@ -10,6 +10,7 @@ router.get('/', async (req, res) => {
             const page = req.query.p
         }
         const docs = await users.find();
+        delete docs.password
         res.send(docs)
     } catch (error) {
         res.send(error)

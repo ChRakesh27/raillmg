@@ -4,9 +4,9 @@ const Schema = mongoose.Schema
 
 const machineRollSchema = new Schema({
     _id: { type: mongoose.Types.ObjectId, auto: true },
-    user: { type: mongoose.Types.ObjectId, auto: true },
-    selection: { type: String, unique: true, required: true },
-    station: { type: String, unique: true, required: true },
+    user: { type: String, required: true },
+    selection: { type: String, required: true },
+    station: { type: String, required: true },
     direction: { type: String, required: true },
     lineNo: { type: String, required: true },
     machine: { type: String, required: true },

@@ -20,415 +20,477 @@
         </select>
       </div>
     </div>
+
     <div class="col-auto">
-      <button class="btn btn-primary btn-lg me-2">Add</button>
+      <button class="btn btn-primary btn-lg me-2" (click)="onAddNewForm()">
+        Add
+      </button>
+      <button class="btn btn-success btn-lg me-2" (click)="onSubmit()">
+        Submit
+      </button>
     </div>
   </div>
 
-  <div class="accordion" id="accordionPanelsStayOpenExample">
-    @for(item of [1,2,3,4]; track $index){
-    <div class="accordion-item">
-      <h2 class="accordion-header d-flex">
-        <button
-          class="accordion-button"
-          type="button"
-          data-bs-toggle="collapse"
-          [attr.data-bs-target]="'#collapse' + $index"
-          aria-expanded="true"
-          [attr.aria-controls]="'collapse' + $index"
-        >
-          OPERATING-{{ $index + 1 }}
-        </button>
-        <button class="btn btn-outline-danger ms-2">Delete</button>
-      </h2>
-      <div [id]="'collapse' + $index" class="accordion-collapse collapse show">
-        <div class="accordion-body">
-          <form>
-            <div class="row">
-              <div class="col col-3">
-                <div class="form-group mt-3 mb-3">
-                  <label>Section</label>
-                  <select class="form-select">
-                    <option value="CGS-KYQ">CGS-KYQ</option>
-                    <option value="KYQ-GHY">KYQ-GHY</option>
-                    <option value="GHY-NNGE">GHY-NNGE</option>
-                    <option value="NNGE-DGU">NNGE-DGU</option>
-                    <option value="DGU-CPK">DGU-CPK</option>
-                    <option value="CPK-HJI">CPK-HJI</option>
-                    <option value="CPK-SHTT/MBO">CPK-SHTT/MBO</option>
-                    <option value="HJI-LMG">HJI-LMG</option>
-                    <option value="LMG-DMV">LMG-DMV</option>
-                    <option value="DMV-FKG">DMV-FKG</option>
-                    <option value="DSR-SKHV">DSR-SKHV</option>
-                    <option value="LMG-NHLG">LMG-NHLG</option>
-                    <option value="NHLG-BPB">NHLG-BPB</option>
-                    <option value="BPB-SCL">BPB-SCL</option>
-                    <option value="BPB-KXJ">BPB-KXJ</option>
-                    <option value="ARCL-KGBP">ARCL-KGBP</option>
-                    <option value="KTX-BHRB">KTX-BHRB</option>
-                    <option value="KXJ-DMR">KXJ-DMR</option>
-                    <option value="DMR-MANU">DMR-MANU</option>
-                    <option value="MANU-AGTL">MANU-AGTL</option>
-                    <option value="AGTL-JRJE">AGTL-JRJE</option>
-                    <option value="JRJE-SBRM">JRJE-SBRM</option>
-                    <option value="BRGMDLCRKXJ-MSSN">BRGMDLCRKXJ-MSSN</option>
-                  </select>
+  <div [formGroup]="form">
+    <div
+      class="accordion"
+      id="accordionPanelsStayOpenExample"
+      formArrayName="machineFormArray"
+    >
+      <ng-container
+        *ngFor="let item of machineFormArray.controls; let i = index"
+      >
+        <div class="accordion-item">
+          <h2 class="accordion-header d-flex">
+            <button
+              class="accordion-button"
+              type="button"
+              data-bs-toggle="collapse"
+              [attr.data-bs-target]="'#collapse' + i"
+              aria-expanded="true"
+              [attr.aria-controls]="'collapse' + i"
+            >
+              OPERATING-{{ i + 1 }}
+            </button>
+            <button class="btn btn-outline-danger ms-2" (click)="onDelete(i)">
+              Delete
+            </button>
+          </h2>
+          <div [id]="'collapse' + i" class="accordion-collapse collapse show">
+            <div class="accordion-body">
+              <form [formGroupName]="i">
+                <div class="row">
+                  <div class="col col-3">
+                    <div class="form-group mt-3 mb-3">
+                      <label>Section</label>
+                      <select class="form-select" formControlName="selection">
+                        <option value="CGS-KYQ">CGS-KYQ</option>
+                        <option value="KYQ-GHY">KYQ-GHY</option>
+                        <option value="GHY-NNGE">GHY-NNGE</option>
+                        <option value="NNGE-DGU">NNGE-DGU</option>
+                        <option value="DGU-CPK">DGU-CPK</option>
+                        <option value="CPK-HJI">CPK-HJI</option>
+                        <option value="CPK-SHTT/MBO">CPK-SHTT/MBO</option>
+                        <option value="HJI-LMG">HJI-LMG</option>
+                        <option value="LMG-DMV">LMG-DMV</option>
+                        <option value="DMV-FKG">DMV-FKG</option>
+                        <option value="DSR-SKHV">DSR-SKHV</option>
+                        <option value="LMG-NHLG">LMG-NHLG</option>
+                        <option value="NHLG-BPB">NHLG-BPB</option>
+                        <option value="BPB-SCL">BPB-SCL</option>
+                        <option value="BPB-KXJ">BPB-KXJ</option>
+                        <option value="ARCL-KGBP">ARCL-KGBP</option>
+                        <option value="KTX-BHRB">KTX-BHRB</option>
+                        <option value="KXJ-DMR">KXJ-DMR</option>
+                        <option value="DMR-MANU">DMR-MANU</option>
+                        <option value="MANU-AGTL">MANU-AGTL</option>
+                        <option value="AGTL-JRJE">AGTL-JRJE</option>
+                        <option value="JRJE-SBRM">JRJE-SBRM</option>
+                        <option value="BRGMDLCRKXJ-MSSN">
+                          BRGMDLCRKXJ-MSSN
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col col-3">
+                    <div class="form-group mt-3 mb-3">
+                      <label>Station</label>
+                      <select class="form-select" formControlName="station">
+                        <option value="AGTL-Agartala">AGTL-Agartala</option>
+                        <option value="AGT-Agthori">AGT-Agthori</option>
+                        <option value="ALGP-Algapur">ALGP-Algapur</option>
+                        <option value="ABSA-Ambasa">ABSA-Ambasa</option>
+                        <option value="AONI-Amoni">AONI-Amoni</option>
+                        <option value="APU-Anipur">APU-Anipur</option>
+                        <option value="ARCL-Arunachal Junction">
+                          ARCL-Arunachal Junction
+                        </option>
+                        <option value="AJRE-Aujari">AJRE-Aujari</option>
+                        <option value="BPG-Badarpur Ghat">
+                          BPG-Badarpur Ghat
+                        </option>
+                        <option value="BPB-Badarpur Junction">
+                          BPB-Badarpur Junction
+                        </option>
+                        <option value="BF-Bagetar">BF-Bagetar</option>
+                        <option value="BHRB-Bairabi">BHRB-Bairabi</option>
+                        <option value="BKS-Balikotia">BKS-Balikotia</option>
+                        <option value="BXK-Bandarkhal">BXK-Bandarkhal</option>
+                        <option value="BRLF-Bar Langfer">
+                          BRLF-Bar Langfer
+                        </option>
+                        <option value="BRHU-Barahu">BRHU-Barahu</option>
+                        <option value="BRGM-Baraigram Junction">
+                          BRGM-Baraigram Junction
+                        </option>
+                        <option value="BXP-Barpathar">BXP-Barpathar</option>
+                        <option value="BTDR-Batadrowa Road">
+                          BTDR-Batadrowa Road
+                        </option>
+                        <option value="BZGT-Bazarghat">BZGT-Bazarghat</option>
+                        <option value="BEE-Bebejia">BEE-Bebejia</option>
+                        <option value="BENA-Belonia">BENA-Belonia</option>
+                        <option value="BXG-Bhanga">BXG-Bhanga</option>
+                        <option value="BHGN-Bhilgaon">BHGN-Bhilgaon</option>
+                        <option value="BHZ-Bihara">BHZ-Bihara</option>
+                        <option value="BLGH-Bishalgarh">BLGH-Bishalgarh</option>
+                        <option value="BHRM-Bishramganj">
+                          BHRM-Bishramganj
+                        </option>
+                        <option value="BXJ-Bokajan">BXJ-Bokajan</option>
+                        <option value="CHBN-Chandkhira Bagan">
+                          CHBN-Chandkhira Bagan
+                        </option>
+                        <option value="CNE-Chandranathpur">
+                          CNE-Chandranathpur
+                        </option>
+                        <option value="CPK-Chaparmukh Junction">
+                          CPK-Chaparmukh Junction
+                        </option>
+                        <option value="CGX-Chargola">CGX-Chargola</option>
+                        <option value="CJA-Chongajan">CJA-Chongajan</option>
+                        <option value="CBZ-Churaibari">CBZ-Churaibari</option>
+                        <option value="DGX-Dagaon">DGX-Dagaon</option>
+                        <option value="DLDE-Daldali">DLDE-Daldali</option>
+                        <option value="DCA-Damchara">DCA-Damchara</option>
+                        <option value="DJA-Daotuhaja">DJA-Daotuhaja</option>
+                        <option value="DQL-Dhalaibil">DQL-Dhalaibil</option>
+                        <option value="DHRY-Dhalpukhuri">
+                          DHRY-Dhalpukhuri
+                        </option>
+                        <option value="DSR-Dhansiri">DSR-Dhansiri</option>
+                        <option value="DML-Dharamtul">DML-Dharamtul</option>
+                        <option value="DMR-Dharmanagar">DMR-Dharmanagar</option>
+                        <option value="DIU-Dhing">DIU-Dhing</option>
+                        <option value="DBZ-Dhing Bazar">DBZ-Dhing Bazar</option>
+                        <option value="DBLG-Dibolong">DBLG-Dibolong</option>
+                        <option value="DGU-Digaru">DGU-Digaru</option>
+                        <option value="DKE-Dihakho">DKE-Dihakho</option>
+                        <option value="DMV-Dimapur">DMV-Dimapur</option>
+                        <option value="DPU-Diphu">DPU-Diphu</option>
+                        <option value="DTC-Ditokcherra">DTC-Ditokcherra</option>
+                        <option value="DLCR-Dullabcherra">
+                          DLCR-Dullabcherra
+                        </option>
+                        <option value="ELL-Eraligul">ELL-Eraligul</option>
+                        <option value="JRJE-Garjee">JRJE-Garjee</option>
+                        <option value="GOE-Ghograpur">GOE-Ghograpur</option>
+                        <option value="GHY-Guwahati">GHY-Guwahati</option>
+                        <option value="HWX-Habaipur">HWX-Habaipur</option>
+                        <option value="HFG-Haflong Hill">
+                          HFG-Haflong Hill
+                        </option>
+                        <option value="HBN-Haibargaon">HBN-Haibargaon</option>
+                        <option value="HKD-Hailakandi">HKD-Hailakandi</option>
+                        <option value="HJO-Harangajao">HJO-Harangajao</option>
+                        <option value="HTL-Hatikhali">HTL-Hatikhali</option>
+                        <option value="HLX-Hilara">HLX-Hilara</option>
+                        <option value="HJI-Hojai">HJI-Hojai</option>
+                        <option value="JID-Jagiroad">JID-Jagiroad</option>
+                        <option value="JKB-Jakhalabandha">
+                          JKB-Jakhalabandha
+                        </option>
+                        <option value="JMI-Jamguri">JMI-Jamguri</option>
+                        <option value="JMRA-Jamira">JMRA-Jamira</option>
+                        <option value="JMK-Jamunamukh">JMK-Jamunamukh</option>
+                        <option value="JTG-Jatinga">JTG-Jatinga</option>
+                        <option value="JGLP-Jatinga Lumpur">
+                          JGLP-Jatinga Lumpur
+                        </option>
+                        <option value="JWNR-Jawaharnagar">
+                          JWNR-Jawaharnagar
+                        </option>
+                        <option value="JRNA-Jirania">JRNA-Jirania</option>
+                        <option value="JRBM-Jiribam">JRBM-Jiribam</option>
+                        <option value="JIGT-Jirighat">JIGT-Jirighat</option>
+                        <option value="JGNR-Jogendranagar">
+                          JGNR-Jogendranagar
+                        </option>
+                        <option value="JIBI-Jolaibari">JIBI-Jolaibari</option>
+                        <option value="JGJN-Jugijan">JGJN-Jugijan</option>
+                        <option value="JRX-Juriagaon">JRX-Juriagaon</option>
+                        <option value="KQI-Kalachand">KQI-Kalachand</option>
+                        <option value="KKGT-Kalkalighat">
+                          KKGT-Kalkalighat
+                        </option>
+                        <option value="KYQ-Kamakhya Junction">
+                          KYQ-Kamakhya Junction
+                        </option>
+                        <option value="KWM-Kampur">KWM-Kampur</option>
+                        <option value="KMNG-Kamranga">KMNG-Kamranga</option>
+                        <option value="KKET-Kamrup Khetri">
+                          KKET-Kamrup Khetri
+                        </option>
+                        <option value="KNBR-Kanaibazar">KNBR-Kanaibazar</option>
+                        <option value="KXJ-Karimganj Junction">
+                          KXJ-Karimganj Junction
+                        </option>
+                        <option value="KTX-Katakhal Junction">
+                          KTX-Katakhal Junction
+                        </option>
+                        <option value="KLCR-Katlicherra">
+                          KLCR-Katlicherra
+                        </option>
+                        <option value="KTGM-Kayasthagram">
+                          KTGM-Kayasthagram
+                        </option>
+                        <option value="KGBP-Khongsang">KGBP-Khongsang</option>
+                        <option value="KHKT-Khotkhoti">KHKT-Khotkhoti</option>
+                        <option value="KUGT-Kumarghat">KUGT-Kumarghat</option>
+                        <option value="LLBR-Lalabazar">LLBR-Lalabazar</option>
+                        <option value="LKG-Lamsakhang">LKG-Lamsakhang</option>
+                        <option value="LCT-Langcholiet">LCT-Langcholiet</option>
+                        <option value="LGT-Langting">LGT-Langting</option>
+                        <option value="LKA-Lanka">LKA-Lanka</option>
+                        <option value="LPN-Laopani">LPN-Laopani</option>
+                        <option value="LGI-Longai">LGI-Longai</option>
+                        <option value="LFG-Lower Haflong">
+                          LFG-Lower Haflong
+                        </option>
+                        <option value="LMG-Lumding Junction">
+                          LMG-Lumding Junction
+                        </option>
+                        <option value="MPRA-Mahamadpur Assam">
+                          MPRA-Mahamadpur Assam
+                        </option>
+                        <option value="MXR-Mahur">MXR-Mahur</option>
+                        <option value="MBG-Maibang">MBG-Maibang</option>
+                        <option value="MGX-Mailongdisa">MGX-Mailongdisa</option>
+                        <option value="MBO-Mairabari">MBO-Mairabari</option>
+                        <option value="MSSN-Maishashan">MSSN-Maishashan</option>
+                        <option value="MYD-Manderdisa">MYD-Manderdisa</option>
+                        <option value="MOAR-Manipur Bagan">
+                          MOAR-Manipur Bagan
+                        </option>
+                        <option value="MANU-Manu">MANU-Manu</option>
+                        <option value="MUBR-Manu Bazar">MUBR-Manu Bazar</option>
+                        <option value="MGE-Migrendisa">MGE-Migrendisa</option>
+                        <option value="MRBD-Moinarband">MRBD-Moinarband</option>
+                        <option value="MNCR-Monacherra">MNCR-Monacherra</option>
+                        <option value="MGKM-Mungiakami">MGKM-Mungiakami</option>
+                        <option value="MUPA-Mupa">MUPA-Mupa</option>
+                        <option value="NPU-Nadiapur">NPU-Nadiapur</option>
+                        <option value="NGAN-Nagaon">NGAN-Nagaon</option>
+                        <option value="NLN-Nailalung">NLN-Nailalung</option>
+                        <option value="NLKT-Nalkata">NLKT-Nalkata</option>
+                        <option value="NJN-Naojan">NJN-Naojan</option>
+                        <option value="NNGE-Narangi">NNGE-Narangi</option>
+                        <option value="NHLG-New Haflong">
+                          NHLG-New Haflong
+                        </option>
+                        <option value="NHGJ-New Harangajao">
+                          NHGJ-New Harangajao
+                        </option>
+                        <option value="NKMG-New Karimganj Junction">
+                          NKMG-New Karimganj Junction
+                        </option>
+                        <option value="NSCL-New Silchar">
+                          NSCL-New Silchar
+                        </option>
+                        <option value="NLBR-Nilambazar">NLBR-Nilambazar</option>
+                        <option value="OTN-Oating">OTN-Oating</option>
+                        <option value="PNB-Panbari">PNB-Panbari</option>
+                        <option value="PNGM-Panchgram">PNGM-Panchgram</option>
+                        <option value="PHI-Panikhaiti">PHI-Panikhaiti</option>
+                        <option value="PASG-Panisagar">PASG-Panisagar</option>
+                        <option value="PTKD-Patharkandi">
+                          PTKD-Patharkandi
+                        </option>
+                        <option value="PKB-Patharkhola">PKB-Patharkhola</option>
+                        <option value="PEC-Pencharthal">PEC-Pencharthal</option>
+                        <option value="PKGM-Phakhoagram">
+                          PKGM-Phakhoagram
+                        </option>
+                        <option value="PDJ-Phiding">PDJ-Phiding</option>
+                        <option value="PUY-Phulaguri">PUY-Phulaguri</option>
+                        <option value="PUQ-Puranigudam">PUQ-Puranigudam</option>
+                        <option value="RAHA-Raha">RAHA-Raha</option>
+                        <option value="RTRA-Ramnathpur">RTRA-Ramnathpur</option>
+                        <option value="RXR-Rangapahar">RXR-Rangapahar</option>
+                        <option value="RXRX-Rangapahar Crossing">
+                          RXRX-Rangapahar Crossing
+                        </option>
+                        <option value="RGBP-Rani Gaidinliu">
+                          RGBP-Rani Gaidinliu
+                        </option>
+                        <option value="RNGN-Ranigaon">RNGN-Ranigaon</option>
+                        <option value="RTBR-Ratabari">RTBR-Ratabari</option>
+                        <option value="RUP-Rupahigaon">RUP-Rupahigaon</option>
+                        <option value="RPB-Rupasibari">RPB-Rupasibari</option>
+                        <option value="SBRM-Sabroom">SBRM-Sabroom</option>
+                        <option value="SCA-Salchapra">SCA-Salchapra</option>
+                        <option value="SLON-Salona">SLON-Salona</option>
+                        <option value="SMGR-Samaguri">SMGR-Samaguri</option>
+                        <option value="STRB-Santir Bazar">
+                          STRB-Santir Bazar
+                        </option>
+                        <option value="SZR-Sarupathar">SZR-Sarupathar</option>
+                        <option value="SKKE-Sekerkote">SKKE-Sekerkote</option>
+                        <option value="SCE-Senchoa Junction">
+                          SCE-Senchoa Junction
+                        </option>
+                        <option value="SKHV-Shokhuvi">SKHV-Shokhuvi</option>
+                        <option value="SCL-Silchar">SCL-Silchar</option>
+                        <option value="SHTT-Silghat Town">
+                          SHTT-Silghat Town
+                        </option>
+                        <option value="SKAP-SK Para">SKAP-SK Para</option>
+                        <option value="SNBR-Sonuabori">SNBR-Sonuabori</option>
+                        <option value="SIBR-Sribar">SIBR-Sribar</option>
+                        <option value="SQF-Sukritipur">SQF-Sukritipur</option>
+                        <option value="SAKD-Suprakandi">SAKD-Suprakandi</option>
+                        <option value="TRBE-Tarabari">TRBE-Tarabari</option>
+                        <option value="TLMR-Teliamura">TLMR-Teliamura</option>
+                        <option value="TTLA-Tetelia">TTLA-Tetelia</option>
+                        <option value="THTW-Thailik Twisa">
+                          THTW-Thailik Twisa
+                        </option>
+                        <option value="TKC-Thakurkuchi">TKC-Thakurkuchi</option>
+                        <option value="TGE-Thekeraguri">TGE-Thekeraguri</option>
+                        <option value="TGBP-Thingou">TGBP-Thingou</option>
+                        <option value="TBX-Tilbhum">TBX-Tilbhum</option>
+                        <option value="UDPU-Udaipur Tripura">
+                          UDPU-Udaipur Tripura
+                        </option>
+                        <option value="VNGP-Vangaichungpao">
+                          VNGP-Vangaichungpao
+                        </option>
+                        <option value="WDA-Wadrengdisa">WDA-Wadrengdisa</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col col-3">
+                    <div class="form-group mt-3 mb-3">
+                      <label>Direction</label>
+                      <select class="form-select" formControlName="direction">
+                        <option value="BOTH">BOTH</option>
+                        <option value="UP">UP</option>
+                        <option value="DN">DN</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col col-3">
+                    <div class="form-group mt-3 mb-3">
+                      <label>Line No.</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Enter Line Number"
+                        formControlName="lineNo"
+                      />
+                    </div>
+                  </div>
+                  <div class="col col-3">
+                    <div class="form-group mt-3 mb-3">
+                      <label>Machine</label>
+                      <select class="form-select" formControlName="machine">
+                        <option value="BCM">BCM</option>
+                        <option value="BRM">BRM</option>
+                        <option value="CSM">CSM</option>
+                        <option value="DGS">DGS</option>
+                        <option value="DTE">DTE</option>
+                        <option value="DUO">DUO</option>
+                        <option value="DUOMATIC">DUOMATIC</option>
+                        <option value="LADDER">LADDER</option>
+                        <option value="MPT">MPT</option>
+                        <option value="PBR">PBR</option>
+                        <option value="PQRS">PQRS</option>
+                        <option value="SBCM">SBCM</option>
+                        <option value="T">T</option>
+                        <option value="TOWER WAGON">TOWER WAGON</option>
+                        <option value="UNIMAT">UNIMAT</option>
+                        <option value="UTV">UTV</option>
+                        <option value="WIRING TRAIN">WIRING TRAIN</option>
+                        <option value="MAST ERECTION TRAIN">
+                          MAST ERECTION TRAIN
+                        </option>
+                        <option value="Others">Others</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col col-3">
+                    <div class="form-group mt-3 mb-3">
+                      <label>Series</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Enter User Name"
+                        formControlName="series"
+                      />
+                    </div>
+                  </div>
+                  <div class="col col-3">
+                    <div class="form-group mt-3 mb-3">
+                      <label>About Work</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Enter User Name"
+                        formControlName="aboutWork"
+                      />
+                    </div>
+                  </div>
+                  <div class="col col-3">
+                    <div class="form-group mt-3 mb-3">
+                      <label>Time Duration</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Enter User Name"
+                        formControlName="time"
+                      />
+                    </div>
+                  </div>
+                  <div class="col col-3">
+                    <div class="form-group mt-3 mb-3">
+                      <label>Available Slot</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Enter User Name"
+                        formControlName="availableSlot"
+                      />
+                    </div>
+                  </div>
+                  <div class="col col-3">
+                    <div class="form-group mt-3 mb-3">
+                      <label>Quantum</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Enter User Name"
+                        formControlName="quantum"
+                      />
+                    </div>
+                  </div>
+                  <div class="col col-3">
+                    <div class="form-group mt-3 mb-3">
+                      <label>Deputed Supervisor</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Enter User Name"
+                        formControlName="deputedSupervisor"
+                      />
+                    </div>
+                  </div>
+                  <div class="col col-3">
+                    <div class="form-group mt-3 mb-3">
+                      <label>Resources</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Enter User Name"
+                        formControlName="resources"
+                      />
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div class="col col-3">
-                <div class="form-group mt-3 mb-3">
-                  <label>Station</label>
-                  <select class="form-select">
-                    <option value="AGTL-Agartala">AGTL-Agartala</option>
-                    <option value="AGT-Agthori">AGT-Agthori</option>
-                    <option value="ALGP-Algapur">ALGP-Algapur</option>
-                    <option value="ABSA-Ambasa">ABSA-Ambasa</option>
-                    <option value="AONI-Amoni">AONI-Amoni</option>
-                    <option value="APU-Anipur">APU-Anipur</option>
-                    <option value="ARCL-Arunachal Junction">
-                      ARCL-Arunachal Junction
-                    </option>
-                    <option value="AJRE-Aujari">AJRE-Aujari</option>
-                    <option value="BPG-Badarpur Ghat">BPG-Badarpur Ghat</option>
-                    <option value="BPB-Badarpur Junction">
-                      BPB-Badarpur Junction
-                    </option>
-                    <option value="BF-Bagetar">BF-Bagetar</option>
-                    <option value="BHRB-Bairabi">BHRB-Bairabi</option>
-                    <option value="BKS-Balikotia">BKS-Balikotia</option>
-                    <option value="BXK-Bandarkhal">BXK-Bandarkhal</option>
-                    <option value="BRLF-Bar Langfer">BRLF-Bar Langfer</option>
-                    <option value="BRHU-Barahu">BRHU-Barahu</option>
-                    <option value="BRGM-Baraigram Junction">
-                      BRGM-Baraigram Junction
-                    </option>
-                    <option value="BXP-Barpathar">BXP-Barpathar</option>
-                    <option value="BTDR-Batadrowa Road">
-                      BTDR-Batadrowa Road
-                    </option>
-                    <option value="BZGT-Bazarghat">BZGT-Bazarghat</option>
-                    <option value="BEE-Bebejia">BEE-Bebejia</option>
-                    <option value="BENA-Belonia">BENA-Belonia</option>
-                    <option value="BXG-Bhanga">BXG-Bhanga</option>
-                    <option value="BHGN-Bhilgaon">BHGN-Bhilgaon</option>
-                    <option value="BHZ-Bihara">BHZ-Bihara</option>
-                    <option value="BLGH-Bishalgarh">BLGH-Bishalgarh</option>
-                    <option value="BHRM-Bishramganj">BHRM-Bishramganj</option>
-                    <option value="BXJ-Bokajan">BXJ-Bokajan</option>
-                    <option value="CHBN-Chandkhira Bagan">
-                      CHBN-Chandkhira Bagan
-                    </option>
-                    <option value="CNE-Chandranathpur">
-                      CNE-Chandranathpur
-                    </option>
-                    <option value="CPK-Chaparmukh Junction">
-                      CPK-Chaparmukh Junction
-                    </option>
-                    <option value="CGX-Chargola">CGX-Chargola</option>
-                    <option value="CJA-Chongajan">CJA-Chongajan</option>
-                    <option value="CBZ-Churaibari">CBZ-Churaibari</option>
-                    <option value="DGX-Dagaon">DGX-Dagaon</option>
-                    <option value="DLDE-Daldali">DLDE-Daldali</option>
-                    <option value="DCA-Damchara">DCA-Damchara</option>
-                    <option value="DJA-Daotuhaja">DJA-Daotuhaja</option>
-                    <option value="DQL-Dhalaibil">DQL-Dhalaibil</option>
-                    <option value="DHRY-Dhalpukhuri">DHRY-Dhalpukhuri</option>
-                    <option value="DSR-Dhansiri">DSR-Dhansiri</option>
-                    <option value="DML-Dharamtul">DML-Dharamtul</option>
-                    <option value="DMR-Dharmanagar">DMR-Dharmanagar</option>
-                    <option value="DIU-Dhing">DIU-Dhing</option>
-                    <option value="DBZ-Dhing Bazar">DBZ-Dhing Bazar</option>
-                    <option value="DBLG-Dibolong">DBLG-Dibolong</option>
-                    <option value="DGU-Digaru">DGU-Digaru</option>
-                    <option value="DKE-Dihakho">DKE-Dihakho</option>
-                    <option value="DMV-Dimapur">DMV-Dimapur</option>
-                    <option value="DPU-Diphu">DPU-Diphu</option>
-                    <option value="DTC-Ditokcherra">DTC-Ditokcherra</option>
-                    <option value="DLCR-Dullabcherra">DLCR-Dullabcherra</option>
-                    <option value="ELL-Eraligul">ELL-Eraligul</option>
-                    <option value="JRJE-Garjee">JRJE-Garjee</option>
-                    <option value="GOE-Ghograpur">GOE-Ghograpur</option>
-                    <option value="GHY-Guwahati">GHY-Guwahati</option>
-                    <option value="HWX-Habaipur">HWX-Habaipur</option>
-                    <option value="HFG-Haflong Hill">HFG-Haflong Hill</option>
-                    <option value="HBN-Haibargaon">HBN-Haibargaon</option>
-                    <option value="HKD-Hailakandi">HKD-Hailakandi</option>
-                    <option value="HJO-Harangajao">HJO-Harangajao</option>
-                    <option value="HTL-Hatikhali">HTL-Hatikhali</option>
-                    <option value="HLX-Hilara">HLX-Hilara</option>
-                    <option value="HJI-Hojai">HJI-Hojai</option>
-                    <option value="JID-Jagiroad">JID-Jagiroad</option>
-                    <option value="JKB-Jakhalabandha">JKB-Jakhalabandha</option>
-                    <option value="JMI-Jamguri">JMI-Jamguri</option>
-                    <option value="JMRA-Jamira">JMRA-Jamira</option>
-                    <option value="JMK-Jamunamukh">JMK-Jamunamukh</option>
-                    <option value="JTG-Jatinga">JTG-Jatinga</option>
-                    <option value="JGLP-Jatinga Lumpur">
-                      JGLP-Jatinga Lumpur
-                    </option>
-                    <option value="JWNR-Jawaharnagar">JWNR-Jawaharnagar</option>
-                    <option value="JRNA-Jirania">JRNA-Jirania</option>
-                    <option value="JRBM-Jiribam">JRBM-Jiribam</option>
-                    <option value="JIGT-Jirighat">JIGT-Jirighat</option>
-                    <option value="JGNR-Jogendranagar">
-                      JGNR-Jogendranagar
-                    </option>
-                    <option value="JIBI-Jolaibari">JIBI-Jolaibari</option>
-                    <option value="JGJN-Jugijan">JGJN-Jugijan</option>
-                    <option value="JRX-Juriagaon">JRX-Juriagaon</option>
-                    <option value="KQI-Kalachand">KQI-Kalachand</option>
-                    <option value="KKGT-Kalkalighat">KKGT-Kalkalighat</option>
-                    <option value="KYQ-Kamakhya Junction">
-                      KYQ-Kamakhya Junction
-                    </option>
-                    <option value="KWM-Kampur">KWM-Kampur</option>
-                    <option value="KMNG-Kamranga">KMNG-Kamranga</option>
-                    <option value="KKET-Kamrup Khetri">
-                      KKET-Kamrup Khetri
-                    </option>
-                    <option value="KNBR-Kanaibazar">KNBR-Kanaibazar</option>
-                    <option value="KXJ-Karimganj Junction">
-                      KXJ-Karimganj Junction
-                    </option>
-                    <option value="KTX-Katakhal Junction">
-                      KTX-Katakhal Junction
-                    </option>
-                    <option value="KLCR-Katlicherra">KLCR-Katlicherra</option>
-                    <option value="KTGM-Kayasthagram">KTGM-Kayasthagram</option>
-                    <option value="KGBP-Khongsang">KGBP-Khongsang</option>
-                    <option value="KHKT-Khotkhoti">KHKT-Khotkhoti</option>
-                    <option value="KUGT-Kumarghat">KUGT-Kumarghat</option>
-                    <option value="LLBR-Lalabazar">LLBR-Lalabazar</option>
-                    <option value="LKG-Lamsakhang">LKG-Lamsakhang</option>
-                    <option value="LCT-Langcholiet">LCT-Langcholiet</option>
-                    <option value="LGT-Langting">LGT-Langting</option>
-                    <option value="LKA-Lanka">LKA-Lanka</option>
-                    <option value="LPN-Laopani">LPN-Laopani</option>
-                    <option value="LGI-Longai">LGI-Longai</option>
-                    <option value="LFG-Lower Haflong">LFG-Lower Haflong</option>
-                    <option value="LMG-Lumding Junction">
-                      LMG-Lumding Junction
-                    </option>
-                    <option value="MPRA-Mahamadpur Assam">
-                      MPRA-Mahamadpur Assam
-                    </option>
-                    <option value="MXR-Mahur">MXR-Mahur</option>
-                    <option value="MBG-Maibang">MBG-Maibang</option>
-                    <option value="MGX-Mailongdisa">MGX-Mailongdisa</option>
-                    <option value="MBO-Mairabari">MBO-Mairabari</option>
-                    <option value="MSSN-Maishashan">MSSN-Maishashan</option>
-                    <option value="MYD-Manderdisa">MYD-Manderdisa</option>
-                    <option value="MOAR-Manipur Bagan">
-                      MOAR-Manipur Bagan
-                    </option>
-                    <option value="MANU-Manu">MANU-Manu</option>
-                    <option value="MUBR-Manu Bazar">MUBR-Manu Bazar</option>
-                    <option value="MGE-Migrendisa">MGE-Migrendisa</option>
-                    <option value="MRBD-Moinarband">MRBD-Moinarband</option>
-                    <option value="MNCR-Monacherra">MNCR-Monacherra</option>
-                    <option value="MGKM-Mungiakami">MGKM-Mungiakami</option>
-                    <option value="MUPA-Mupa">MUPA-Mupa</option>
-                    <option value="NPU-Nadiapur">NPU-Nadiapur</option>
-                    <option value="NGAN-Nagaon">NGAN-Nagaon</option>
-                    <option value="NLN-Nailalung">NLN-Nailalung</option>
-                    <option value="NLKT-Nalkata">NLKT-Nalkata</option>
-                    <option value="NJN-Naojan">NJN-Naojan</option>
-                    <option value="NNGE-Narangi">NNGE-Narangi</option>
-                    <option value="NHLG-New Haflong">NHLG-New Haflong</option>
-                    <option value="NHGJ-New Harangajao">
-                      NHGJ-New Harangajao
-                    </option>
-                    <option value="NKMG-New Karimganj Junction">
-                      NKMG-New Karimganj Junction
-                    </option>
-                    <option value="NSCL-New Silchar">NSCL-New Silchar</option>
-                    <option value="NLBR-Nilambazar">NLBR-Nilambazar</option>
-                    <option value="OTN-Oating">OTN-Oating</option>
-                    <option value="PNB-Panbari">PNB-Panbari</option>
-                    <option value="PNGM-Panchgram">PNGM-Panchgram</option>
-                    <option value="PHI-Panikhaiti">PHI-Panikhaiti</option>
-                    <option value="PASG-Panisagar">PASG-Panisagar</option>
-                    <option value="PTKD-Patharkandi">PTKD-Patharkandi</option>
-                    <option value="PKB-Patharkhola">PKB-Patharkhola</option>
-                    <option value="PEC-Pencharthal">PEC-Pencharthal</option>
-                    <option value="PKGM-Phakhoagram">PKGM-Phakhoagram</option>
-                    <option value="PDJ-Phiding">PDJ-Phiding</option>
-                    <option value="PUY-Phulaguri">PUY-Phulaguri</option>
-                    <option value="PUQ-Puranigudam">PUQ-Puranigudam</option>
-                    <option value="RAHA-Raha">RAHA-Raha</option>
-                    <option value="RTRA-Ramnathpur">RTRA-Ramnathpur</option>
-                    <option value="RXR-Rangapahar">RXR-Rangapahar</option>
-                    <option value="RXRX-Rangapahar Crossing">
-                      RXRX-Rangapahar Crossing
-                    </option>
-                    <option value="RGBP-Rani Gaidinliu">
-                      RGBP-Rani Gaidinliu
-                    </option>
-                    <option value="RNGN-Ranigaon">RNGN-Ranigaon</option>
-                    <option value="RTBR-Ratabari">RTBR-Ratabari</option>
-                    <option value="RUP-Rupahigaon">RUP-Rupahigaon</option>
-                    <option value="RPB-Rupasibari">RPB-Rupasibari</option>
-                    <option value="SBRM-Sabroom">SBRM-Sabroom</option>
-                    <option value="SCA-Salchapra">SCA-Salchapra</option>
-                    <option value="SLON-Salona">SLON-Salona</option>
-                    <option value="SMGR-Samaguri">SMGR-Samaguri</option>
-                    <option value="STRB-Santir Bazar">STRB-Santir Bazar</option>
-                    <option value="SZR-Sarupathar">SZR-Sarupathar</option>
-                    <option value="SKKE-Sekerkote">SKKE-Sekerkote</option>
-                    <option value="SCE-Senchoa Junction">
-                      SCE-Senchoa Junction
-                    </option>
-                    <option value="SKHV-Shokhuvi">SKHV-Shokhuvi</option>
-                    <option value="SCL-Silchar">SCL-Silchar</option>
-                    <option value="SHTT-Silghat Town">SHTT-Silghat Town</option>
-                    <option value="SKAP-SK Para">SKAP-SK Para</option>
-                    <option value="SNBR-Sonuabori">SNBR-Sonuabori</option>
-                    <option value="SIBR-Sribar">SIBR-Sribar</option>
-                    <option value="SQF-Sukritipur">SQF-Sukritipur</option>
-                    <option value="SAKD-Suprakandi">SAKD-Suprakandi</option>
-                    <option value="TRBE-Tarabari">TRBE-Tarabari</option>
-                    <option value="TLMR-Teliamura">TLMR-Teliamura</option>
-                    <option value="TTLA-Tetelia">TTLA-Tetelia</option>
-                    <option value="THTW-Thailik Twisa">
-                      THTW-Thailik Twisa
-                    </option>
-                    <option value="TKC-Thakurkuchi">TKC-Thakurkuchi</option>
-                    <option value="TGE-Thekeraguri">TGE-Thekeraguri</option>
-                    <option value="TGBP-Thingou">TGBP-Thingou</option>
-                    <option value="TBX-Tilbhum">TBX-Tilbhum</option>
-                    <option value="UDPU-Udaipur Tripura">
-                      UDPU-Udaipur Tripura
-                    </option>
-                    <option value="VNGP-Vangaichungpao">
-                      VNGP-Vangaichungpao
-                    </option>
-                    <option value="WDA-Wadrengdisa">WDA-Wadrengdisa</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col col-3">
-                <div class="form-group mt-3 mb-3">
-                  <label>Direction</label>
-                  <select class="form-select">
-                    <option value="BOTH">BOTH</option>
-                    <option value="UP">UP</option>
-                    <option value="DN">DN</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col col-3">
-                <div class="form-group mt-3 mb-3">
-                  <label>Line No.</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="Enter Line Number"
-                  />
-                </div>
-              </div>
-              <div class="col col-3">
-                <div class="form-group mt-3 mb-3">
-                  <label>Machine</label>
-                  <select class="form-select">
-                    <option value="BCM">BCM</option>
-                    <option value="BRM">BRM</option>
-                    <option value="CSM">CSM</option>
-                    <option value="DGS">DGS</option>
-                    <option value="DTE">DTE</option>
-                    <option value="DUO">DUO</option>
-                    <option value="DUOMATIC">DUOMATIC</option>
-                    <option value="LADDER">LADDER</option>
-                    <option value="MPT">MPT</option>
-                    <option value="PBR">PBR</option>
-                    <option value="PQRS">PQRS</option>
-                    <option value="SBCM">SBCM</option>
-                    <option value="T">T</option>
-                    <option value="TOWER WAGON">TOWER WAGON</option>
-                    <option value="UNIMAT">UNIMAT</option>
-                    <option value="UTV">UTV</option>
-                    <option value="WIRING TRAIN">WIRING TRAIN</option>
-                    <option value="MAST ERECTION TRAIN">
-                      MAST ERECTION TRAIN
-                    </option>
-                    <option value="Others">Others</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col col-3">
-                <div class="form-group mt-3 mb-3">
-                  <label>Series</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="Enter User Name"
-                  />
-                </div>
-              </div>
-              <div class="col col-3">
-                <div class="form-group mt-3 mb-3">
-                  <label>About Work</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="Enter User Name"
-                  />
-                </div>
-              </div>
-              <div class="col col-3">
-                <div class="form-group mt-3 mb-3">
-                  <label>Time Duration</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="Enter User Name"
-                  />
-                </div>
-              </div>
-              <div class="col col-3">
-                <div class="form-group mt-3 mb-3">
-                  <label>Available Slot</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="Enter User Name"
-                  />
-                </div>
-              </div>
-              <div class="col col-3">
-                <div class="form-group mt-3 mb-3">
-                  <label>Quantum</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="Enter User Name"
-                  />
-                </div>
-              </div>
-              <div class="col col-3">
-                <div class="form-group mt-3 mb-3">
-                  <label>Deputed Supervisor</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="Enter User Name"
-                  />
-                </div>
-              </div>
-              <div class="col col-3">
-                <div class="form-group mt-3 mb-3">
-                  <label>Resources</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="Enter User Name"
-                  />
-                </div>
-              </div>
+              </form>
             </div>
-          </form>
+          </div>
         </div>
-      </div>
+      </ng-container>
     </div>
-    }
   </div>
 </div>
