@@ -4,25 +4,6 @@
   background-repeat: no-repeat;
   background-size: cover;
 }
-*:focus {
-  outline: none;
-}
-
-select {
-  appearance: none;
-  -webkit-appearance: none;
-  background-color: transparent;
-  border: 0;
-  padding: 10px;
-  margin: -5px -20px -5px -5px;
-}
-
-#drink-holder select option {
-  display: inline-block;
-}
-
-#drink-holder {
-  display: inline-block;
-  vertical-align: top;
-  overflow: hidden;
+.nav-item {
+  margin-left: 6rem;
 }
