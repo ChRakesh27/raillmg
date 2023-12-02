@@ -1,6 +1,4 @@
-@if(!isUserLoggedIn){
-<app-user></app-user>
-}@else {
+@if(isUserLoggedIn){
 <app-navbar></app-navbar>
-<router-outlet></router-outlet>
 }
+<router-outlet></router-outlet>
