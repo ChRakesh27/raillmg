@@ -1,1 +1,172 @@
-<h1>MACHINE ROLL</h1>
+<div class="container">
+  <div class="row text-center">
+    <div class="col">
+      <h3>DEMAND FOR (MACHINE) BLOCK</h3>
+    </div>
+  </div>
+  <div class="row align-items-center">
+    <div class="col-auto me-auto">
+      <div class="form-group mt-3 mb-3">
+        <label>Department</label>
+        <select class="form-select">
+          <option value="OPERATING">OPERATING</option>
+          <option value="CONSTRUCTION">CONSTRUCTION</option>
+          <option value="ENGINEERING">ENGINEERING</option>
+          <option value="RE">RE</option>
+          <option value="RVNL">RVNL</option>
+          <option value="SIGNAL">SIGNAL</option>
+          <option value="Telecom">Telecom</option>
+          <option value="TRD">TRD</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-auto">
+      <button class="btn btn-primary me-2">Add</button>
+      <button class="btn btn-danger">Delete</button>
+    </div>
+  </div>
+
+  <div class="accordion" id="accordionPanelsStayOpenExample">
+    @for(item of [1,2,3,4]; track $index){
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button
+          class="accordion-button"
+          type="button"
+          data-bs-toggle="collapse"
+          [attr.data-bs-target]="'#collapse' + $index"
+          aria-expanded="true"
+          [attr.aria-controls]="'collapse' + $index"
+        >
+          Item{{ $index + 1 }}
+        </button>
+      </h2>
+      <div [id]="'collapse' + $index" class="accordion-collapse collapse show">
+        <div class="accordion-body">
+          <form>
+            <div class="row">
+              <div class="col col-3">
+                <div class="form-group mt-3 mb-3">
+                  <label>Section</label>
+                  <select class="form-select">
+                    <option value="OPERATING">OPERATING</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col col-3">
+                <div class="form-group mt-3 mb-3">
+                  <label>Station</label>
+                  <select class="form-select">
+                    <option value="OPERATING">OPERATING</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col col-3">
+                <div class="form-group mt-3 mb-3">
+                  <label>Direction</label>
+                  <select class="form-select">
+                    <option value="OPERATING">OPERATING</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col col-3">
+                <div class="form-group mt-3 mb-3">
+                  <label>Line No.</label>
+                  <select class="form-select">
+                    <option value="OPERATING">OPERATING</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col col-3">
+                <div class="form-group mt-3 mb-3">
+                  <label>Machine</label>
+                  <select class="form-select">
+                    <option value="OPERATING">OPERATING</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col col-3">
+                <div class="form-group mt-3 mb-3">
+                  <label>Series</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="username"
+                    placeholder="Enter User Name"
+                  />
+                </div>
+              </div>
+              <div class="col col-3">
+                <div class="form-group mt-3 mb-3">
+                  <label>About Work</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="username"
+                    placeholder="Enter User Name"
+                  />
+                </div>
+              </div>
+              <div class="col col-3">
+                <div class="form-group mt-3 mb-3">
+                  <label>Time Duration</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="username"
+                    placeholder="Enter User Name"
+                  />
+                </div>
+              </div>
+              <div class="col col-3">
+                <div class="form-group mt-3 mb-3">
+                  <label>Available Slot</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="username"
+                    placeholder="Enter User Name"
+                  />
+                </div>
+              </div>
+              <div class="col col-3">
+                <div class="form-group mt-3 mb-3">
+                  <label>Quantum</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="username"
+                    placeholder="Enter User Name"
+                  />
+                </div>
+              </div>
+              <div class="col col-3">
+                <div class="form-group mt-3 mb-3">
+                  <label>Deputed Supervisor</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="username"
+                    placeholder="Enter User Name"
+                  />
+                </div>
+              </div>
+              <div class="col col-3">
+                <div class="form-group mt-3 mb-3">
+                  <label>Resources</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="username"
+                    placeholder="Enter User Name"
+                  />
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+</div>
