@@ -1,0 +1,46 @@
+<section class="vh-100" style="background-color: rgb(244, 244, 244)">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+        <div class="card shadow-2-strong" style="border-radius: 1rem">
+          <div class="card-body p-5">
+            <h3 class="mb-5 text-center">Log in</h3>
+            <form>
+              <div class="form-group mt-3 mb-3">
+                <label for="usename">User Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="username"
+                  placeholder="Enter User Name"
+                />
+              </div>
+              <div class="form-group mt-3 mb-3">
+                <label for="password">Password</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="password"
+                  placeholder="Password"
+                />
+              </div>
+              <button
+                type="submit"
+                class="btn btn-primary w-100 btn-lg mt-5"
+                (click)="onLogin()"
+              >
+                Login
+              </button>
+            </form>
+            <div class="text-center mt-2 user-footer">
+              <span>Don't have an account?</span>
+              <button type="button" class="btn btn-link" routerLink="/register">
+                Sign up
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
