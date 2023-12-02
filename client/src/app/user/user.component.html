@@ -8,22 +8,52 @@
               <div class="card-body p-md-5 mx-md-4">
                 <div class="text-center">
                   @if(login){
-                  <h1 class="mt-5 mb-5 pb-1 fw-bold">Log in</h1>
+                  <h1 class="mt-5 mb-5 pb-1 fw-bold">Sign in</h1>
                   }@else{
-                  <h1 class="mt-5 mb-5 pb-1 fw-bold">Sign up</h1>
+                  <h1 class="mb-5 pb-1 fw-bold">Sign up</h1>
                   }
                 </div>
-
+                @if(login) {
                 <form>
                   <div class="form-outline mb-4">
                     <input
-                      type="email"
+                      type="text"
                       id="form2Example11"
-                      class="form-control"
-                      placeholder="Email Id"
+                      class="form-control login"
+                      placeholder="User Name"
+                    />
+                  </div>
+                  <div class="form-outline mb-4">
+                    <input
+                      type="password"
+                      id="form2Example22"
+                      class="form-control login"
+                      placeholder="Password"
                     />
                   </div>
 
+                  <div class="text-center mb-5 pb-1">
+                    <a class="text-muted" href="#!">Forgot password?</a>
+                    <br />
+                    <br />
+                    <button
+                      class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3"
+                      type="button"
+                    >
+                      Log in
+                    </button>
+                  </div>
+                </form>
+                } @else {
+                <form>
+                  <div class="form-outline mb-4">
+                    <input
+                      type="text"
+                      id="form2Example11"
+                      class="form-control"
+                      placeholder="User Name"
+                    />
+                  </div>
                   <div class="form-outline mb-4">
                     <input
                       type="password"
@@ -32,25 +62,80 @@
                       placeholder="Password"
                     />
                   </div>
-                  <div class="text-center mb-5 pb-1">
-                    <a class="text-muted" href="#!">Forgot password?</a>
-                    <br />
-                    <br />
-                    @if(login) {
+                  <div class="form-outline mb-4">
+                    <input
+                      type="text"
+                      id="form2Example11"
+                      class="form-control"
+                      placeholder="Email"
+                    />
+                  </div>
+                  <div class="form-outline mb-4">
+                    <label>Designation</label>
+                    <select
+                      class="form-select"
+                      aria-label="Default select example"
+                    >
+                      <option value="DRM">DRM</option>
+                      <option value="ADRM">ADRM</option>
+                      <option value="DOM/IC">DOM/IC</option>
+                      <option value="AOM/GOODS">AOM/GOODS</option>
+                      <option value="AOM/COACHING">AOM/COACHING</option>
+                      <option value="Sr.DCM">Sr.DCM</option>
+                      <option value="DCM">DCM</option>
+                      <option value="ACM">ACM</option>
+                      <option value="ARM/NCB">ARM/NCB</option>
+                      <option value="TI/MOV">TI/MOV</option>
+                      <option value="TI/HQ">TI/HQ</option>
+                      <option value="TI/SWR">TI/SWR</option>
+                      <option value="TI/STORE">TI/STORE</option>
+                      <option value="TI/PLANNING">TI/PLANNING</option>
+                      <option value="TI/IT">TI/IT</option>
+                      <option value="TI/APDJ-1">TI/APDJ-1</option>
+                      <option value="TI/APDJ-2">TI/APDJ-2</option>
+                      <option value="TI/CL/APDJ">TI/CL/APDJ</option>
+                      <option value="TI/CL/NCB">TI/CL/NCB</option>
+                      <option value="TI/CL/APDJ@NJP">
+                        {{ "TI/CL/APDJ@NJP" }}
+                      </option>
+                      <option value="TI/NMZ">TI/NMZ</option>
+                      <option value="TI/NCB">TI/NCB</option>
+                      <option value="TI/JPE">TI/JPE</option>
+                      <option value="TI/NMX">TI/NMX</option>
+                      <option value="TI/FKM">TI/FKM</option>
+                    </select>
+                  </div>
+                  <div class="form-outline mb-4">
+                    <label>Department</label>
+                    <select class="form-select">
+                      <option value="OPERATING">OPERATING</option>
+                      <option value="CONSTRUCTION">CONSTRUCTION</option>
+                      <option value="ENGINEERING">ENGINEERING</option>
+                      <option value="RE">RE</option>
+                      <option value="RVNL">RVNL</option>
+                      <option value="SIGNAL">SIGNAL</option>
+                      <option value="Telecom">Telecom</option>
+                      <option value="TRD">TRD</option>
+                    </select>
+                  </div>
+                  <div class="form-outline mb-4">
+                    <input
+                      type="number"
+                      id="form2Example22"
+                      class="form-control"
+                      placeholder="Mobile Number"
+                    />
+                  </div>
+                  <div class="text-center pb-1">
                     <button
                       class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3"
                       type="button"
                     >
-                      Log in</button
-                    >}@else {
-                    <button
-                      class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3"
-                      type="button"
-                    >
-                      Register</button
-                    >}
+                      Register
+                    </button>
                   </div>
                 </form>
+                }
               </div>
             </div>
             <div
@@ -59,10 +144,10 @@
               <div class="text-white text-center">
                 <h1 class="mb-4 fw-bold">Hello, User!</h1>
                 @if(login){
-                <p class="small mb-4">Don't have an account?</p>
+                <p class="mb-4">Don't have an account?</p>
                 <button class="signUp" (click)="onLogin(false)">SIGN UP</button
                 >} @else{
-                <p class="small mb-4">Already have an account?</p>
+                <p class="mb-4">Already have an account?</p>
                 <button class="signUp" (click)="onLogin(true)">LOG IN</button>}
               </div>
             </div>

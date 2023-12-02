@@ -33,6 +33,14 @@
 
 .form-control {
   background: rgb(186, 219, 252);
+}
+.form-select {
+  background: rgb(186, 219, 252);
+}
+.login {
   height: 4rem;
   font-size: larger;
+}
+
+.register {
 }
