@@ -21,15 +21,14 @@
       </div>
     </div>
     <div class="col-auto">
-      <button class="btn btn-primary me-2">Add</button>
-      <button class="btn btn-danger">Delete</button>
+      <button class="btn btn-primary btn-lg me-2">Add</button>
     </div>
   </div>
 
   <div class="accordion" id="accordionPanelsStayOpenExample">
     @for(item of [1,2,3,4]; track $index){
     <div class="accordion-item">
-      <h2 class="accordion-header">
+      <h2 class="accordion-header d-flex">
         <button
           class="accordion-button"
           type="button"
@@ -38,8 +37,9 @@
           aria-expanded="true"
           [attr.aria-controls]="'collapse' + $index"
         >
-          Item{{ $index + 1 }}
+          OPERATING-{{ $index + 1 }}
         </button>
+        <button class="btn btn-outline-danger ms-2">Delete</button>
       </h2>
       <div [id]="'collapse' + $index" class="accordion-collapse collapse show">
         <div class="accordion-body">
