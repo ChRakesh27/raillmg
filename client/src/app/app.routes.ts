@@ -3,6 +3,6 @@ import { UserComponent } from './user/user.component';
 import { HomePageComponent } from './home-page/home-page.component';
 
 export const routes: Routes = [
-    { path: '', component: UserComponent },
-    { path: 'home', component: HomePageComponent }
+    { path: 'home', component: UserComponent },
+    { path: '', component: HomePageComponent }
 ];
