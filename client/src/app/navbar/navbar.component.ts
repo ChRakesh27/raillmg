@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { AppService } from '../app.service';
 @Component({
   selector: 'app-navbar',
   standalone: true,
@@ -9,4 +10,11 @@ import { RouterLink } from '@angular/router';
 })
 export class NavbarComponent {
 
+  constructor(private service: AppService) {
+
+  }
+
+  onLogout() {
+    this.service.isUserLoggedIn$.next(false)
+  }
 }
