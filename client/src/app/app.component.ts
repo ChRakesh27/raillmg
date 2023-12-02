@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './navbar/navbar.component';
 import { UserComponent } from "./user/user.component";
+import { AppService } from './app.service';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +12,15 @@ import { UserComponent } from "./user/user.component";
   styleUrls: ['./app.component.css'],
   imports: [CommonModule, RouterOutlet, NavbarComponent, UserComponent]
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'client';
-  isUserLoggedIn = true
+  isUserLoggedIn = false
+
+
+  constructor(private service: AppService) { }
+  ngOnInit() {
+    this.service.isUserLoggedIn$.subscribe(res => {
+      this.isUserLoggedIn = res
+    })
+  }
 }
