@@ -17,17 +17,23 @@ export class MachineRollComponent implements OnInit {
     return this.form.controls['machineFormArray'] as FormArray
   }
 
+  get department(): string {
+    return this.form.controls['department'].value
+  }
+
   constructor(private fb: FormBuilder) { }
 
 
   ngOnInit(): void {
     this.form = this.fb.group({
+      department: this.fb.control("OPERATING", Validators.required),
       machineFormArray: this.fb.array([])
     })
     this.onAddNewForm()
   }
 
   onSubmit() {
+    console.log(this.form.valid)
     console.log(this.machineFormArray.value);
   }
 
