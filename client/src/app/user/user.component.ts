@@ -38,6 +38,7 @@ export class UserComponent {
   }
   onLogin(data: boolean) {
     this.login = data
+    this.service.isUserLoggedIn = true
   }
 
 }
