@@ -24,10 +24,11 @@ export class LoginComponent implements OnInit {
 
   }
   onLogin() {
-    this.service.loginUser(this.userForm.value.username, this.userForm.value.password).subscribe(data => {
-      console.log("🚀 ~ data:", data)
-      this.service.isUserLoggedIn$.next(data)
-
-    })
+    if (this.userForm.valid) {
+      this.service.loginUser(this.userForm.value.username, this.userForm.value.password).subscribe(data => {
+        this.service.setIsUserLoggedIn(data)
+        this.service.isUserLoggedIn$.next(true)
+      })
+    }
   }
 }

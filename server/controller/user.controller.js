@@ -7,9 +7,14 @@ router.get('/', async (req, res) => {
     try {
         const login = req.query
         console.log("🚀 ~ login:", login)
-        const docs = await users.find(login);
-        docs[0].password = ''
-        res.send(docs)
+        const docs = await users.findOne(login);
+        if (docs == null) {
+            res.status(404).send({ message: "user not found" })
+        } else {
+            delete docs.password
+            res.send(docs)
+        }
+
     } catch (error) {
         res.send(error)
     }
@@ -28,6 +33,7 @@ router.post("/", async (req, res) => {
     try {
         const data = req.body;
         const docs = await users.create(data)
+        delete docs.password
         res.send(docs)
     } catch (err) {
         res.send(err)
