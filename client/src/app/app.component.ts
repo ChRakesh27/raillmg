@@ -5,13 +5,14 @@ import { NavbarComponent } from './navbar/navbar.component';;
 import { AppService } from './app.service';
 import { LoginComponent } from "./login/login.component";
 import { RegisterComponent } from "./register/register.component";
+import { MachineRollComponent } from "./machine-roll/machine-roll.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  imports: [CommonModule, RouterOutlet, NavbarComponent, LoginComponent, RegisterComponent]
+  imports: [CommonModule, RouterOutlet, NavbarComponent, LoginComponent, RegisterComponent, MachineRollComponent]
 })
 export class AppComponent implements OnInit {
   title = 'client';
@@ -23,7 +24,8 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.navigateUser()
     this.service.isUserLoggedIn$.subscribe(res => {
-      this.isUserLoggedIn = res
+      if (res.length > 0)
+        this.isUserLoggedIn = true
       this.navigateUser();
     })
   }
