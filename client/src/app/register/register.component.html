@@ -5,7 +5,7 @@
         <div class="card shadow-2-strong" style="border-radius: 1rem">
           <div class="card-body p-5">
             <h3 class="mb-5 text-center">Register</h3>
-            <form>
+            <form [formGroup]="registerForm">
               <div class="form-group mt-3 mb-3">
                 <label for="usename">User Name</label>
                 <input
@@ -13,6 +13,7 @@
                   class="form-control"
                   id="username"
                   placeholder="Enter User Name"
+                  formControlName="username"
                 />
               </div>
 
@@ -23,6 +24,7 @@
                   class="form-control"
                   id="password"
                   placeholder="Password"
+                  formControlName="password"
                 />
               </div>
               <div class="form-group mt-3 mb-3">
@@ -32,11 +34,17 @@
                   class="form-control"
                   id="username"
                   placeholder="Enter Email"
+                  formControlName="email"
                 />
               </div>
               <div class="form-group mt-3 mb-3">
                 <label for="designation">Designation</label>
-                <select class="form-select" aria-label="Default select example">
+
+                <select
+                  class="form-select"
+                  aria-label="Default select example"
+                  formControlName="designation"
+                >
                   <option value="DRM">DRM</option>
                   <option value="ADRM">ADRM</option>
                   <option value="DOM/IC">DOM/IC</option>
@@ -69,7 +77,7 @@
 
               <div class="form-group mt-3 mb-3">
                 <label>Department</label>
-                <select class="form-select">
+                <select class="form-select" formControlName="department">
                   <option value="OPERATING">OPERATING</option>
                   <option value="CONSTRUCTION">CONSTRUCTION</option>
                   <option value="ENGINEERING">ENGINEERING</option>
@@ -88,10 +96,15 @@
                   id="form2Example22"
                   class="form-control"
                   placeholder="Mobile Number"
+                  formControlName="mobile"
                 />
               </div>
 
-              <button type="submit" class="btn btn-primary w-100 btn-lg mt-2">
+              <button
+                type="submit"
+                class="btn btn-primary w-100 btn-lg mt-2"
+                (click)="onRegister()"
+              >
                 Register
               </button>
             </form>

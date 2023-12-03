@@ -1,16 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { AppService } from '../app.service';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, ReactiveFormsModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
 export class RegisterComponent implements OnInit {
   registerForm!: FormGroup;
+  constructor(private service: AppService) { }
   ngOnInit(): void {
 
     this.registerForm = new FormGroup({
@@ -22,6 +24,12 @@ export class RegisterComponent implements OnInit {
       mobile: new FormControl(null, Validators.required)
     });
 
+  }
+
+  onRegister() {
+    this.service.register(this.registerForm.value).subscribe(data => {
+      this.service.isUserLoggedIn$.next([data])
+    })
   }
 
 }
