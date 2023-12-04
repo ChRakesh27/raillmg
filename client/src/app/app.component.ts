@@ -24,12 +24,12 @@ export class AppComponent implements OnInit {
   constructor(private service: AppService, private router: Router) { }
 
   ngOnInit() {
+    this.service.isLoading$.subscribe(res => this.isLoading = res)
     this.navigateUser()
     this.service.isUserLoggedIn$.subscribe(res => {
       this.isUserLoggedIn = res
       this.navigateUser();
     })
-    // this.service.isLoading$.subscribe(res => this.isLoading = res)
   }
 
   private navigateUser() {
