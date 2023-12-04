@@ -34,12 +34,11 @@ export class AddMachineRollComponent implements OnInit {
     this.userData = this.service.userData;
     this.form = this.fb.group({
       department: this.fb.control(
-        this.userData['department'],
+        null,
         Validators.required
       ),
       machineFormArray: this.fb.array([]),
     });
-    this.onAddNewForm();
   }
 
   onSubmit() {
@@ -53,7 +52,6 @@ export class AddMachineRollComponent implements OnInit {
       });
 
       this.service.setMachineRoll(payload).subscribe(() => {
-        console.log('🚀 ~ payload:', payload);
         this.machineFormArray.reset();
         alert('Your successful submission');
       });

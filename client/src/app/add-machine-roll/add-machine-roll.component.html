@@ -9,6 +9,7 @@
       <div class="form-group mt-3 mb-3">
         <label>Department</label>
         <select class="form-select" formControlName="department">
+          <option value="null" disabled>Select Department</option>
           <option value="OPERATING">OPERATING</option>
           <option value="CONSTRUCTION">CONSTRUCTION</option>
           <option value="ENGINEERING">ENGINEERING</option>
@@ -22,10 +23,10 @@
     </div>
 
     <div class="col-auto">
-      <button class="btn btn-primary btn-lg me-2" (click)="onAddNewForm()">
+      <button class="btn btn-primary btn-sm me-2" (click)="onAddNewForm()">
         Add
       </button>
-      <button class="btn btn-success btn-lg me-2" (click)="onSubmit()">
+      <button class="btn btn-success btn-sm me-2" (click)="onSubmit()">
         Submit
       </button>
     </div>

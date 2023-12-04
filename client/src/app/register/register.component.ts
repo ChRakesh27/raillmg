@@ -29,7 +29,6 @@ export class RegisterComponent implements OnInit {
   onRegister() {
     if (this.registerForm.valid) {
       this.service.register(this.registerForm.value).subscribe(data => {
-        console.log("🚀 ~ data:", data)
         this.service.setIsUserLoggedIn(data)
         this.service.isUserLoggedIn$.next(true)
       })
