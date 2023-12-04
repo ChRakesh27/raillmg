@@ -10,6 +10,7 @@ import {
 } from '@angular/forms';
 import { AppService } from '../app.service';
 import { DateTime } from 'luxon'
+import { AvailableSlotsConfig } from './available-slots';
 
 @Component({
   selector: 'app-add-machine-roll',
@@ -21,15 +22,9 @@ import { DateTime } from 'luxon'
 export class AddMachineRollComponent implements OnInit {
   form!: FormGroup;
   userData = {};
-  selctionObj = {
-    "CGS-KYQ": [],
-    "KYQ-GHY": [],
-    "GHY-NNGE": [],
-    'NNGE DGU': [],
-    "DGU-CPK": { up: [] },
-    "CPK-HJI": []
-  }
+  availableSlots = {};
   value: any;
+
   get machineFormArray(): FormArray {
     return this.form.controls['machineFormArray'] as FormArray;
   }
@@ -41,14 +36,6 @@ export class AddMachineRollComponent implements OnInit {
   constructor(private fb: FormBuilder, private service: AppService) { }
 
   ngOnInit(): void {
-
-
-
-
-    this.setDate()
-
-
-
     this.userData = this.service.userData;
     this.form = this.fb.group({
       department: this.fb.control(
@@ -58,41 +45,6 @@ export class AddMachineRollComponent implements OnInit {
       machineFormArray: this.fb.array([]),
     });
   }
-
-  setDate() {
-    let dt = DateTime.now()
-    for (let i = 0; i < 365; i++) {
-      dt = dt.plus({ days: 1 });
-      // this.dateOfyear[dt.weekday - 1].push(dt.toLocaleString())
-
-      if (dt.weekday === 3) {
-        this.selctionObj["CGS-KYQ"].push(dt.toLocaleString() + "  00:00 to 03:00 hrs(WED)")
-        this.selctionObj["KYQ-GHY"].push(dt.toLocaleString() + "  00:00 to 03:00 hrs(WED)")
-        this.selctionObj["GHY-NNGE"].push(dt.toLocaleString() + "  00:00 to 03:00 hrs(WED)")
-      }
-      if (dt.weekday === 4) {
-        this.selctionObj["CGS-KYQ"].push(dt.toLocaleString() + "  00:00 to 03:00 hrs(THR)")
-        this.selctionObj["KYQ-GHY"].push(dt.toLocaleString() + "  00:00 to 03:00 hrs(THR)")
-        this.selctionObj["GHY-NNGE"].push(dt.toLocaleString() + "  00:00 to 03:00 hrs(THR)")
-      }
-      if (dt.weekday === 5) {
-        this.selctionObj["CGS-KYQ"].push(dt.toLocaleString() + "  00:00 to 03:00 hrs(FRI)")
-        this.selctionObj["KYQ-GHY"].push(dt.toLocaleString() + "  00:00 to 03:00 hrs(FRI)")
-        this.selctionObj["GHY-NNGE"].push(dt.toLocaleString() + "  00:00 to 03:00 hrs(FRI)")
-      }
-
-
-
-
-
-
-
-    }
-
-  }
-
-
-
 
   onSubmit() {
     if (this.machineFormArray.value.length === 0 || !this.form.valid) {
@@ -132,27 +84,44 @@ export class AddMachineRollComponent implements OnInit {
     });
 
     this.machineFormArray.push(machineForm);
+
+    const selectCtrl = machineForm.controls['selection'] as FormControl
+    selectCtrl.valueChanges.subscribe((change) => {
+      this.prepareAvailableSlots(change, machineForm.controls['direction'].value)
+    })
+    const directionCtrl = machineForm.controls['direction'] as FormControl
+    directionCtrl.valueChanges.subscribe((change) => {
+      this.prepareAvailableSlots(machineForm.controls['selection'].value, change)
+    })
   }
 
   onDelete(index: number) {
     this.machineFormArray.removeAt(index);
   }
 
-  onSection(data) {
-    let val = data.controls['selection'].value
+  prepareAvailableSlots(selection, direction) {
+    console.log(selection, direction)
+    if (!selection || !direction) {
+      return
+    }
 
-    // if (val === "CGS-KYQ" || val === "KYQ-GHY" ||)
-    return this.selctionObj[val]
+    if (this.availableSlots[selection + '_' + direction]) {
+      return
+    }
 
+    const slots = AvailableSlotsConfig[selection][direction.toLowerCase()]
+    if (!slots) return
 
+    let dt = DateTime.now()
+    const weekdays = []
+    for (let i = 0; i < 365; i++) {
+      dt = dt.plus({ days: 1 });
+      if (slots[dt.weekday - 1]) {
+        weekdays.push(dt.toLocaleString() + slots[dt.weekday - 1])
+      }
+    }
 
+    this.availableSlots[selection + '_' + direction] = weekdays
   }
-
-
-
-
-
-
-
 
 }
