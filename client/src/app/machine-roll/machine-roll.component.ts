@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { AppService } from '../app.service';
+import { utils, writeFileXLSX } from 'xlsx';
+
 
 @Component({
   selector: 'app-machine-roll',
@@ -22,8 +24,12 @@ export class MachineRollComponent implements OnInit {
     })
   }
 
-
-
+  onExcelDownload() {
+    const ws = utils.json_to_sheet(this.machineRolls);
+    const wb = utils.book_new();
+    utils.book_append_sheet(wb, ws, "Data");
+    writeFileXLSX(wb, "MachineRolls.xlsx");
+  }
 
 }
 

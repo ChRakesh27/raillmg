@@ -1,38 +1,43 @@
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">S.N.</th>
-      <th scope="col">SELECTION</th>
-      <th scope="col">STATION</th>
-      <th scope="col">DIRECTION</th>
-      <th scope="col">LINENO</th>
-      <th scope="col">MACHINE</th>
-      <th scope="col">SERIES</th>
-      <th scope="col">ABOUTWORK</th>
-      <th scope="col">TIME</th>
-      <th scope="col">AVAILABLESLOT</th>
-      <th scope="col">QUANTUM</th>
-      <th scope="col">DEPUTEDSUPERVISOR</th>
-      <th scope="col">RESOURCES</th>
-    </tr>
-  </thead>
-  @for(machineRoll of machineRolls; track $index){
-  <tbody>
-    <tr>
-      <th scope="row">{{ $index + 1 }}</th>
-      <td>{{ machineRoll.selection }}</td>
-      <td>{{ machineRoll.station }}</td>
-      <td>{{ machineRoll.direction }}</td>
-      <td>{{ machineRoll.lineNo }}</td>
-      <td>{{ machineRoll.machine }}</td>
-      <td>{{ machineRoll.series }}</td>
-      <td>{{ machineRoll.aboutWork }}</td>
-      <td>{{ machineRoll.time }}</td>
-      <td>{{ machineRoll.availableSlot }}</td>
-      <td>{{ machineRoll.quantum }}</td>
-      <td>{{ machineRoll.deputedSupervisor }}</td>
-      <td>{{ machineRoll.resources }}</td>
-    </tr>
-  </tbody>
-  }
-</table>
+<div class="container">
+  <button class="btn btn-primary mb-2" (click)="onExcelDownload()">
+    Excel
+  </button>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">S.N.</th>
+        <th scope="col">SELECTION</th>
+        <th scope="col">STATION</th>
+        <th scope="col">DIRECTION</th>
+        <th scope="col">LINENO</th>
+        <th scope="col">MACHINE</th>
+        <th scope="col">SERIES</th>
+        <th scope="col">ABOUTWORK</th>
+        <th scope="col">TIME</th>
+        <th scope="col">AVAILABLESLOT</th>
+        <th scope="col">QUANTUM</th>
+        <th scope="col">DEPUTEDSUPERVISOR</th>
+        <th scope="col">RESOURCES</th>
+      </tr>
+    </thead>
+    @for(machineRoll of machineRolls; track $index){
+    <tbody>
+      <tr>
+        <th scope="row">{{ $index + 1 }}</th>
+        <td>{{ machineRoll.selection }}</td>
+        <td>{{ machineRoll.station }}</td>
+        <td>{{ machineRoll.direction }}</td>
+        <td>{{ machineRoll.lineNo }}</td>
+        <td>{{ machineRoll.machine }}</td>
+        <td>{{ machineRoll.series }}</td>
+        <td>{{ machineRoll.aboutWork }}</td>
+        <td>{{ machineRoll.time }}</td>
+        <td>{{ machineRoll.availableSlot }}</td>
+        <td>{{ machineRoll.quantum }}</td>
+        <td>{{ machineRoll.deputedSupervisor }}</td>
+        <td>{{ machineRoll.resources }}</td>
+      </tr>
+    </tbody>
+    }
+  </table>
+</div>
