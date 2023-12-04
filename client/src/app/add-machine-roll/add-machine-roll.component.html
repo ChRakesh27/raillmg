@@ -433,6 +433,22 @@
                 </div>
                 <div class="col col-3">
                   <div class="form-group mt-3 mb-3">
+                    <label>Select Day</label>
+
+                    <select class="form-select" formControlName="">
+                      <option value="null" selected disabled>Select Day</option>
+                      <option value="0">Sunday</option>
+                      <option value="1">Monday</option>
+                      <option value="2">Tuesday</option>
+                      <option value="3">Wednesday</option>
+                      <option value="4">Thrusday</option>
+                      <option value="5">Friday</option>
+                      <option value="6">Saturday</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col col-3">
+                  <div class="form-group mt-3 mb-3">
                     <label>Available Slot</label>
 
                     <select class="form-select" formControlName="availableSlot">
@@ -440,7 +456,7 @@
                         Select Available Slot
                       </option>
                       @for(date of onSection(item); track $index){
-                      <option value="BCM">{{ date }}</option>
+                      <option value="{{ date }}">{{ date }}</option>
                       }
                     </select>
                   </div>
