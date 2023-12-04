@@ -6,6 +6,7 @@ import {
   ReactiveFormsModule,
   FormBuilder,
   FormArray,
+  FormControl,
 } from '@angular/forms';
 import { AppService } from '../app.service';
 
@@ -24,8 +25,8 @@ export class AddMachineRollComponent implements OnInit {
     return this.form.controls['machineFormArray'] as FormArray;
   }
 
-  get department(): string {
-    return this.form.controls['department'].value;
+  get department(): FormControl {
+    return this.form.controls['department'] as FormControl;
   }
 
   constructor(private fb: FormBuilder, private service: AppService) { }
@@ -42,22 +43,23 @@ export class AddMachineRollComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.machineFormArray.valid) {
-      let payload = this.machineFormArray.value.map((item) => {
-        return {
-          ...item,
-          user: this.userData['_id'],
-          department: this.department,
-        };
-      });
-
-      this.service.setMachineRoll(payload).subscribe(() => {
-        this.machineFormArray.reset();
-        alert('Your successful submission');
-      });
-    } else {
-      alert('fill all details');
+    if (this.machineFormArray.value.length === 0 || !this.form.valid) {
+      alert("form is not valid")
+      return
     }
+
+    let payload = this.machineFormArray.value.map((item) => {
+      return {
+        ...item,
+        user: this.userData['_id'],
+        department: this.department.value,
+      };
+    });
+
+    this.service.setMachineRoll(payload).subscribe(() => {
+      this.machineFormArray.reset();
+      alert('Your successful submission');
+    });
   }
 
   onAddNewForm() {
