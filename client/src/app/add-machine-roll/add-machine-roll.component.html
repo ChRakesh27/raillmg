@@ -9,8 +9,6 @@
       <div class="form-group mt-3 mb-3">
         <label>Department</label>
         <select class="form-select" formControlName="department">
-          <option value="null" disabled>Select Department</option>
-          <option value="OPERATING">OPERATING</option>
           <option value="CONSTRUCTION">CONSTRUCTION</option>
           <option value="ENGINEERING">ENGINEERING</option>
           <option value="RE">RE</option>
@@ -23,11 +21,7 @@
     </div>
 
     <div class="col-auto">
-      <button
-        class="btn btn-primary btn-lg me-2"
-        (click)="onAddNewForm()"
-        [disabled]="!department.valid"
-      >
+      <button class="btn btn-primary btn-lg me-2" (click)="onAddNewForm()">
         Add
       </button>
       <button
@@ -428,9 +422,9 @@
                 </div>
                 <div class="col col-3">
                   <div class="form-group mt-3 mb-3">
-                    <label>Time Duration</label>
+                    <label>Time Duration (In Minutes)</label>
                     <input
-                      type="text"
+                      type="number"
                       class="form-control"
                       placeholder="Enter User Name"
                       formControlName="time"
@@ -440,12 +434,15 @@
                 <div class="col col-3">
                   <div class="form-group mt-3 mb-3">
                     <label>Available Slot</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      placeholder="Enter User Name"
-                      formControlName="availableSlot"
-                    />
+
+                    <select class="form-select" formControlName="availableSlot">
+                      <option value="null" selected disabled>
+                        Select Available Slot
+                      </option>
+                      @for(date of onSection(item); track $index){
+                      <option value="BCM">{{ date }}</option>
+                      }
+                    </select>
                   </div>
                 </div>
                 <div class="col col-3">

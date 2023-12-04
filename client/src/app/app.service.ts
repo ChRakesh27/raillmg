@@ -10,6 +10,7 @@ export class AppService {
 
   userData = {}
   isUserLoggedIn$ = new Subject<boolean>()
+  isLoading$ = new Subject<boolean>()
 
   constructor(private httpClient: HttpClient) { }
 

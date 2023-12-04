@@ -25,9 +25,11 @@ export class LoginComponent implements OnInit {
   }
   onLogin() {
     if (this.userForm.valid) {
+      this.service.isLoading$.next(true)
       this.service.loginUser(this.userForm.value.username, this.userForm.value.password).subscribe(data => {
         this.service.setIsUserLoggedIn(data)
         this.service.isUserLoggedIn$.next(true)
+
       })
     }
   }

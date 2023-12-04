@@ -9,6 +9,7 @@ import {
   FormControl,
 } from '@angular/forms';
 import { AppService } from '../app.service';
+import { DateTime } from 'luxon'
 
 @Component({
   selector: 'app-add-machine-roll',
@@ -20,7 +21,15 @@ import { AppService } from '../app.service';
 export class AddMachineRollComponent implements OnInit {
   form!: FormGroup;
   userData = {};
-
+  selctionObj = {
+    "CGS-KYQ": [],
+    "KYQ-GHY": [],
+    "GHY-NNGE": [],
+    'NNGE DGU': [],
+    "DGU-CPK": { up: [] },
+    "CPK-HJI": []
+  }
+  value: any;
   get machineFormArray(): FormArray {
     return this.form.controls['machineFormArray'] as FormArray;
   }
@@ -32,15 +41,58 @@ export class AddMachineRollComponent implements OnInit {
   constructor(private fb: FormBuilder, private service: AppService) { }
 
   ngOnInit(): void {
+
+
+
+
+    this.setDate()
+
+
+
     this.userData = this.service.userData;
     this.form = this.fb.group({
       department: this.fb.control(
-        null,
+        "CONSTRUCTION",
         Validators.required
       ),
       machineFormArray: this.fb.array([]),
     });
   }
+
+  setDate() {
+    let dt = DateTime.now()
+    for (let i = 0; i < 365; i++) {
+      dt = dt.plus({ days: 1 });
+      // this.dateOfyear[dt.weekday - 1].push(dt.toLocaleString())
+
+      if (dt.weekday === 3) {
+        this.selctionObj["CGS-KYQ"].push(dt.toLocaleString() + "  00:00 to 03:00 hrs(WED)")
+        this.selctionObj["KYQ-GHY"].push(dt.toLocaleString() + "  00:00 to 03:00 hrs(WED)")
+        this.selctionObj["GHY-NNGE"].push(dt.toLocaleString() + "  00:00 to 03:00 hrs(WED)")
+      }
+      if (dt.weekday === 4) {
+        this.selctionObj["CGS-KYQ"].push(dt.toLocaleString() + "  00:00 to 03:00 hrs(THR)")
+        this.selctionObj["KYQ-GHY"].push(dt.toLocaleString() + "  00:00 to 03:00 hrs(THR)")
+        this.selctionObj["GHY-NNGE"].push(dt.toLocaleString() + "  00:00 to 03:00 hrs(THR)")
+      }
+      if (dt.weekday === 5) {
+        this.selctionObj["CGS-KYQ"].push(dt.toLocaleString() + "  00:00 to 03:00 hrs(FRI)")
+        this.selctionObj["KYQ-GHY"].push(dt.toLocaleString() + "  00:00 to 03:00 hrs(FRI)")
+        this.selctionObj["GHY-NNGE"].push(dt.toLocaleString() + "  00:00 to 03:00 hrs(FRI)")
+      }
+
+
+
+
+
+
+
+    }
+
+  }
+
+
+
 
   onSubmit() {
     if (this.machineFormArray.value.length === 0 || !this.form.valid) {
@@ -60,6 +112,7 @@ export class AddMachineRollComponent implements OnInit {
       this.machineFormArray.reset();
       alert('Your successful submission');
     });
+
   }
 
   onAddNewForm() {
@@ -84,4 +137,22 @@ export class AddMachineRollComponent implements OnInit {
   onDelete(index: number) {
     this.machineFormArray.removeAt(index);
   }
+
+  onSection(data) {
+    let val = data.controls['selection'].value
+
+    // if (val === "CGS-KYQ" || val === "KYQ-GHY" ||)
+    return this.selctionObj[val]
+
+
+
+  }
+
+
+
+
+
+
+
+
 }
