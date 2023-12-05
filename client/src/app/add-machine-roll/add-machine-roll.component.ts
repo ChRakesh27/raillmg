@@ -52,7 +52,11 @@ export class AddMachineRollComponent implements OnInit {
       return
     }
 
+
     let payload = this.machineFormArray.value.map((item) => {
+      let splitSlot = item.availableSlot.split(' ')
+      item.availableSlot = { startDate: splitSlot[0] + ' ' + splitSlot[1] + ' ' + splitSlot[4], endDate: splitSlot[0] + ' ' + splitSlot[3] + ' ' + splitSlot[4] }
+
       return {
         ...item,
         user: this.userData['_id'],

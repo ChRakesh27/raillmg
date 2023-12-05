@@ -13,8 +13,8 @@ const machineRollSchema = new Schema({
     machine: { type: String, required: true },
     series: { type: String, required: true },
     aboutWork: { type: String, required: true },
-    time: { type: String, required: true },
-    availableSlot: { type: String, required: true },
+    time: { type: Number, required: true },
+    availableSlot: { type: Object, required: true },
     quantum: { type: String, required: true },
     deputedSupervisor: { type: String, required: true },
     resources: { type: String, required: true }
