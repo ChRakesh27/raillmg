@@ -11,6 +11,7 @@ import {
 import { AppService } from '../app.service';
 import { DateTime } from 'luxon'
 import { AvailableSlotsConfig } from './available-slots';
+import { ToastService } from '../toast/toast.service';
 
 @Component({
   selector: 'app-add-machine-roll',
@@ -33,7 +34,7 @@ export class AddMachineRollComponent implements OnInit {
     return this.form.controls['department'] as FormControl;
   }
 
-  constructor(private fb: FormBuilder, private service: AppService) { }
+  constructor(private fb: FormBuilder, private service: AppService, private toastService: ToastService) { }
 
   ngOnInit(): void {
     this.userData = this.service.userData;
@@ -48,7 +49,7 @@ export class AddMachineRollComponent implements OnInit {
 
   onSubmit() {
     if (this.machineFormArray.value.length === 0 || !this.form.valid) {
-      alert("form is not valid")
+      this.toastService.showWarning("Please fill all details")
       return
     }
 
@@ -69,7 +70,7 @@ export class AddMachineRollComponent implements OnInit {
 
     this.service.setMachineRoll(payload).subscribe(() => {
       this.machineFormArray.reset();
-      alert('Your successful submission');
+      this.toastService.showSuccess("successfully submitted")
     });
 
   }

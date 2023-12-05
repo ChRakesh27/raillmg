@@ -8,13 +8,14 @@ import { RegisterComponent } from "./register/register.component";
 import { MachineRollComponent } from "./machine-roll/machine-roll.component";
 import { SpinnerComponent } from "./spinner/spinner.component";
 import { AddMachineRollComponent } from "./add-machine-roll/add-machine-roll.component";
+import { ToastComponent } from "./toast/toast.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  imports: [CommonModule, RouterOutlet, NavbarComponent, LoginComponent, RegisterComponent, MachineRollComponent, SpinnerComponent, AddMachineRollComponent]
+  imports: [CommonModule, RouterOutlet, NavbarComponent, LoginComponent, RegisterComponent, MachineRollComponent, SpinnerComponent, AddMachineRollComponent, ToastComponent]
 })
 export class AppComponent implements OnInit {
   title = 'client';

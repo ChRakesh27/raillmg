@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { AppService } from '../app.service';
 import { RouterLink } from '@angular/router';
+import { ToastService } from '../toast/toast.service';
 
 
 @Component({
@@ -13,7 +14,7 @@ import { RouterLink } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
   userForm!: FormGroup;
-  constructor(private service: AppService) { }
+  constructor(private service: AppService, private toastService: ToastService) { }
 
   ngOnInit(): void {
 
@@ -29,7 +30,6 @@ export class LoginComponent implements OnInit {
       this.service.loginUser(this.userForm.value.username, this.userForm.value.password).subscribe(data => {
         this.service.setIsUserLoggedIn(data)
         this.service.isUserLoggedIn$.next(true)
-
       })
     }
   }
