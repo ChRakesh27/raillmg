@@ -9,14 +9,15 @@
         <th scope="col">SELECTION</th>
         <th scope="col">STATION</th>
         <th scope="col">DIRECTION</th>
-        <th scope="col">LINENO</th>
+        <th scope="col">LINE NO.</th>
         <th scope="col">MACHINE</th>
         <th scope="col">SERIES</th>
-        <th scope="col">ABOUTWORK</th>
+        <th scope="col">ABOUT WORK</th>
         <th scope="col">TIME</th>
-        <th scope="col">AVAILABLESLOT</th>
+        <th scope="col">AVAILABLESLOT StartDate</th>
+        <th scope="col">AVAILABLESLOT EndDate</th>
         <th scope="col">QUANTUM</th>
-        <th scope="col">DEPUTEDSUPERVISOR</th>
+        <th scope="col">DEPUTED SUPERVISOR</th>
         <th scope="col">RESOURCES</th>
       </tr>
     </thead>
@@ -32,7 +33,12 @@
         <td>{{ machineRoll.series }}</td>
         <td>{{ machineRoll.aboutWork }}</td>
         <td>{{ machineRoll.time }}</td>
-        <td>{{ machineRoll.availableSlot }}</td>
+        <td>
+          {{ machineRoll.availableSlot["startDate"] }}
+        </td>
+        <td>
+          {{ machineRoll.availableSlot["endDate"] }}
+        </td>
         <td>{{ machineRoll.quantum }}</td>
         <td>{{ machineRoll.deputedSupervisor }}</td>
         <td>{{ machineRoll.resources }}</td>
