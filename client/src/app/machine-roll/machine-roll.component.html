@@ -34,10 +34,10 @@
         <td>{{ machineRoll.aboutWork }}</td>
         <td>{{ machineRoll.time }}</td>
         <td>
-          {{ machineRoll.availableSlot["startDate"] }}
+          {{ machineRoll.availableSlot["startDate"] | date : "medium" }}
         </td>
         <td>
-          {{ machineRoll.availableSlot["endDate"] }}
+          {{ machineRoll.availableSlot["endDate"] | date : "medium" }}
         </td>
         <td>{{ machineRoll.quantum }}</td>
         <td>{{ machineRoll.deputedSupervisor }}</td>

@@ -55,7 +55,10 @@ export class AddMachineRollComponent implements OnInit {
 
     let payload = this.machineFormArray.value.map((item) => {
       let splitSlot = item.availableSlot.split(' ')
-      item.availableSlot = { startDate: splitSlot[0] + ' ' + splitSlot[1] + ' ' + splitSlot[5], endDate: splitSlot[0] + ' ' + splitSlot[3] + ' ' + splitSlot[5] }
+      item.availableSlot = {
+        startDate: this.getISOString(splitSlot[0], splitSlot[1]),
+        endDate: this.getISOString(splitSlot[0], splitSlot[3])
+      }
 
       return {
         ...item,
@@ -69,6 +72,10 @@ export class AddMachineRollComponent implements OnInit {
       alert('Your successful submission');
     });
 
+  }
+
+  getISOString(date, time): string {
+    return new Date(date + " " + time).toISOString()
   }
 
   onAddNewForm() {
