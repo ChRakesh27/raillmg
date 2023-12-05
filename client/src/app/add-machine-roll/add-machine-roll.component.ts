@@ -119,10 +119,10 @@ export class AddMachineRollComponent implements OnInit {
     let dt = DateTime.now()
     const weekdays = []
     for (let i = 0; i < 365; i++) {
-      dt = dt.plus({ days: 1 });
-      if (slots[dt.weekday - 1]) {
-        weekdays.push(dt.toLocaleString() + slots[dt.weekday - 1])
+      if (slots[dt.weekday]) {
+        weekdays.push(dt.toLocaleString() + slots[dt.weekday])
       }
+      dt = dt.plus({ days: 1 });
     }
 
     this.availableSlots[selection + '_' + direction] = weekdays
