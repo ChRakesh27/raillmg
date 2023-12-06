@@ -1,15 +1,9 @@
-.navStyle {
-  display: flex;
-  justify-content: space-between;
-}
 .nav-item {
   margin: 0 3rem;
 }
-@media only screen and (max-width: 600px) {
-  .navStyle {
-    display: block;
-  }
+
+@media only screen and (min-width: 300px) {
   .nav-item {
-    margin: 0px;
+    margin: 2px 0px;
   }
 }
