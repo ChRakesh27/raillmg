@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Router, RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './navbar/navbar.component';;
 import { AppService } from './app.service';
@@ -21,26 +21,23 @@ export class AppComponent implements OnInit {
   title = 'client';
   isUserLoggedIn = false
   isLoading = false
-
-  constructor(private service: AppService, private router: Router) { }
+  isLoggedIn: any;
+  constructor(private service: AppService, private router: Router, @Inject(PLATFORM_ID) private platform: object) { }
 
   ngOnInit() {
-
     this.service.isLoading$.subscribe(res => this.isLoading = res)
-    this.navigateUser()
     this.service.isUserLoggedIn$.subscribe(res => {
       this.isUserLoggedIn = res
       this.navigateUser();
     })
-
-    let isLoggedIn: any = localStorage.getItem('user')
-    console.log("🚀 ~ isLoggedIn:", !!isLoggedIn)
-
-    if (!!isLoggedIn) {
-      this.service.userData = JSON.parse(isLoggedIn)
+    if (isPlatformBrowser(this.platform)) {
+      this.isLoggedIn = localStorage.getItem('user')
+    }
+    if (!!this.isLoggedIn) {
+      this.service.userData = JSON.parse(this.isLoggedIn)
       this.service.isUserLoggedIn$.next(true)
     }
-
+    this.navigateUser()
   }
 
   private navigateUser() {
