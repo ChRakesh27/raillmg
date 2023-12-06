@@ -9,14 +9,19 @@ export class AppService {
   API_HOST = 'https://raillmg-server.onrender.com/api';
 
   userData = {}
+
   isUserLoggedIn$ = new Subject<boolean>()
   isLoading$ = new Subject<boolean>()
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {
+
+  }
 
   setIsUserLoggedIn(data) {
+    localStorage.setItem('user', JSON.stringify(data))
     this.userData = data
   }
+
 
 
   loginUser(username, password): Observable<any> {

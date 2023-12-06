@@ -25,15 +25,26 @@ export class AppComponent implements OnInit {
   constructor(private service: AppService, private router: Router) { }
 
   ngOnInit() {
+
     this.service.isLoading$.subscribe(res => this.isLoading = res)
     this.navigateUser()
     this.service.isUserLoggedIn$.subscribe(res => {
       this.isUserLoggedIn = res
       this.navigateUser();
     })
+
+    let isLoggedIn: any = localStorage.getItem('user')
+    console.log("🚀 ~ isLoggedIn:", !!isLoggedIn)
+
+    if (!!isLoggedIn) {
+      this.service.userData = JSON.parse(isLoggedIn)
+      this.service.isUserLoggedIn$.next(true)
+    }
+
   }
 
   private navigateUser() {
+
     if (this.isUserLoggedIn) {
       this.router.navigate(['/home']);
     } else {

@@ -23,6 +23,7 @@ export class NavbarComponent implements OnInit {
 
   onLogout() {
     this.service.isUserLoggedIn$.next(false)
+    localStorage.removeItem("user");
   }
 
   collapseNavMenu() {
