@@ -1,3 +1,10 @@
-/* .nav-item {
-  margin-left: 6rem;
-} */
+.navStyle {
+  display: flex;
+  justify-content: space-between;
+}
+
+@media only screen and (max-width: 600px) {
+  .navStyle {
+    display: block;
+  }
+}
