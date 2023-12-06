@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top shadow">
   <div class="container-fluid">
-    <a class="navbar-brand" routerLink=" ">LMG DIVISION</a>
+    <a class="navbar-brand" routerLink="home">LMG DIVISION</a>
     <button
       class="navbar-toggler"
       type="button"
@@ -28,22 +28,62 @@
           </a>
           <ul class="dropdown-menu">
             <li>
-              <a class="dropdown-item" routerLink="add-machineRoll"
+              <a
+                class="dropdown-item"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNavDropdown"
+                routerLink="add-machineRoll"
                 >Machine(Roll)</a
               >
             </li>
-            <li><a class="dropdown-item">maintenance(Roll)</a></li>
-            <li><a class="dropdown-item">Machine(Non-Roll)</a></li>
             <li>
-              <a class="dropdown-item">maintenance(Non-Roll)</a>
+              <a
+                class="dropdown-item"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNavDropdown"
+                >maintenance(Roll)</a
+              >
             </li>
             <li>
-              <a class="dropdown-item">Machine(Upload File)</a>
+              <a
+                class="dropdown-item"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNavDropdown"
+                >Machine(Non-Roll)</a
+              >
             </li>
             <li>
-              <a class="dropdown-item">maintenance(Upload File)</a>
+              <a
+                class="dropdown-item"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNavDropdown"
+                >maintenance(Non-Roll)</a
+              >
             </li>
-            <li><a class="dropdown-item">Edit</a></li>
+            <li>
+              <a
+                class="dropdown-item"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNavDropdown"
+                >Machine(Upload File)</a
+              >
+            </li>
+            <li>
+              <a
+                class="dropdown-item"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNavDropdown"
+                >maintenance(Upload File)</a
+              >
+            </li>
+            <li>
+              <a
+                class="dropdown-item"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNavDropdown"
+                >Edit</a
+              >
+            </li>
           </ul>
         </li>
         <li class="nav-item dropdown">
@@ -56,11 +96,31 @@
             Output
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item">All</a></li>
             <li>
-              <a class="dropdown-item" routerLink="machineRoll">Rolling</a>
+              <a
+                class="dropdown-item"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNavDropdown"
+                >All</a
+              >
             </li>
-            <li><a class="dropdown-item">Non-Rolling</a></li>
+            <li>
+              <a
+                class="dropdown-item"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNavDropdown"
+                routerLink="machineRoll"
+                >Rolling</a
+              >
+            </li>
+            <li>
+              <a
+                class="dropdown-item"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNavDropdown"
+                >Non-Rolling</a
+              >
+            </li>
           </ul>
         </li>
         <li class="nav-item dropdown">
@@ -73,11 +133,46 @@
             Reports
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item">Demand Rolling</a></li>
-            <li><a class="dropdown-item">Demand Non-Rolling</a></li>
-            <li><a class="dropdown-item">Machine Block</a></li>
-            <li><a class="dropdown-item">maintenance Block</a></li>
-            <li><a class="dropdown-item">Block summary</a></li>
+            <li>
+              <a
+                class="dropdown-item"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNavDropdown"
+                >Demand Rolling</a
+              >
+            </li>
+            <li>
+              <a
+                class="dropdown-item"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNavDropdown"
+                >Demand Non-Rolling</a
+              >
+            </li>
+            <li>
+              <a
+                class="dropdown-item"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNavDropdown"
+                >Machine Block</a
+              >
+            </li>
+            <li>
+              <a
+                class="dropdown-item"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNavDropdown"
+                >maintenance Block</a
+              >
+            </li>
+            <li>
+              <a
+                class="dropdown-item"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNavDropdown"
+                >Block summary</a
+              >
+            </li>
           </ul>
         </li>
       </ul>
