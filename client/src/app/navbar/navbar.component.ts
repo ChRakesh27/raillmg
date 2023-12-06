@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AppService } from '../app.service';
+import $ from 'jquery';
 @Component({
   selector: 'app-navbar',
   standalone: true,
@@ -8,13 +9,25 @@ import { AppService } from '../app.service';
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
+  isCollapsed: boolean;
 
   constructor(private service: AppService) {
+    this.isCollapsed = true;
+
+  }
+  ngOnInit(): void {
+
 
   }
 
   onLogout() {
     this.service.isUserLoggedIn$.next(false)
+  }
+
+  collapseNavMenu() {
+    if (!this.isCollapsed) {
+      this.isCollapsed = !this.isCollapsed;
+    }
   }
 }

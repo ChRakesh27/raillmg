@@ -25,10 +25,14 @@ export class MachineRollComponent implements OnInit {
   }
 
   onExcelDownload() {
-    // let payload = 
+
+    let payload = this.machineRolls.map(item => {
+      let { _id, user, availableSlot, ...rest } = item
+      return { ...rest, avl_start: new Date(availableSlot.startDate), avl_end: new Date(availableSlot.endDate) }
+    })
 
 
-    const ws = utils.json_to_sheet(this.machineRolls);
+    const ws = utils.json_to_sheet(payload);
     const wb = utils.book_new();
     utils.book_append_sheet(wb, ws, "Data");
     writeFileXLSX(wb, "MachineRolls.xlsx");
