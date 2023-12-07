@@ -2,14 +2,13 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { AppService } from '../../../app.service';
 import { utils, writeFileXLSX } from 'xlsx';
+import { AgGridModule } from 'ag-grid-angular';
 import {
   ColDef,
   ColGroupDef,
+  GridReadyEvent,
   SizeColumnsToContentStrategy,
-  SizeColumnsToFitGridStrategy,
-  SizeColumnsToFitProvidedWidthStrategy,
 } from 'ag-grid-community';
-import { AgGridModule } from 'ag-grid-angular';
 import { IMachineRoll } from '../../../model/machineRoll.model';
 import { DateTime } from 'luxon';
 import { localStorageService } from '../../../shared/service/local-storage.service';
@@ -24,47 +23,42 @@ import { localStorageService } from '../../../shared/service/local-storage.servi
 export class MachineRollComponent implements OnInit {
   userData = {};
   machineRolls = [];
-  rowData: IMachineRoll[];
-  colData: (ColDef | ColGroupDef)[];
-  public autoSizeStrategy:
-    | SizeColumnsToFitGridStrategy
-    | SizeColumnsToFitProvidedWidthStrategy
-    | SizeColumnsToContentStrategy = {
-      type: 'fitCellContents',
-    };
 
-  constructor(
-    private service: AppService,
-    private ls: localStorageService
-  ) { }
+  rowData: IMachineRoll[] = [];
+  colDefs: (ColDef | ColGroupDef)[] = [
+    { field: 'department' },
+    {
+      field: 'date',
+      cellDataType: 'date',
+    },
+    { field: 'selection' },
+    { field: 'station' },
+    { field: 'direction' },
+    { field: 'lineNo' },
+    { field: 'machine' },
+    { field: 'series' },
+    { field: 'aboutWork' },
+    { field: 'time' },
+    {
+      headerName: 'AvailableSlot',
+      marryChildren: true,
+      children: [{ field: 'startTime' }, { field: 'endTime' }],
+    },
+    { field: 'quantum' },
+    { field: 'deputedSupervisor' },
+    { field: 'resources' },
+  ];
+  public autoSizeStrategy: SizeColumnsToContentStrategy = {
+    type: 'fitCellContents',
+  };
+
+  constructor(private service: AppService, private ls: localStorageService) { }
 
   ngOnInit(): void {
-    this.userData = this.ls.getUser()
+    this.userData = this.ls.getUser();
+  }
 
-    this.colData = [
-      { field: 'department' },
-      {
-        field: 'date',
-        cellDataType: 'date',
-      },
-      { field: 'selection' },
-      { field: 'station' },
-      { field: 'direction' },
-      { field: 'lineNo' },
-      { field: 'machine' },
-      { field: 'series' },
-      { field: 'aboutWork' },
-      { field: 'time' },
-      {
-        headerName: 'AvailableSlot',
-        marryChildren: true,
-        children: [{ field: 'startTime' }, { field: 'endTime' }],
-      },
-      { field: 'quantum' },
-      { field: 'deputedSupervisor' },
-      { field: 'resources' },
-    ];
-
+  onGridReady(event: GridReadyEvent) {
     this.service.getMachineRoll(this.userData['_id']).subscribe((data) => {
       this.machineRolls = data;
       this.rowData = data.map((item) => {

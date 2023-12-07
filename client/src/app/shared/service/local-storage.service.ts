@@ -14,7 +14,6 @@ export class localStorageService {
 
     getUser(): IUser {
         if (!isPlatformBrowser(this.platform)) {
-            console.log('---------------------------------')
             return {} as IUser;
         }
         return JSON.parse(localStorage.getItem(this.KEY_USER)) as IUser
