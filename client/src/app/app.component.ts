@@ -9,7 +9,8 @@ import { MachineRollComponent } from "./machine-roll/machine-roll.component";
 import { SpinnerComponent } from "./spinner/spinner.component";
 import { AddMachineRollComponent } from "./add-machine-roll/add-machine-roll.component";
 import { ToastComponent } from "./toast/toast.component";
-
+import 'ag-grid-community/styles/ag-grid.css';
+import 'ag-grid-community/styles/ag-theme-quartz.css';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -25,19 +26,22 @@ export class AppComponent implements OnInit {
   constructor(private service: AppService, private router: Router, @Inject(PLATFORM_ID) private platform: object) { }
 
   ngOnInit() {
+    if (isPlatformBrowser(this.platform)) {
+      this.isLoggedIn = localStorage.getItem('user')
+    }
     this.service.isLoading$.subscribe(res => this.isLoading = res)
+
     this.service.isUserLoggedIn$.subscribe(res => {
       this.isUserLoggedIn = res
       this.navigateUser();
     })
-    if (isPlatformBrowser(this.platform)) {
-      this.isLoggedIn = localStorage.getItem('user')
-    }
+
+
     if (!!this.isLoggedIn) {
       this.service.userData = JSON.parse(this.isLoggedIn)
       this.service.isUserLoggedIn$.next(true)
     }
-    this.navigateUser()
+    // this.navigateUser()
   }
 
   private navigateUser() {
@@ -47,6 +51,7 @@ export class AppComponent implements OnInit {
     } else {
       this.router.navigate(['/login']);
     }
+
   }
 
 
