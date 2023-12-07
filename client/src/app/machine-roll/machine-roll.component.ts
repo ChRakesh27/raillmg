@@ -5,8 +5,6 @@ import { utils, writeFileXLSX } from 'xlsx';
 import { ColDef, ColGroupDef } from 'ag-grid-community';
 import { AgGridModule } from 'ag-grid-angular';
 import { IMachineRoll } from '../model/machineRoll.model';
-import 'ag-grid-community/styles/ag-grid.css';
-import 'ag-grid-community/styles/ag-theme-quartz.css';
 @Component({
   selector: 'app-machine-roll',
   standalone: true,
@@ -19,20 +17,11 @@ export class MachineRollComponent implements OnInit {
   machineRolls = []
   rowData: IMachineRoll[];
   colData: (ColDef | ColGroupDef)[]
-  themeClass = "ag-theme-quartz";
   constructor(private service: AppService) { }
 
 
   ngOnInit(): void {
     this.userData = this.service.getIsUserLoggedIn();
-    this.service.getMachineRoll(this.userData["_id"]).subscribe((data) => {
-      this.machineRolls = data
-      this.rowData = data.map(item => {
-        let { availableSlot, ...rest } = item
-        return { startDate: new Date(availableSlot['startDate']), endDate: new Date(availableSlot[`endDate`]), ...rest }
-      })
-    })
-
     this.colData = [{ field: 'department' },
     { field: "selection" },
     { field: "station" },
@@ -54,6 +43,14 @@ export class MachineRollComponent implements OnInit {
     { field: "deputedSupervisor" },
     { field: "resources" }
     ]
+
+    this.service.getMachineRoll(this.userData["_id"]).subscribe((data) => {
+      this.machineRolls = data
+      this.rowData = data.map(item => {
+        let { availableSlot, ...rest } = item
+        return { startDate: new Date(availableSlot['startDate']), endDate: new Date(availableSlot[`endDate`]), ...rest }
+      })
+    })
   }
 
   onExcelDownload() {
