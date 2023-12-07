@@ -8,10 +8,11 @@ import {
   FormArray,
   FormControl,
 } from '@angular/forms';
-import { AppService } from '../app.service';
+import { AppService } from '../../../app.service';
 import { DateTime } from 'luxon'
 import { AvailableSlotsConfig } from './available-slots';
-import { ToastService } from '../toast/toast.service';
+import { ToastService } from '../../../shared/toast/toast.service';
+import { localStorageService } from '../../../shared/service/local-storage.service';
 
 @Component({
   selector: 'app-add-machine-roll',
@@ -34,10 +35,15 @@ export class AddMachineRollComponent implements OnInit {
     return this.form.controls['department'] as FormControl;
   }
 
-  constructor(private fb: FormBuilder, private service: AppService, private toastService: ToastService) { }
+  constructor(
+    private fb: FormBuilder,
+    private service: AppService,
+    private toastService: ToastService,
+    private ls: localStorageService
+  ) { }
 
   ngOnInit(): void {
-    this.userData = this.service.userData;
+    this.userData = this.ls.getUser();
     this.form = this.fb.group({
       department: this.fb.control(
         "CONSTRUCTION",
@@ -112,7 +118,6 @@ export class AddMachineRollComponent implements OnInit {
   }
 
   prepareAvailableSlots(selection, direction) {
-    console.log(selection, direction)
     if (!selection || !direction) {
       return
     }

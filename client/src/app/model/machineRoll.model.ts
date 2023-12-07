@@ -10,8 +10,13 @@ export interface IMachineRoll {
     series: String,
     aboutWork: String,
     time: String,
-    availableSlot: Object,
+    availableSlot: IAvailableSlots,
     quantum: String,
     deputedSupervisor: String,
     resources: String
+}
+
+export interface IAvailableSlots {
+    startDate: String;
+    endDate: String
 }

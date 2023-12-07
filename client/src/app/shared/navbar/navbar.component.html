@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top shadow">
   <div class="container-fluid">
-    <a class="navbar-brand" routerLink="home">LMG DIVISION</a>
+    <a class="navbar-brand" routerLink="./">LMG DIVISION</a>
     <button
       class="navbar-toggler"
       type="button"
@@ -32,7 +32,7 @@
                 class="dropdown-item"
                 data-bs-toggle="collapse"
                 data-bs-target="#navbarNavDropdown"
-                routerLink="add-machineRoll"
+                [routerLink]="['demand', 'machine-roll']"
                 >Machine(Roll)</a
               >
             </li>
@@ -109,7 +109,7 @@
                 class="dropdown-item"
                 data-bs-toggle="collapse"
                 data-bs-target="#navbarNavDropdown"
-                routerLink="machineRoll"
+                [routerLink]="['output', 'rolling']"
                 >Rolling</a
               >
             </li>

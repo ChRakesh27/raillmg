@@ -11,7 +11,8 @@
 
 <div class="content">
   <ag-grid-angular
-    style="width: 100%; height: 350px"
+    [autoSizeStrategy]="autoSizeStrategy"
+    style="width: 100%; height: 92vh"
     class="ag-theme-quartz"
     [rowData]="rowData"
     [columnDefs]="colData"

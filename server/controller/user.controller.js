@@ -6,7 +6,6 @@ const router = express.Router()
 router.get('/', async (req, res) => {
     try {
         const login = req.query
-        console.log("🚀 ~ login:", login)
         const docs = await users.findOne(login);
         if (docs == null) {
             res.status(404).send({ message: "user not found" })

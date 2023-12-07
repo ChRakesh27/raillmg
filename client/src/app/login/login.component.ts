@@ -1,37 +1,55 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormGroup,
+  FormControl,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { AppService } from '../app.service';
-import { RouterLink } from '@angular/router';
-import { ToastService } from '../toast/toast.service';
-
+import { Router, RouterLink } from '@angular/router';
+import { ToastService } from '../shared/toast/toast.service';
+import { localStorageService } from '../shared/service/local-storage.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [RouterLink, ReactiveFormsModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrl: './login.component.css',
 })
 export class LoginComponent implements OnInit {
   userForm!: FormGroup;
-  constructor(private service: AppService, private toastService: ToastService) { }
+  constructor(
+    private service: AppService,
+    private ls: localStorageService,
+    private toastService: ToastService,
+    private router: Router
+  ) {
+
+  }
 
   ngOnInit(): void {
+    console.log("-------------------------login");
 
     this.userForm = new FormGroup({
       username: new FormControl(null, Validators.required),
-      password: new FormControl(null, Validators.required)
+      password: new FormControl(null, Validators.required),
     });
-
   }
   onLogin() {
     if (this.userForm.valid) {
-      this.service.isLoading$.next(true)
-      this.service.loginUser(this.userForm.value.username, this.userForm.value.password).subscribe(data => {
-        this.service.setIsUserLoggedIn(data)
-        this.service.isUserLoggedIn$.next(true)
-
-      })
+      this.service.isLoading$.next(true);
+      this.service
+        .loginUser(this.userForm.value.username, this.userForm.value.password)
+        .subscribe({
+          next: (data) => {
+            this.ls.setUser(data);
+            this.router.navigate(['/lmg']);
+          },
+          error: (err) => {
+            this.toastService.showDanger('failed to login');
+          }
+        });
     }
   }
 }
