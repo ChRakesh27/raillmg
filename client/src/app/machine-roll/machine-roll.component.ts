@@ -5,6 +5,9 @@ import { utils, writeFileXLSX } from 'xlsx';
 import { ColDef, ColGroupDef } from 'ag-grid-community';
 import { AgGridModule } from 'ag-grid-angular';
 import { IMachineRoll } from '../model/machineRoll.model';
+
+import 'ag-grid-community/styles/ag-grid.css';
+import 'ag-grid-community/styles/ag-theme-quartz.css';
 @Component({
   selector: 'app-machine-roll',
   standalone: true,
