@@ -9,8 +9,6 @@ import { MachineRollComponent } from "./machine-roll/machine-roll.component";
 import { SpinnerComponent } from "./spinner/spinner.component";
 import { AddMachineRollComponent } from "./add-machine-roll/add-machine-roll.component";
 import { ToastComponent } from "./toast/toast.component";
-import 'ag-grid-community/styles/ag-grid.css';
-import 'ag-grid-community/styles/ag-theme-quartz.css';
 @Component({
   selector: 'app-root',
   standalone: true,
