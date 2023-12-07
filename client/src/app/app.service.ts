@@ -1,5 +1,6 @@
+import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
 @Injectable({
@@ -14,13 +15,21 @@ export class AppService {
   isUserLoggedIn$ = new Subject<boolean>()
   isLoading$ = new Subject<boolean>()
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, @Inject(PLATFORM_ID) private platform: object) {
 
   }
+
 
   setIsUserLoggedIn(data) {
     localStorage.setItem('user', JSON.stringify(data))
     this.userData = data
+  }
+
+  getIsUserLoggedIn() {
+    if (isPlatformBrowser(this.platform)) {
+      this.userData = JSON.parse(localStorage.getItem('user'))
+    }
+    return this.userData
   }
 
 

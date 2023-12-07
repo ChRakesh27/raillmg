@@ -22,7 +22,7 @@ export class MachineRollComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.userData = this.service.userData;
+    this.userData = this.service.getIsUserLoggedIn();
     this.service.getMachineRoll(this.userData["_id"]).subscribe((data) => {
       this.machineRolls = data
       this.rowData = data.map(item => {
@@ -30,10 +30,6 @@ export class MachineRollComponent implements OnInit {
         return { startDate: new Date(availableSlot['startDate']), endDate: new Date(availableSlot[`endDate`]), ...rest }
       })
     })
-
-
-
-
 
     this.colData = [{ field: 'department' },
     { field: "selection" },

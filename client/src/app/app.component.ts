@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Router, RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './navbar/navbar.component';;
@@ -23,12 +23,12 @@ export class AppComponent implements OnInit {
   isUserLoggedIn = false
   isLoading = false
   isLoggedIn: any;
-  constructor(private service: AppService, private router: Router, @Inject(PLATFORM_ID) private platform: object) { }
+  constructor(private service: AppService, private router: Router) { }
 
   ngOnInit() {
-    if (isPlatformBrowser(this.platform)) {
-      this.isLoggedIn = localStorage.getItem('user')
-    }
+
+    this.isLoggedIn = this.service.getIsUserLoggedIn()
+
     this.service.isLoading$.subscribe(res => this.isLoading = res)
 
     this.service.isUserLoggedIn$.subscribe(res => {
@@ -38,7 +38,6 @@ export class AppComponent implements OnInit {
 
 
     if (!!this.isLoggedIn) {
-      this.service.userData = JSON.parse(this.isLoggedIn)
       this.service.isUserLoggedIn$.next(true)
     }
     // this.navigateUser()
