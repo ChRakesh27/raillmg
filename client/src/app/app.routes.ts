@@ -1,11 +1,12 @@
 import { Routes } from '@angular/router';
 import { HomePageComponent } from './lmg/home-page/home-page.component';
-import { MachineRollComponent } from './lmg/output/machine-roll/machine-roll.component';
+import { MachineRollComponent } from './lmg/report/machine-roll/machine-roll.component';
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { AddMachineRollComponent } from './lmg/demand/add-machine-roll/add-machine-roll.component';
 import { authGuard } from './shared/service/auth-guard.service';
 import { LmgComponent } from './lmg/lmg.component';
+import { AdminComponent } from './admin/admin-login/admin.component';
 
 export const routes: Routes = [
     {
@@ -27,7 +28,7 @@ export const routes: Routes = [
                 ]
             },
             {
-                path: "output",
+                path: "report",
                 children: [
                     {
                         path: "rolling",
@@ -41,12 +42,14 @@ export const routes: Routes = [
     {
         path: 'login',
         component: LoginComponent,
-        // canActivate: [authGuardFn],
     },
     {
         path: 'register',
         component: RegisterComponent,
-        // canActivate: [authGuardFn],
+    },
+    {
+        path: 'admin',
+        component: AdminComponent,
     },
     {
         path: '',

@@ -1,0 +1,116 @@
+<div class="container">
+  <nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+      <button
+        class="nav-link active"
+        id="nav-department-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#nav-department"
+        type="button"
+        role="tab"
+        aria-controls="nav-department"
+        aria-selected="true"
+      >
+        Department
+      </button>
+      <button
+        class="nav-link"
+        id="nav-train-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#nav-train"
+        type="button"
+        role="tab"
+        aria-controls="nav-train"
+        aria-selected="false"
+      >
+        Train
+      </button>
+      <button
+        class="nav-link"
+        id="nav-machine-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#nav-machine"
+        type="button"
+        role="tab"
+        aria-controls="nav-machine"
+        aria-selected="false"
+      >
+        Machine
+      </button>
+    </div>
+  </nav>
+  <div class="tab-content" id="nav-tabContent">
+    <div
+      class="tab-pane fade show active"
+      id="nav-department"
+      role="tabpanel"
+      aria-labelledby="nav-department-tab"
+      tabindex="0"
+    >
+      <form>
+        <div class="mt-3 mb-3">
+          <label>Department</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Enter Department"
+          />
+          <button type="submit" class="btn btn-primary">Add</button>
+        </div>
+      </form>
+    </div>
+    <div
+      class="tab-pane fade"
+      id="nav-train"
+      role="tabpanel"
+      aria-labelledby="nav-train-tab"
+      tabindex="0"
+    >
+      <form>
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label"
+            >Email address</label
+          >
+          <input
+            type="email"
+            class="form-control"
+            id="exampleInputEmail1"
+            aria-describedby="emailHelp"
+          />
+          <div id="emailHelp" class="form-text">
+            We'll never share your email with anyone else.
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="exampleInputPassword1" class="form-label">Password</label>
+          <input
+            type="password"
+            class="form-control"
+            id="exampleInputPassword1"
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">Add</button>
+      </form>
+    </div>
+    <div
+      class="tab-pane fade"
+      id="nav-machine"
+      role="tabpanel"
+      aria-labelledby="nav-machine-tab"
+      tabindex="0"
+    >
+      <form>
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">Machine</label>
+          <input
+            type="text"
+            class="form-control"
+            id="exampleInputMachine"
+            aria-describedby="machineHelp"
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">Add</button>
+      </form>
+    </div>
+  </div>
+</div>
