@@ -87,7 +87,7 @@ export class AddMachineRollComponent implements OnInit {
 
   onAddNewForm() {
     const machineForm = this.fb.group({
-      selection: [null, Validators.required],
+      section: [null, Validators.required],
       station: [null, Validators.required],
       direction: [null, Validators.required],
       lineNo: [null, Validators.required],
