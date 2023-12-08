@@ -26,27 +26,28 @@ export class MachineRollComponent implements OnInit {
 
   rowData: IMachineRoll[] = [];
   colDefs: (ColDef | ColGroupDef)[] = [
-    { field: 'department' },
+    { field: 'department', filter: 'agTextColumnFilter' },
     {
       field: 'date',
       cellDataType: 'date',
+      filter: 'agDateColumnFilter'
     },
-    { field: 'section' },
-    { field: 'station' },
-    { field: 'direction' },
-    { field: 'lineNo' },
-    { field: 'machine' },
-    { field: 'series' },
-    { field: 'aboutWork' },
-    { field: 'time' },
+    { field: 'section', filter: 'agTextColumnFilter' },
+    { field: 'station', filter: "agTextColumnFilter" },
+    { field: 'direction', filter: "agTextColumnFilter" },
+    { field: 'lineNo', filter: "agTextColumnFilter" },
+    { field: 'machine', filter: "agTextColumnFilter" },
+    { field: 'series', filter: "agTextColumnFilter" },
+    { field: 'aboutWork', filter: "agTextColumnFilter" },
+    { field: 'time', filter: "agTextColumnFilter" },
     {
       headerName: 'AvailableSlot',
       marryChildren: true,
-      children: [{ field: 'startTime' }, { field: 'endTime' }],
+      children: [{ field: 'startTime', filter: "agTextColumnFilter" }, { field: 'endTime', filter: "agTextColumnFilter" }],
     },
-    { field: 'quantum' },
-    { field: 'deputedSupervisor' },
-    { field: 'resources' },
+    { field: 'quantum', filter: "agTextColumnFilter" },
+    { field: 'deputedSupervisor', filter: "agTextColumnFilter" },
+    { field: 'resources', filter: "agTextColumnFilter" },
   ];
   public autoSizeStrategy: SizeColumnsToContentStrategy = {
     type: 'fitCellContents',
