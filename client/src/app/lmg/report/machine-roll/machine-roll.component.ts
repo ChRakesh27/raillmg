@@ -31,7 +31,7 @@ export class MachineRollComponent implements OnInit {
       field: 'date',
       cellDataType: 'date',
     },
-    { field: 'selection' },
+    { field: 'section' },
     { field: 'station' },
     { field: 'direction' },
     { field: 'lineNo' },
