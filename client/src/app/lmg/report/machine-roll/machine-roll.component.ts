@@ -6,6 +6,7 @@ import { AgGridModule } from 'ag-grid-angular';
 import {
   ColDef,
   ColGroupDef,
+  GridApi,
   GridReadyEvent,
   SizeColumnsToContentStrategy,
 } from 'ag-grid-community';
@@ -16,38 +17,44 @@ import { localStorageService } from '../../../shared/service/local-storage.servi
 @Component({
   selector: 'app-machine-roll',
   standalone: true,
-  imports: [CommonModule, AgGridModule],
+  imports: [CommonModule, AgGridModule,],
   templateUrl: './machine-roll.component.html',
   styleUrl: './machine-roll.component.css',
 })
 export class MachineRollComponent implements OnInit {
+  private gridApi!: GridApi;
   userData = {};
   machineRolls = [];
 
+  defaultColDef: ColDef = {
+    // filter: 'agTextColumnFilter',
+    filter: true
+  };
+
   rowData: IMachineRoll[] = [];
   colDefs: (ColDef | ColGroupDef)[] = [
-    { field: 'department', filter: 'agTextColumnFilter' },
+    { field: 'department' },
     {
       field: 'date',
       cellDataType: 'date',
-      filter: 'agDateColumnFilter'
+      filter: 'agDateColumnFilter',
     },
-    { field: 'section', filter: 'agTextColumnFilter' },
-    { field: 'station', filter: "agTextColumnFilter" },
-    { field: 'direction', filter: "agTextColumnFilter" },
-    { field: 'lineNo', filter: "agTextColumnFilter" },
-    { field: 'machine', filter: "agTextColumnFilter" },
-    { field: 'series', filter: "agTextColumnFilter" },
-    { field: 'aboutWork', filter: "agTextColumnFilter" },
-    { field: 'time', filter: "agTextColumnFilter" },
+    { field: 'section' },
+    { field: 'station' },
+    { field: 'direction' },
+    { field: 'lineNo' },
+    { field: 'machine' },
+    { field: 'series' },
+    { field: 'aboutWork' },
+    { field: 'time' },
     {
       headerName: 'AvailableSlot',
       marryChildren: true,
-      children: [{ field: 'startTime', filter: "agTextColumnFilter" }, { field: 'endTime', filter: "agTextColumnFilter" }],
+      children: [{ field: 'startTime' }, { field: 'endTime' }],
     },
-    { field: 'quantum', filter: "agTextColumnFilter" },
-    { field: 'deputedSupervisor', filter: "agTextColumnFilter" },
-    { field: 'resources', filter: "agTextColumnFilter" },
+    { field: 'quantum' },
+    { field: 'deputedSupervisor' },
+    { field: 'resources' },
   ];
   public autoSizeStrategy: SizeColumnsToContentStrategy = {
     type: 'fitCellContents',
@@ -60,6 +67,7 @@ export class MachineRollComponent implements OnInit {
   }
 
   onGridReady(event: GridReadyEvent) {
+    this.gridApi = event.api
     this.service.getMachineRoll(this.userData['_id']).subscribe((data) => {
       this.machineRolls = data;
       this.rowData = data.map((item) => {

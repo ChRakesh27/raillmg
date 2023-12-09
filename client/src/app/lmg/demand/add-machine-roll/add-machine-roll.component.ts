@@ -88,7 +88,8 @@ export class AddMachineRollComponent implements OnInit {
   onAddNewForm() {
     const machineForm = this.fb.group({
       section: [null, Validators.required],
-      station: [null, Validators.required],
+      stationTo: [null, Validators.required],
+      stationFrom: [null, Validators.required],
       direction: [null, Validators.required],
       lineNo: [null, Validators.required],
       machine: [null, Validators.required],
@@ -99,17 +100,19 @@ export class AddMachineRollComponent implements OnInit {
       quantum: [null, Validators.required],
       deputedSupervisor: [null, Validators.required],
       resources: [null, Validators.required],
+      crew: [0],
+      loco: [0],
     });
 
     this.machineFormArray.push(machineForm);
 
-    const selectCtrl = machineForm.controls['selection'] as FormControl
+    const selectCtrl = machineForm.controls['section'] as FormControl
     selectCtrl.valueChanges.subscribe((change) => {
       this.prepareAvailableSlots(change, machineForm.controls['direction'].value)
     })
     const directionCtrl = machineForm.controls['direction'] as FormControl
     directionCtrl.valueChanges.subscribe((change) => {
-      this.prepareAvailableSlots(machineForm.controls['selection'].value, change)
+      this.prepareAvailableSlots(machineForm.controls['section'].value, change)
     })
   }
 
@@ -117,16 +120,16 @@ export class AddMachineRollComponent implements OnInit {
     this.machineFormArray.removeAt(index);
   }
 
-  prepareAvailableSlots(selection, direction) {
-    if (!selection || !direction) {
+  prepareAvailableSlots(section, direction) {
+    if (!section || !direction) {
       return
     }
 
-    if (this.availableSlots[selection + '_' + direction]) {
+    if (this.availableSlots[section + '_' + direction]) {
       return
     }
 
-    const slots = AvailableSlotsConfig[selection][direction.toLowerCase()]
+    const slots = AvailableSlotsConfig[section][direction.toLowerCase()]
     if (!slots) return
 
     let dt = DateTime.now()
@@ -138,7 +141,7 @@ export class AddMachineRollComponent implements OnInit {
       dt = dt.plus({ days: 1 });
     }
 
-    this.availableSlots[selection + '_' + direction] = weekdays
+    this.availableSlots[section + '_' + direction] = weekdays
   }
 
 }

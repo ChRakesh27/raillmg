@@ -7,7 +7,8 @@ const machineRollSchema = new Schema({
     user: { type: String, required: true },
     department: { type: String, required: true },
     section: { type: String, required: true },
-    station: { type: String, required: true },
+    stationTo: { type: String, required: true },
+    stationFrom: { type: String, required: true },
     direction: { type: String, required: true },
     lineNo: { type: String, required: true },
     machine: { type: String, required: true },
@@ -17,7 +18,9 @@ const machineRollSchema = new Schema({
     availableSlot: { type: Object, required: true },
     quantum: { type: String, required: true },
     deputedSupervisor: { type: String, required: true },
-    resources: { type: String, required: true }
+    resources: { type: String, required: true },
+    crew: { type: Number },
+    loco: { type: Number }
 }, {
     versionKey: false
 })
