@@ -1,23 +1,18 @@
-<div class="d-flex justify-content-between mt-2">
+<div class="">
   <button class="btn btn-primary mb-2" (click)="onExcelDownload()">
     Excel
   </button>
-
-  <form class="d-flex align-items-baseline">
-    <input type="text" class="form-control me-2" placeholder="search" />
-    <button class="btn btn-primary mb-2">Search</button>
-  </form>
+  <!-- <button class="btn btn-primary mb-2" (click)="onPdfDownload()">PDF</button> -->
 </div>
 
-<div class="content">
-  <ag-grid-angular
-    [autoSizeStrategy]="autoSizeStrategy"
-    style="width: 100%; height: 550px"
-    class="ag-theme-quartz"
-    [rowData]="rowData"
-    [columnDefs]="colDefs"
-    [defaultColDef]="defaultColDef"
-    (gridReady)="onGridReady($event)"
+<div>
+  <hot-table
+    class="hot"
+    [hotId]="id"
+    [settings]="hotSettings"
+    [data]="dataset"
+    [colHeaders]="colHeaders"
+    licenseKey="non-commercial-and-evaluation"
   >
-  </ag-grid-angular>
+  </hot-table>
 </div>

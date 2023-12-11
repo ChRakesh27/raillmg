@@ -2,6 +2,8 @@
 /* Quartz Theme Specific CSS */
 @import "ag-grid-community/styles/ag-theme-quartz.css";
 
+@import "handsontable/dist/handsontable.full.css";
+
 .user-footer {
   display: flex;
   align-items: center;

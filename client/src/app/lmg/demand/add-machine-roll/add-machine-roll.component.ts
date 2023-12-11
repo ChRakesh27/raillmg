@@ -59,14 +59,12 @@ export class AddMachineRollComponent implements OnInit {
       return
     }
 
-
     let payload = this.machineFormArray.value.map((item) => {
       let splitSlot = item.availableSlot.split(' ')
       item.availableSlot = {
         startDate: this.getISOString(splitSlot[0], splitSlot[1]),
         endDate: this.getISOString(splitSlot[0], splitSlot[3])
       }
-
       return {
         ...item,
         user: this.userData['_id'],
@@ -100,8 +98,10 @@ export class AddMachineRollComponent implements OnInit {
       quantum: [null, Validators.required],
       deputedSupervisor: [null, Validators.required],
       resources: [null, Validators.required],
-      crew: [0],
-      loco: [0],
+      crew: [null],
+      crewCheckbox: [false],
+      loco: [null],
+      locoCheckbox: [false],
     });
 
     this.machineFormArray.push(machineForm);

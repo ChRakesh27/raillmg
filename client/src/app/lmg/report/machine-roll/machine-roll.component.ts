@@ -1,86 +1,67 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { AppService } from '../../../app.service';
-import { utils, writeFileXLSX } from 'xlsx';
-import { AgGridModule } from 'ag-grid-angular';
-import {
-  ColDef,
-  ColGroupDef,
-  GridApi,
-  GridReadyEvent,
-  SizeColumnsToContentStrategy,
-} from 'ag-grid-community';
-import { IMachineRoll } from '../../../model/machineRoll.model';
 import { DateTime } from 'luxon';
 import { localStorageService } from '../../../shared/service/local-storage.service';
+import { HotTableModule, HotTableRegisterer } from '@handsontable/angular';
+import { registerAllModules } from 'handsontable/registry'
+import Handsontable from 'handsontable';
+import * as Papa from 'papaparse';
+import * as XLSX from 'xlsx';
 
+registerAllModules()
 @Component({
   selector: 'app-machine-roll',
   standalone: true,
-  imports: [CommonModule, AgGridModule,],
+  imports: [CommonModule, HotTableModule],
   templateUrl: './machine-roll.component.html',
   styleUrl: './machine-roll.component.css',
 })
 export class MachineRollComponent implements OnInit {
-  private gridApi!: GridApi;
   userData = {};
   machineRolls = [];
-
-  defaultColDef: ColDef = {
-    // filter: 'agTextColumnFilter',
-    filter: true
+  dataset: any[] = [];
+  filters = []
+  colHeaders = [];
+  private hotRegisterer = new HotTableRegisterer();
+  id = 'hotInstance';
+  hotSettings: Handsontable.GridSettings = {
+    rowHeaders: true,
+    colWidths: "150",
+    height: "auto",
+    multiColumnSorting: true,
+    manualColumnResize: true,
+    filters: true,
+    manualColumnMove: true,
+    dropdownMenu: [
+      'filter_by_value',
+      'filter_operators',
+      'filter_action_bar',
+    ]
   };
 
-  rowData: IMachineRoll[] = [];
-  colDefs: (ColDef | ColGroupDef)[] = [
-    { field: 'department' },
-    {
-      field: 'date',
-      cellDataType: 'date',
-      filter: 'agDateColumnFilter',
-    },
-    { field: 'section' },
-    { field: 'station' },
-    { field: 'direction' },
-    { field: 'lineNo' },
-    { field: 'machine' },
-    { field: 'series' },
-    { field: 'aboutWork' },
-    { field: 'time' },
-    {
-      headerName: 'AvailableSlot',
-      marryChildren: true,
-      children: [{ field: 'startTime' }, { field: 'endTime' }],
-    },
-    { field: 'quantum' },
-    { field: 'deputedSupervisor' },
-    { field: 'resources' },
-  ];
-  public autoSizeStrategy: SizeColumnsToContentStrategy = {
-    type: 'fitCellContents',
-  };
 
   constructor(private service: AppService, private ls: localStorageService) { }
 
   ngOnInit(): void {
-    this.userData = this.ls.getUser();
-  }
 
-  onGridReady(event: GridReadyEvent) {
-    this.gridApi = event.api
+    this.userData = this.ls.getUser();
     this.service.getMachineRoll(this.userData['_id']).subscribe((data) => {
       this.machineRolls = data;
-      this.rowData = data.map((item) => {
-        let { availableSlot, ...rest } = item;
+
+      this.dataset = data.map((item) => {
+        let { availableSlot, _id, user, ...rest } = item;
         return {
-          date: new Date(availableSlot['startDate']),
+          date: DateTime.fromISO(availableSlot['startDate']).toISODate(),
           startTime: this.timeFormate(availableSlot['startDate']),
           endTime: this.timeFormate(availableSlot['endDate']),
           ...rest,
         };
       });
+      this.colHeaders = Object.keys(this.dataset[0])
     });
   }
+
 
   timeFormate(params) {
     let dt = DateTime.fromISO(params);
@@ -88,17 +69,31 @@ export class MachineRollComponent implements OnInit {
   }
 
   onExcelDownload() {
-    let payload = this.machineRolls.map((item) => {
-      let { _id, user, availableSlot, ...rest } = item;
-      return {
-        ...rest,
-        avl_start: new Date(availableSlot.startDate),
-        avl_end: new Date(availableSlot.endDate),
-      };
+
+    const hot = this.hotRegisterer.getInstance(this.id);
+    const exportPlugin = hot.getPlugin('exportFile');
+    const exportedString = exportPlugin.exportAsString('csv', {
+      bom: false,
+      columnHeaders: true,
+      exportHiddenColumns: true,
+      exportHiddenRows: true,
+      rowDelimiter: '\r\n',
     });
-    const ws = utils.json_to_sheet(payload);
-    const wb = utils.book_new();
-    utils.book_append_sheet(wb, ws, 'Data');
-    writeFileXLSX(wb, 'MachineRolls.xlsx');
+
+
+    const jsonData = Papa.parse(exportedString);
+    const workbook = XLSX.utils.book_new();
+    const worksheet = XLSX.utils.json_to_sheet([]);
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Dates');
+    XLSX.utils.sheet_add_aoa(worksheet, jsonData.data);
+    XLSX.writeFile(workbook, 'MachineRolls.xlsx');
+
+
+
   }
+
+  onPdfDownload() {
+
+  }
+
 }

@@ -725,23 +725,31 @@
                 </div>
                 <div class="col-sm-6 col-md-3">
                   <div class="form-group mt-3 mb-3">
+                    <input type="checkbox" formControlName="crewCheckbox" />
                     <label>Crew Required</label>
                     <input
                       type="number"
                       class="form-control"
                       placeholder="Enter Number of Crew Required"
                       formControlName="crew"
+                      [hidden]="
+                        !machineFormArray.controls[i].get('crewCheckbox').value
+                      "
                     />
                   </div>
                 </div>
                 <div class="col-sm-6 col-md-3">
                   <div class="form-group mt-3 mb-3">
+                    <input type="checkbox" formControlName="locoCheckbox" />
                     <label>Loco Required</label>
                     <input
                       type="number"
                       class="form-control"
                       placeholder="Enter Number of Loco Required"
                       formControlName="loco"
+                      [hidden]="
+                        !machineFormArray.controls[i].get('locoCheckbox').value
+                      "
                     />
                   </div>
                 </div>

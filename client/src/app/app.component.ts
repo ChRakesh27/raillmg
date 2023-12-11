@@ -13,8 +13,8 @@ import { ToastComponent } from './shared/toast/toast.component';
     CommonModule,
     RouterOutlet,
     SpinnerComponent,
-    ToastComponent,
-  ],
+    ToastComponent
+  ]
 })
 export class AppComponent implements OnInit {
   isLoading = false;
