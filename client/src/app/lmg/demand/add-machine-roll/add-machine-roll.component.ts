@@ -65,12 +65,21 @@ export class AddMachineRollComponent implements OnInit {
         startDate: this.getISOString(splitSlot[0], splitSlot[1]),
         endDate: this.getISOString(splitSlot[0], splitSlot[3])
       }
+
+      if (!item.crewCheckbox || item.crew == null) {
+        item.crew = 0
+      }
+      if (!item.locoCheckbox || item.loco == null) {
+        item.loco = 0
+      }
+      const { crewCheckbox, locoCheckbox, ...rest } = item
       return {
-        ...item,
+        ...rest,
         user: this.userData['_id'],
         department: this.department.value,
       };
     });
+    console.log("🚀 ~ payload:", payload)
 
     this.service.setMachineRoll(payload).subscribe(() => {
       this.machineFormArray.reset();
@@ -136,7 +145,7 @@ export class AddMachineRollComponent implements OnInit {
     const weekdays = []
     for (let i = 0; i < 365; i++) {
       if (slots[dt.weekday]) {
-        weekdays.push(dt.toLocaleString() + slots[dt.weekday])
+        weekdays.push(dt.toFormat('MM/dd/yyyy') + slots[dt.weekday])
       }
       dt = dt.plus({ days: 1 });
     }

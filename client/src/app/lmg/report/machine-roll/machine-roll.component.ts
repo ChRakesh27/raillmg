@@ -52,7 +52,7 @@ export class MachineRollComponent implements OnInit {
       this.dataset = data.map((item) => {
         let { availableSlot, _id, user, ...rest } = item;
         return {
-          date: DateTime.fromISO(availableSlot['startDate']).toISODate(),
+          date: DateTime.fromISO(availableSlot['startDate']).toFormat('MM/dd/yyyy'),
           startTime: this.timeFormate(availableSlot['startDate']),
           endTime: this.timeFormate(availableSlot['endDate']),
           ...rest,
