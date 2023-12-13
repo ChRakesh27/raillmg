@@ -9,7 +9,6 @@ export class AppService {
   API_HOST = 'https://raillmg-server.onrender.com/api';
   // API_HOST = 'http://localhost:3000/api';
 
-  // isUserLoggedIn$ = new Subject<boolean>()
   isLoading$ = new Subject<boolean>();
 
   constructor(private httpClient: HttpClient) { }
@@ -24,8 +23,8 @@ export class AppService {
     return this.httpClient.post(this.API_HOST + '/users', data);
   }
 
-  getMachineRoll(id): Observable<any> {
-    return this.httpClient.get(`${this.API_HOST}/machineRolls?user=${id}`);
+  getAllMachineRoll(): Observable<any> {
+    return this.httpClient.get(`${this.API_HOST}/machineRolls`);
   }
 
   setMachineRoll(data): Observable<any> {
