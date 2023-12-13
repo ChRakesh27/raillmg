@@ -1,18 +1,16 @@
-<div class="">
+<div>
   <button class="btn btn-primary mb-2" (click)="onExcelDownload()">
     Excel
   </button>
   <!-- <button class="btn btn-primary mb-2" (click)="onPdfDownload()">PDF</button> -->
 </div>
-
 <div>
   <hot-table
     class="hot"
     [hotId]="id"
     [settings]="hotSettings"
-    [data]="dataset"
-    [colHeaders]="colHeaders"
     licenseKey="non-commercial-and-evaluation"
+    [editor]="false"
   >
   </hot-table>
 </div>

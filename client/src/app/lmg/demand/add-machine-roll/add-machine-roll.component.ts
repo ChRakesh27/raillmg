@@ -26,7 +26,6 @@ export class AddMachineRollComponent implements OnInit {
   userData = {};
   availableSlots = {};
   value: any;
-
   get machineFormArray(): FormArray {
     return this.form.controls['machineFormArray'] as FormArray;
   }
@@ -46,8 +45,10 @@ export class AddMachineRollComponent implements OnInit {
     this.userData = this.ls.getUser();
     this.form = this.fb.group({
       department: this.fb.control(
-        "CONSTRUCTION",
+        { value: "CONSTRUCTION", disabled: false },
         Validators.required
+
+
       ),
       machineFormArray: this.fb.array([]),
     });
@@ -59,12 +60,9 @@ export class AddMachineRollComponent implements OnInit {
       return
     }
 
-    let payload = this.machineFormArray.value.map((item) => {
+    let payload = []
+    payload = this.machineFormArray.value.map((item) => {
       let splitSlot = item.availableSlot.split(' ')
-      item.availableSlot = {
-        startDate: this.getISOString(splitSlot[0], splitSlot[1]),
-        endDate: this.getISOString(splitSlot[0], splitSlot[3])
-      }
 
       if (!item.crewCheckbox || item.crew == null) {
         item.crew = 0
@@ -72,17 +70,22 @@ export class AddMachineRollComponent implements OnInit {
       if (!item.locoCheckbox || item.loco == null) {
         item.loco = 0
       }
-      const { crewCheckbox, locoCheckbox, ...rest } = item
+
       return {
-        ...rest,
+        ...item,
+        avl_slot_to: this.getISOString(splitSlot[0], splitSlot[1]),
+        avl_slot_from: this.getISOString(splitSlot[0], splitSlot[3]),
         user: this.userData['_id'],
         department: this.department.value,
       };
+
     });
-    console.log("🚀 ~ payload:", payload)
 
     this.service.setMachineRoll(payload).subscribe(() => {
-      this.machineFormArray.reset();
+      for (let index = this.machineFormArray.length - 1; index >= 0; index--) {
+        this.machineFormArray.removeAt(index);
+      }
+      this.form.get('department')?.enable();
       this.toastService.showSuccess("successfully submitted")
     });
 
@@ -93,20 +96,30 @@ export class AddMachineRollComponent implements OnInit {
   }
 
   onAddNewForm() {
+    this.form.get('department')?.disable();
     const machineForm = this.fb.group({
-      section: [null, Validators.required],
-      stationTo: [null, Validators.required],
-      stationFrom: [null, Validators.required],
-      direction: [null, Validators.required],
-      lineNo: [null, Validators.required],
-      machine: [null, Validators.required],
-      series: [null, Validators.required],
-      aboutWork: [null, Validators.required],
-      time: [null, Validators.required],
-      availableSlot: [null, Validators.required],
-      quantum: [null, Validators.required],
-      deputedSupervisor: [null, Validators.required],
-      resources: [null, Validators.required],
+      board: [''],
+      section: [''],
+      stationTo: [''],
+      stationFrom: [''],
+      direction: [''],
+      lineNo: [null],
+      machine: [''],
+      series: [null],
+      typeOfWork: [null],
+      time: [null],
+      availableSlot: [''],
+      quantum: [null],
+      deputedSupervisor: [null],
+      resources: [null],
+      ni: [''],
+      yard: [null],
+      remarks: [null],
+      approval: [''],
+      s_tStaff: [''],
+      tpcStaff: [''],
+      point: [null],
+      tower: [null],
       crew: [null],
       crewCheckbox: [false],
       loco: [null],
@@ -127,17 +140,18 @@ export class AddMachineRollComponent implements OnInit {
 
   onDelete(index: number) {
     this.machineFormArray.removeAt(index);
+    if (this.machineFormArray.length === 0) {
+      this.form.get('department')?.enable();
+    }
   }
 
   prepareAvailableSlots(section, direction) {
     if (!section || !direction) {
       return
     }
-
     if (this.availableSlots[section + '_' + direction]) {
       return
     }
-
     const slots = AvailableSlotsConfig[section][direction.toLowerCase()]
     if (!slots) return
 

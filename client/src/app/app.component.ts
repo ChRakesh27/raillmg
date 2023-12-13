@@ -18,7 +18,9 @@ import { ToastComponent } from './shared/toast/toast.component';
 })
 export class AppComponent implements OnInit {
   isLoading = false;
-  constructor(private service: AppService) { }
+  constructor(private service: AppService) {
+
+  }
 
   ngOnInit() {
     this.service.isLoading$.subscribe((res) => (this.isLoading = res));

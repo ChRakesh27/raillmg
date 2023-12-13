@@ -46,6 +46,9 @@
                   aria-label="Default select example"
                   formControlName="designation"
                 >
+                  <option value="null" disabled selected>
+                    Select Designation
+                  </option>
                   <option value="DRM">DRM</option>
                   <option value="ADRM">ADRM</option>
                   <option value="DOM/IC">DOM/IC</option>
@@ -79,7 +82,10 @@
               <div class="form-group mt-3 mb-3">
                 <label>Department</label>
                 <select class="form-select" formControlName="department">
-                  <option value="OPERATING">OPERATING</option>
+                  <option value="null" disabled selected>
+                    Select Department
+                  </option>
+                  <!-- <option value="OPERATING">OPERATING</option> -->
                   <option value="CONSTRUCTION">CONSTRUCTION</option>
                   <option value="ENGINEERING">ENGINEERING</option>
                   <option value="RE">RE</option>

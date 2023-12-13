@@ -6,8 +6,7 @@ const router = express.Router()
 
 router.get('/', async (req, res) => {
     try {
-        const user = req.query
-        const docs = await machineRoll.find(user);
+        const docs = await machineRoll.find();
         res.send(docs)
     } catch (error) {
         res.send(error)
