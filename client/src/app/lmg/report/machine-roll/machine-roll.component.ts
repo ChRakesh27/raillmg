@@ -21,9 +21,9 @@ export class MachineRollComponent implements OnInit {
   userData = {};
   filters = [];
   colHeaders = [
+    { data: 'department', title: 'DEPARTMENT' },
     { data: 'date', title: 'DATE' },
     { data: "board", title: "BOARD" },
-    { data: 'department', title: 'DEPARTMENT' },
     { data: "section", title: "SECTION" },
     { data: 'startTime', title: 'AVAILABLE SLOT START TIME' },
     { data: 'endTime', title: 'AVAILABLE SLOT END TIME' },
