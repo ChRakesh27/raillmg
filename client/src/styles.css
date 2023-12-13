@@ -9,3 +9,8 @@
   align-items: center;
   justify-content: center;
 }
+
+.handsontable table thead th {
+  font-weight: bold;
+  font-size: 15px;
+}
