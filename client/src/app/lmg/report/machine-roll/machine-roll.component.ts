@@ -20,69 +20,44 @@ registerAllModules();
 export class MachineRollComponent implements OnInit {
   userData = {};
   filters = [];
-  colHeaders = [];
+  colHeaders = [
+    { data: 'date', title: 'DATE' },
+    { data: "board", title: "BOARD" },
+    { data: 'department', title: 'DEPARTMENT' },
+    { data: "section", title: "SECTION" },
+    { data: 'startTime', title: 'AVAILABLE SLOT START TIME' },
+    { data: 'endTime', title: 'AVAILABLE SLOT END TIME' },
+    { data: 'stationTo', title: 'STATION TO' },
+    { data: 'stationFrom', title: 'STATION FROM' },
+    { data: 'direction', title: 'DIRECTION' },
+    { data: 'series', title: 'SERIES' },
+    { data: "ni", title: "Whether NI work/PNI work or Non-NI Work" },
+    { data: "yard", title: "Yard" },
+    { data: "lineNo", title: "KM/LINE" },
+    { data: "machine", title: "Machine Type & No." },
+    { data: "typeOfWork", title: "TYPE OF WORK" },
+    { data: "time", title: "BLOCK DEMAND HOURS" },
+    { data: "quantum", title: "QUANTUM" },
+    { data: "deputedSupervisior", title: "DEPUTED SUPERVISIOR" },
+    { data: "resources", title: "RESOURCES" },
+    { data: "loco", title: "LOCO" },
+    { data: "crew", title: "CREW" },
+    { data: "remarks", title: " REMARKS IF ANY" },
+    { data: "approval", title: "APPROVAL REQUIRED OR NOT " },
+    { data: "s_tStaff", title: "S&T STAFF REQUIRED (YES/NO)" },
+    { data: "tpcStaff", title: "TPC STAFF REQUIRED (YES/NO)" },
+    { data: "point", title: "POINT/BPAC/OTHERS" },
+    { data: "tower", title: "TOWER WAGON/MATERIAL TRAIN" }
+  ];
+
+
+
   private hotRegisterer = new HotTableRegisterer();
   id = 'hotInstance';
   hotSettings: Handsontable.GridSettings = {
     rowHeaders: true,
-    colHeaders: [
-      'edit',
-      'date',
-      'startTime',
-      'endTime',
-      'department',
-      'section',
-      'stationTo',
-      'stationFrom',
-      'direction',
-      'lineNo',
-      'machine',
-      'series',
-      'typeOfWork',
-      'time',
-      'quantum',
-      'deputedSupervisor',
-      'resources',
-      'crew',
-      'loco'
-    ],
-    afterOnCellMouseDown: (event, coords, TD) => {
-      // if (event.realTarget.nodeName.toLowerCase() === 'button' && coords.col === 1) {
-      console.log(event);
-      // }
-    },
-
-    columns: [
-      {
-        data: 'edit',
-        readOnly: true,
-        editor: false,
-        renderer: function (instance, td, row, col, prop, value, cellProperties) {
-          if (value) {
-            td.innerHTML = `<button class="btn btn-primary" (click)='onEdit(${value})'> Edit </button>`;
-          }
-        }
-      },
-      { data: 'date' },
-      { data: 'startTime' },
-      { data: 'endTime' },
-      { data: 'department' },
-      { data: 'section' },
-      { data: 'stationTo' },
-      { data: 'stationFrom' },
-      { data: 'direction' },
-      { data: 'lineNo' },
-      { data: 'machine' },
-      { data: 'series' },
-      { data: 'typeOfWork' },
-      { data: 'time' },
-      { data: 'quantum' },
-      { data: 'deputedSupervisor' },
-      { data: 'resources' },
-      { data: 'crew' },
-      { data: 'loco' }
-    ],
     colWidths: '150',
+    columns: this.colHeaders,
     height: 'auto',
     multiColumnSorting: true,
     manualColumnResize: true,
@@ -99,17 +74,14 @@ export class MachineRollComponent implements OnInit {
     this.service.getAllMachineRoll().subscribe((data) => {
       const hot = this.hotRegisterer.getInstance(this.id);
       const dataSet = data.map((item) => {
-        let { avl_slot_to, avl_slot_from, _id, user, ...rest } = item;
+        let { avl_end, avl_start, _id, user, ...rest } = item;
         return {
-          edit:
-            item.department == this.userData['department']
-              ? item.department
-              : '',
-          date: DateTime.fromISO(avl_slot_from).toFormat(
+
+          date: DateTime.fromISO(avl_start).toFormat(
             'MM/dd/yyyy'
           ),
-          startTime: this.timeFormate(avl_slot_from),
-          endTime: this.timeFormate(avl_slot_to),
+          startTime: this.timeFormate(avl_start),
+          endTime: this.timeFormate(avl_end),
           ...rest,
         };
       });
@@ -148,3 +120,41 @@ export class MachineRollComponent implements OnInit {
 
   onPdfDownload() { }
 }
+
+// {
+//   data: 'edit',
+//   readOnly: true,
+//   editor: false,
+//   renderer: function (instance, td, row, col, prop, value, cellProperties) {
+//     if (value) {
+//       td.innerHTML = `<button class="btn btn-primary" (click)='onEdit(${value})'> Edit </button>`;
+//     }
+//   }
+// },
+
+// columns: [
+//   { data: 'date' },
+//   { data: 'startTime' },
+//   { data: 'endTime' },
+//   { data: 'department' },
+//   { data: 'section' },
+//   { data: 'stationTo' },
+//   { data: 'stationFrom' },
+//   { data: 'direction' },
+//   { data: 'lineNo' },
+//   { data: 'machine' },
+//   { data: 'series' },
+//   { data: 'typeOfWork' },
+//   { data: 'time' },
+//   { data: 'quantum' },
+//   { data: 'deputedSupervisor' },
+//   { data: 'resources' },
+//   { data: 'crew' },
+//   { data: 'loco' }
+// ],
+
+// edit:
+//             item.department == this.userData['department']
+//                item.department
+//               : '',
+

@@ -73,8 +73,8 @@ export class AddMachineRollComponent implements OnInit {
 
       return {
         ...item,
-        avl_slot_to: this.getISOString(splitSlot[0], splitSlot[1]),
-        avl_slot_from: this.getISOString(splitSlot[0], splitSlot[3]),
+        avl_start: this.getISOString(splitSlot[0], splitSlot[1]),
+        avl_end: this.getISOString(splitSlot[0], splitSlot[3]),
         user: this.userData['_id'],
         department: this.department.value,
       };
@@ -110,7 +110,7 @@ export class AddMachineRollComponent implements OnInit {
       time: [null],
       availableSlot: [''],
       quantum: [null],
-      deputedSupervisor: [null],
+      deputedSupervisior: [null],
       resources: [null],
       ni: [''],
       yard: [null],
