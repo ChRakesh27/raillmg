@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { AppService } from '../../../app.service';
 import { localStorageService } from '../../../shared/service/local-storage.service';
 import { ToastService } from '../../../shared/toast/toast.service';
+import { DateTime } from 'luxon';
 
 @Component({
   selector: 'app-machine-upload-file',
@@ -25,7 +26,6 @@ export class MachineUploadFileComponent implements OnInit {
   colHeader = []
   hotSettings: Handsontable.GridSettings = {
     colWidths: '150',
-    height: 'auto',
     multiColumnSorting: true,
     manualColumnResize: true,
     filters: true,
@@ -71,7 +71,7 @@ export class MachineUploadFileComponent implements OnInit {
     reader.onload = (event) => {
       const hot = this.hotRegisterer.getInstance(this.id);
       const data = reader.result
-      wb = XLSX.read(data, { type: 'binary' });
+      wb = XLSX.read(data, { type: 'binary', raw: false });
       const wsname: string = wb.SheetNames[0];
       const ws: XLSX.WorkSheet = wb.Sheets[wsname];
 
@@ -81,6 +81,7 @@ export class MachineUploadFileComponent implements OnInit {
       this.colHeader = Object.keys(this.jsonData[0])
 
       hot.updateData(this.jsonData);
+      console.log("🚀 ~ this.jsonData:", this.jsonData)
     }
 
     reader.readAsBinaryString(file);
@@ -97,8 +98,10 @@ export class MachineUploadFileComponent implements OnInit {
         key = key.toUpperCase().trim()
         if (key === 'AVAILABLE SLOT') {
           let splitSlot = item['AVAILABLE SLOT'].split(' ')
-          ModData["avl_start"] = this.getISOString(splitSlot[0], splitSlot[1])
-          ModData["avl_end"] = this.getISOString(splitSlot[0], splitSlot[3])
+
+          ModData["date"] = splitSlot[0]
+          ModData["avl_start"] = this.timeFormate(splitSlot[0], splitSlot[1])
+          ModData["avl_end"] = this.timeFormate(splitSlot[0], splitSlot[3])
         } else {
           if (this.xlToMngKeys[key] !== undefined)
             ModData[this.xlToMngKeys[key]] = item[key]
@@ -106,7 +109,6 @@ export class MachineUploadFileComponent implements OnInit {
       }
       return ModData
     })
-    console.log("this.dataSet", this.dataSet);
 
     if (this.dataSet.length !== 0) {
       this.service.setMachineRoll(this.dataSet).subscribe(() => {
@@ -119,8 +121,11 @@ export class MachineUploadFileComponent implements OnInit {
 
   }
 
-  getISOString(date, time): string {
-    return new Date(date + " " + time).toISOString()
+
+  timeFormate(date, time) {
+    let dateTime = new Date(date + " " + time).toISOString()
+    let dt = DateTime.fromISO(dateTime);
+    return dt.toLocaleString(DateTime.TIME_SIMPLE);
   }
 
   onDelete() {

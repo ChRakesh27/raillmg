@@ -19,14 +19,26 @@ registerAllModules();
 })
 export class MachineRollComponent implements OnInit {
   userData = {};
-  filters = [];
+  editData = {};
+  dataSet = []
   colHeaders = [
+    {
+      data: 'edit', title: 'Edit',
+      renderer: (instance, TD, row, col, prop, value, cellProperties) => {
+        if (value) {
+          TD.innerHTML = `<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Edit</button>`
+        } else {
+          TD.innerHTML = ''
+        }
+        return TD;
+      }
+    },
     { data: 'department', title: 'DEPARTMENT' },
     { data: 'date', title: 'DATE' },
     { data: "board", title: "BOARD" },
     { data: "section", title: "SECTION" },
-    { data: 'startTime', title: 'AVAILABLE SLOT START TIME' },
-    { data: 'endTime', title: 'AVAILABLE SLOT END TIME' },
+    { data: 'avl_start', title: 'AVAILABLE SLOT START TIME' },
+    { data: 'avl_end', title: 'AVAILABLE SLOT END TIME' },
     { data: 'stationTo', title: 'STATION TO' },
     { data: 'stationFrom', title: 'STATION FROM' },
     { data: 'direction', title: 'DIRECTION' },
@@ -56,6 +68,13 @@ export class MachineRollComponent implements OnInit {
   id = 'hotInstance';
   hotSettings: Handsontable.GridSettings = {
     rowHeaders: true,
+    afterOnCellMouseDown: (event, coords, TD) => {
+      const target = event.target as HTMLElement
+      if (target.nodeName.toLowerCase() === 'button' && coords.col === 0) {
+        console.log('->>>>>>>>>>>>>', this.dataSet[coords.row]);
+        this.editData = this.dataSet[coords.row]
+      }
+    },
     colWidths: '150',
     columns: this.colHeaders,
     height: 'auto',
@@ -73,26 +92,18 @@ export class MachineRollComponent implements OnInit {
     this.userData = this.ls.getUser();
     this.service.getAllMachineRoll().subscribe((data) => {
       const hot = this.hotRegisterer.getInstance(this.id);
-      const dataSet = data.map((item) => {
-        let { avl_end, avl_start, _id, user, ...rest } = item;
-        return {
+      this.dataSet = data.map((item) => {
 
-          date: DateTime.fromISO(avl_start).toFormat(
-            'MM/dd/yyyy'
-          ),
-          startTime: this.timeFormate(avl_start),
-          endTime: this.timeFormate(avl_end),
-          ...rest,
+        return {
+          edit: item.department === this.userData["department"] ? true : false,
+          ...item
         };
       });
-      hot.updateData(dataSet);
+      hot.updateData(this.dataSet);
     });
   }
 
-  timeFormate(params) {
-    let dt = DateTime.fromISO(params);
-    return dt.toLocaleString(DateTime.TIME_SIMPLE);
-  }
+
 
   onEdit(data) {
     console.log("🚀 ~ data:", data)

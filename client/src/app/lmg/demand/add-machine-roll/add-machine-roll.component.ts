@@ -73,8 +73,9 @@ export class AddMachineRollComponent implements OnInit {
 
       return {
         ...item,
-        avl_start: this.getISOString(splitSlot[0], splitSlot[1]),
-        avl_end: this.getISOString(splitSlot[0], splitSlot[3]),
+        avl_start: this.timeFormate(splitSlot[0], splitSlot[1]),
+        avl_end: this.timeFormate(splitSlot[0], splitSlot[3]),
+        date: splitSlot[0],
         user: this.userData['_id'],
         department: this.department.value,
       };
@@ -90,9 +91,10 @@ export class AddMachineRollComponent implements OnInit {
     });
 
   }
-
-  getISOString(date, time): string {
-    return new Date(date + " " + time).toISOString()
+  timeFormate(date, time) {
+    let dateTime = new Date(date + " " + time).toISOString()
+    let dt = DateTime.fromISO(dateTime);
+    return dt.toLocaleString(DateTime.TIME_SIMPLE);
   }
 
   onAddNewForm() {
