@@ -5,6 +5,7 @@ const Schema = mongoose.Schema
 const machineRollSchema = new Schema({
     _id: { type: mongoose.Types.ObjectId, auto: true },
     user: { type: String },
+    date: { type: String },
     department: { type: String },
     section: { type: String },
     stationTo: { type: String },
