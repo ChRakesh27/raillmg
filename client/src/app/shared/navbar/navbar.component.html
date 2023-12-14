@@ -182,8 +182,8 @@
       </ul>
       <div class="">
         <label
-          ><b>{{ userData["username"] | uppercase }}</b> _
-          {{ userData["department"] }}</label
+          >Name: <b>{{ userData["username"] | uppercase }}</b> Department:
+          <b> {{ userData["department"] | uppercase }}</b></label
         >
         <button class="btn btn-outline-dark rounded ms-5" (click)="onLogout()">
           Sign Out
