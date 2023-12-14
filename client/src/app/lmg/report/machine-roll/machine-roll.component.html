@@ -1,23 +1,16 @@
-@for(table of tables; track $index){
-<div class="mt-5">
-  <div class="d-flex justify-content-between">
-    <h3>{{ table["id"] | uppercase }}</h3>
-    <button class="btn btn-primary mb-2" (click)="onExcelDownload(table['id'])">
-      Excel
-    </button>
-  </div>
+<div>
+  <button class="btn btn-primary mb-2" (click)="onExcelDownload()">
+    Excel
+  </button>
   <!-- <button class="btn btn-primary mb-2" (click)="onPdfDownload()">PDF</button> -->
 </div>
 <div>
   <hot-table
     class="hot"
-    [hotId]="table['id']"
-    [columns]="table['columns']"
+    [hotId]="id"
     [settings]="hotSettings"
     licenseKey="non-commercial-and-evaluation"
     [editor]="false"
   >
   </hot-table>
 </div>
-
-}

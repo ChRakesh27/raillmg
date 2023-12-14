@@ -10,6 +10,7 @@ import { AdminComponent } from './admin/admin-login/admin.component';
 import { MachineNonRollComponent } from './lmg/demand/machine-non-roll/machine-non-roll.component';
 import { MaintenanceRollComponent } from './lmg/demand/maintenance-roll/maintenance-roll.component';
 import { MaintenanceNonRollComponent } from './lmg/demand/maintenance-non-roll/maintenance-non-roll.component';
+import { MachineUploadFileComponent } from './lmg/demand/machine-upload-file/machine-upload-file.component';
 
 export const routes: Routes = [
     {
@@ -39,6 +40,10 @@ export const routes: Routes = [
                     {
                         path: "maintenance-non-roll",
                         component: MaintenanceNonRollComponent
+                    },
+                    {
+                        path: "machine-upload-file",
+                        component: MachineUploadFileComponent
                     },
 
                 ]

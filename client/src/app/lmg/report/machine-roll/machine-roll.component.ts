@@ -8,11 +8,6 @@ import { registerAllModules } from 'handsontable/registry';
 import Handsontable from 'handsontable';
 import * as Papa from 'papaparse';
 import * as XLSX from 'xlsx';
-import {
-  electric,
-  engineering,
-  s_t,
-} from '../../../shared/Departmentcolumns/columns';
 
 registerAllModules();
 @Component({
@@ -25,61 +20,72 @@ registerAllModules();
 export class MachineRollComponent implements OnInit {
   userData = {};
   filters = [];
-  dataSet = {
-    engineering: [],
-    s_t: [],
-    electric: []
-  }
-  private hotRegisterer = new HotTableRegisterer();
-  tables = [
-    { id: 'engineering', columns: engineering },
-    { id: 's&t', columns: s_t },
-    { id: 'electric', columns: electric },
+  colHeaders = [
+    { data: 'department', title: 'DEPARTMENT' },
+    { data: 'date', title: 'DATE' },
+    { data: "board", title: "BOARD" },
+    { data: "section", title: "SECTION" },
+    { data: 'startTime', title: 'AVAILABLE SLOT START TIME' },
+    { data: 'endTime', title: 'AVAILABLE SLOT END TIME' },
+    { data: 'stationTo', title: 'STATION TO' },
+    { data: 'stationFrom', title: 'STATION FROM' },
+    { data: 'direction', title: 'DIRECTION' },
+    { data: 'series', title: 'SERIES' },
+    { data: "ni", title: "Whether NI work/PNI work or Non-NI Work" },
+    { data: "yard", title: "Yard" },
+    { data: "lineNo", title: "KM/LINE" },
+    { data: "machine", title: "Machine Type & No." },
+    { data: "typeOfWork", title: "TYPE OF WORK" },
+    { data: "time", title: "BLOCK DEMAND HOURS" },
+    { data: "quantum", title: "QUANTUM" },
+    { data: "deputedSupervisior", title: "DEPUTED SUPERVISIOR" },
+    { data: "resources", title: "RESOURCES" },
+    { data: "loco", title: "LOCO" },
+    { data: "crew", title: "CREW" },
+    { data: "remarks", title: " REMARKS IF ANY" },
+    { data: "approval", title: "APPROVAL REQUIRED OR NOT " },
+    { data: "s_tStaff", title: "S&T STAFF REQUIRED (YES/NO)" },
+    { data: "tpcStaff", title: "TPC STAFF REQUIRED (YES/NO)" },
+    { data: "point", title: "POINT/BPAC/OTHERS" },
+    { data: "tower", title: "TOWER WAGON/MATERIAL TRAIN" }
   ];
+
+
+
+  private hotRegisterer = new HotTableRegisterer();
+  id = 'hotInstance';
   hotSettings: Handsontable.GridSettings = {
     rowHeaders: true,
     colWidths: '150',
+    columns: this.colHeaders,
     height: 'auto',
     multiColumnSorting: true,
     manualColumnResize: true,
     filters: true,
-    columnHeaderHeight: 50,
     manualColumnMove: true,
     dropdownMenu: ['filter_by_value', 'filter_operators', 'filter_action_bar'],
   };
 
   constructor(private service: AppService, private ls: localStorageService) { }
 
+
   ngOnInit() {
     this.userData = this.ls.getUser();
     this.service.getAllMachineRoll().subscribe((data) => {
-      const engg = this.hotRegisterer.getInstance(this.tables[0]['id']);
-      const s_t = this.hotRegisterer.getInstance(this.tables[1]['id']);
-      const elec = this.hotRegisterer.getInstance(this.tables[2]['id']);
-
-      for (let item of data) {
+      const hot = this.hotRegisterer.getInstance(this.id);
+      const dataSet = data.map((item) => {
         let { avl_end, avl_start, _id, user, ...rest } = item;
-        const customData = {
-          date: DateTime.fromISO(avl_start).toFormat('MM/dd/yyyy'),
+        return {
+
+          date: DateTime.fromISO(avl_start).toFormat(
+            'MM/dd/yyyy'
+          ),
           startTime: this.timeFormate(avl_start),
           endTime: this.timeFormate(avl_end),
-        }
-        if (item.department === 'ENGINEERING') {
-          this.dataSet['engineering'].push({ ...customData, ...rest })
-        }
-        else if (item.department === 'S&T') {
-          this.dataSet['s_t'].push({ ...customData, ...rest })
-
-        }
-        else if (item.department === 'ELECTRIC') {
-          this.dataSet['electric'].push({ ...customData, ...rest })
-
-        }
-      }
-
-      engg.updateData(this.dataSet.engineering);
-      s_t.updateData(this.dataSet.s_t);
-      elec.updateData(this.dataSet.electric);
+          ...rest,
+        };
+      });
+      hot.updateData(dataSet);
     });
   }
 
@@ -89,11 +95,12 @@ export class MachineRollComponent implements OnInit {
   }
 
   onEdit(data) {
-    console.log('🚀 ~ data:', data);
+    console.log("🚀 ~ data:", data)
+
   }
 
-  onExcelDownload(id) {
-    const hot = this.hotRegisterer.getInstance(id);
+  onExcelDownload() {
+    const hot = this.hotRegisterer.getInstance(this.id);
     const exportPlugin = hot.getPlugin('exportFile');
     const exportedString = exportPlugin.exportAsString('csv', {
       bom: false,
@@ -113,19 +120,3 @@ export class MachineRollComponent implements OnInit {
 
   onPdfDownload() { }
 }
-
-// {
-//   data: 'edit',
-//   readOnly: true,
-//   editor: false,
-//   renderer: function (instance, td, row, col, prop, value, cellProperties) {
-//     if (value) {
-//       td.innerHTML = `<button class="btn btn-primary" (click)='onEdit(${value})'> Edit </button>`;
-//     }
-//   }
-// },
-
-// edit:
-//             item.department == this.userData['department']
-//                item.department
-//               : '',
