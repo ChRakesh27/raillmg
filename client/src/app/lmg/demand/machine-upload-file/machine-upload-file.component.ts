@@ -132,11 +132,10 @@ export class MachineUploadFileComponent implements OnInit {
 
   }
 
-
   timeFormate(date, time) {
     let dateTime = new Date(date + " " + time).toISOString()
     let dt = DateTime.fromISO(dateTime);
-    return dt.toLocaleString(DateTime.TIME_SIMPLE);
+    return dt.toLocaleString(DateTime.TIME_24_SIMPLE);
   }
 
   onDelete() {
