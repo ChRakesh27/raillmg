@@ -25,12 +25,18 @@ export class MachineUploadFileComponent implements OnInit {
   id = 'hotInstancePre';
   colHeader = []
   hotSettings: Handsontable.GridSettings = {
+    allowRemoveColumn: true,
+    allowInsertColumn: false,
+    allowInsertRow: false,
+    allowRemoveRow: true,
+    contextMenu: true,
     colWidths: '150',
     multiColumnSorting: true,
     manualColumnResize: true,
     filters: true,
     manualColumnMove: true,
-    dropdownMenu: ['filter_by_value', 'filter_operators', 'filter_action_bar'],
+    rowHeaders: true,
+    dropdownMenu: ['remove_col', 'remove_row', 'clear_column', 'undo', 'redo', 'filter_by_value', 'filter_operators', 'filter_action_bar'],
   };
 
   xlToMngKeys = {
@@ -81,7 +87,6 @@ export class MachineUploadFileComponent implements OnInit {
       this.colHeader = Object.keys(this.jsonData[0])
 
       hot.updateData(this.jsonData);
-      console.log("🚀 ~ this.jsonData:", this.jsonData)
     }
 
     reader.readAsBinaryString(file);
@@ -89,22 +94,24 @@ export class MachineUploadFileComponent implements OnInit {
   }
 
   onSubmit() {
+    const hot = this.hotRegisterer.getInstance(this.id);
     this.dataSet = this.jsonData.map((item) => {
       let ModData = {
         department: this.department,
         user: this.userData['_id'],
       }
       for (let key of Object.keys(item)) {
-        key = key.toUpperCase().trim()
-        if (key === 'AVAILABLE SLOT') {
-          let splitSlot = item['AVAILABLE SLOT'].split(' ')
-
-          ModData["date"] = splitSlot[0]
-          ModData["avl_start"] = this.timeFormate(splitSlot[0], splitSlot[1])
-          ModData["avl_end"] = this.timeFormate(splitSlot[0], splitSlot[3])
-        } else {
-          if (this.xlToMngKeys[key] !== undefined)
-            ModData[this.xlToMngKeys[key]] = item[key]
+        if (item[key] !== null) {
+          key = key.toUpperCase().trim()
+          if (key === 'AVAILABLE SLOT') {
+            let splitSlot = item['AVAILABLE SLOT'].split(' ')
+            ModData["date"] = splitSlot[0]
+            ModData["avl_start"] = this.timeFormate(splitSlot[0], splitSlot[1])
+            ModData["avl_end"] = this.timeFormate(splitSlot[0], splitSlot[3])
+          } else {
+            if (this.xlToMngKeys[key] !== undefined)
+              ModData[this.xlToMngKeys[key]] = item[key]
+          }
         }
       }
       return ModData

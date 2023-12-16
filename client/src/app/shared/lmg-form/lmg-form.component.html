@@ -1,329 +1,332 @@
 {{ department }}
 {{ department === "ENGINEERING" }}
-<div class="row">
-  <div class="col-sm-6 col-md-3">
-    <div class="form-group mt-3 mb-3">
-      <label>Board</label>
-      <select class="form-select" formControlName="board" required>
-        <option value="" selected disabled>Select Board</option>
-        <option value="BD1">BD1</option>
-        <option value="BD2">BD2</option>
-        <option value="BD3">BD3</option>
-        <option value="BD4">BD4</option>
-        <option value="BD5">BD5</option>
-      </select>
+<div [formGroup]="machineForm">
+  <div class="row">
+    <div class="col-sm-6 col-md-3">
+      <div class="form-group mt-3 mb-3">
+        <label>Board</label>
+        <select class="form-select" formControlName="board" required>
+          <option value="" selected disabled>Select Board</option>
+          <option value="BD1">BD1</option>
+          <option value="BD2">BD2</option>
+          <option value="BD3">BD3</option>
+          <option value="BD4">BD4</option>
+          <option value="BD5">BD5</option>
+        </select>
+      </div>
     </div>
-  </div>
-  <div class="col-sm-6 col-md-3">
-    <div class="form-group mt-3 mb-3">
-      <label>Section</label>
-      <select class="form-select" formControlName="section" required>
-        <option value="">Select Section</option>
-        <option value="CGS-KYQ">CGS-KYQ</option>
-        <option value="KYQ-GHY">KYQ-GHY</option>
-        <option value="GHY-NNGE">GHY-NNGE</option>
-        <option value="NNGE-DGU">NNGE-DGU</option>
-        <option value="DGU-CPK">DGU-CPK</option>
-        <option value="CPK-HJI">CPK-HJI</option>
-        <option value="CPK-SHTT/MBO">CPK-SHTT/MBO</option>
-        <option value="HJI-LMG">HJI-LMG</option>
-        <option value="LMG-DMV">LMG-DMV</option>
-        <option value="DMV-FKG">DMV-FKG</option>
-        <option value="DSR-SKHV">DSR-SKHV</option>
-        <option value="LMG-NHLG">LMG-NHLG</option>
-        <option value="NHLG-BPB">NHLG-BPB</option>
-        <option value="BPB-SCL">BPB-SCL</option>
-        <option value="BPB-KXJ">BPB-KXJ</option>
-        <option value="ARCL-KGBP">ARCL-KGBP</option>
-        <option value="KTX-BHRB">KTX-BHRB</option>
-        <option value="KXJ-DMR">KXJ-DMR</option>
-        <option value="DMR-MANU">DMR-MANU</option>
-        <option value="MANU-AGTL">MANU-AGTL</option>
-        <option value="AGTL-JRJE">AGTL-JRJE</option>
-        <option value="JRJE-SBRM">JRJE-SBRM</option>
-        <option value="BRGMDLCRKXJ-MSSN">BRGMDLCRKXJ-MSSN</option>
-      </select>
+    <div class="col-sm-6 col-md-3">
+      <div class="form-group mt-3 mb-3">
+        <label>Section</label>
+        <select class="form-select" formControlName="section" required>
+          <option value="">Select Section</option>
+          <option value="CGS-KYQ">CGS-KYQ</option>
+          <option value="KYQ-GHY">KYQ-GHY</option>
+          <option value="GHY-NNGE">GHY-NNGE</option>
+          <option value="NNGE-DGU">NNGE-DGU</option>
+          <option value="DGU-CPK">DGU-CPK</option>
+          <option value="CPK-HJI">CPK-HJI</option>
+          <option value="CPK-SHTT/MBO">CPK-SHTT/MBO</option>
+          <option value="HJI-LMG">HJI-LMG</option>
+          <option value="LMG-DMV">LMG-DMV</option>
+          <option value="DMV-FKG">DMV-FKG</option>
+          <option value="DSR-SKHV">DSR-SKHV</option>
+          <option value="LMG-NHLG">LMG-NHLG</option>
+          <option value="NHLG-BPB">NHLG-BPB</option>
+          <option value="BPB-SCL">BPB-SCL</option>
+          <option value="BPB-KXJ">BPB-KXJ</option>
+          <option value="ARCL-KGBP">ARCL-KGBP</option>
+          <option value="KTX-BHRB">KTX-BHRB</option>
+          <option value="KXJ-DMR">KXJ-DMR</option>
+          <option value="DMR-MANU">DMR-MANU</option>
+          <option value="MANU-AGTL">MANU-AGTL</option>
+          <option value="AGTL-JRJE">AGTL-JRJE</option>
+          <option value="JRJE-SBRM">JRJE-SBRM</option>
+          <option value="BRGMDLCRKXJ-MSSN">BRGMDLCRKXJ-MSSN</option>
+        </select>
+      </div>
     </div>
-  </div>
-  <div class="col-sm-6 col-md-3">
-    <div class="form-group mt-3 mb-3">
-      <label>Station From</label>
-      <select class="form-select" formControlName="stationFrom" required>
-        <option value="" selected disabled>Select Station</option>
-        @for(station of stations; track $index){
-        <option value="{{ station }}">{{ station }}</option>
-        }
-      </select>
+    <div class="col-sm-6 col-md-3">
+      <div class="form-group mt-3 mb-3">
+        <label>Station From</label>
+        <select class="form-select" formControlName="stationFrom" required>
+          <option value="" selected disabled>Select Station</option>
+          @for(station of stations; track $index){
+          <option value="{{ station }}">{{ station }}</option>
+          }
+        </select>
+      </div>
     </div>
-  </div>
-  <div class="col-sm-6 col-md-3">
-    <div class="form-group mt-3 mb-3">
-      <label>Station To</label>
-      <select class="form-select" formControlName="stationTo" required>
-        <option value="" selected disabled>Select Station</option>
-        @for(station of stations; track $index){
-        <option value="{{ station }}">{{ station }}</option>
-        }
-      </select>
+    <div class="col-sm-6 col-md-3">
+      <div class="form-group mt-3 mb-3">
+        <label>Station To</label>
+        <select class="form-select" formControlName="stationTo" required>
+          <option value="" selected disabled>Select Station</option>
+          @for(station of stations; track $index){
+          <option value="{{ station }}">{{ station }}</option>
+          }
+        </select>
+      </div>
     </div>
-  </div>
-  <div class="col-sm-6 col-md-3">
-    <div class="form-group mt-3 mb-3">
-      <label>Direction</label>
-      <select class="form-select" formControlName="direction" required>
-        <option value="" selected disabled>Select Direction</option>
-        <option value="BOTH">BOTH</option>
-        <option value="UP">UP</option>
-        <option value="DN">DN</option>
-      </select>
+    <div class="col-sm-6 col-md-3">
+      <div class="form-group mt-3 mb-3">
+        <label>Direction</label>
+        <select class="form-select" formControlName="direction" required>
+          <option value="" selected disabled>Select Direction</option>
+          <option value="BOTH">BOTH</option>
+          <option value="UP">UP</option>
+          <option value="DN">DN</option>
+        </select>
+      </div>
     </div>
-  </div>
-  <div class="col-sm-6 col-md-3">
-    <div class="form-group mt-3 mb-3">
-      <label>Series</label>
-      <input
-        type="text"
-        class="form-control"
-        placeholder="Enter Series"
-        formControlName="series"
-        required
-      />
+    <div class="col-sm-6 col-md-3">
+      <div class="form-group mt-3 mb-3">
+        <label>Series</label>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Enter Series"
+          formControlName="series"
+          required
+        />
+      </div>
     </div>
-  </div>
-  <div class="col-sm-6 col-md-3">
-    <div class="form-group mt-3 mb-3">
-      <label>Whether NI work/PNI work or Non-NI Work</label>
-      <select class="form-select" formControlName="ni" required>
-        <option value="" selected disabled>Select NI/Non-NI Work</option>
-        <option value="Yes">Yes</option>
-        <option value="No">no</option>
-      </select>
+    <div class="col-sm-6 col-md-3">
+      <div class="form-group mt-3 mb-3">
+        <label>Whether NI work/PNI work or Non-NI Work</label>
+        <select class="form-select" formControlName="ni" required>
+          <option value="" selected disabled>Select NI/Non-NI Work</option>
+          <option value="Yes">Yes</option>
+          <option value="No">no</option>
+        </select>
+      </div>
     </div>
-  </div>
-  <div class="col-sm-6 col-md-3">
-    <div class="form-group mt-3 mb-3">
-      <label>Yard</label>
-      <input
-        type="text"
-        class="form-control"
-        placeholder="Enter Yard"
-        formControlName="yard"
-        required
-      />
+    <div class="col-sm-6 col-md-3">
+      <div class="form-group mt-3 mb-3">
+        <label>Yard</label>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Enter Yard"
+          formControlName="yard"
+          required
+        />
+      </div>
     </div>
-  </div>
-  <div class="col-sm-6 col-md-3">
-    <div class="form-group mt-3 mb-3">
-      <label>Type of Work</label>
-      <input
-        type="text"
-        class="form-control"
-        placeholder="Enter Type of Work"
-        formControlName="typeOfWork"
-        required
-      />
+    <div class="col-sm-6 col-md-3">
+      <div class="form-group mt-3 mb-3">
+        <label>Type of Work</label>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Enter Type of Work"
+          formControlName="typeOfWork"
+          required
+        />
+      </div>
     </div>
-  </div>
-  <div class="col-sm-6 col-md-3">
-    <div class="form-group mt-3 mb-3">
-      <label>Available Slot</label>
-      <select class="form-select" formControlName="availableSlot" required>
-        <option value="" selected disabled>Select Available Slot</option>
-        @for(date of availableSlots[ machineForm.controls["section"].value+'_'+
-        machineForm.controls["direction"].value]; track $index){
-        <option value="{{ date }}">{{ date }}</option>
-        }
-      </select>
+    <div class="col-sm-6 col-md-3">
+      <div class="form-group mt-3 mb-3">
+        <label>Available Slot</label>
+        <select class="form-select" formControlName="availableSlot" required>
+          <option value="" selected disabled>Select Available Slot</option>
+          @for(date of availableSlots[
+          machineForm.controls["section"].value+'_'+
+          machineForm.controls["direction"].value]; track $index){
+          <option value="{{ date }}">{{ date }}</option>
+          }
+        </select>
+      </div>
     </div>
-  </div>
-  <div class="col-sm-6 col-md-3">
-    <div class="form-group mt-3 mb-3">
-      <label>Quantum</label>
-      <input
-        type="text"
-        class="form-control"
-        placeholder="Enter Quantum"
-        formControlName="quantum"
-        required
-      />
+    <div class="col-sm-6 col-md-3">
+      <div class="form-group mt-3 mb-3">
+        <label>Quantum</label>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Enter Quantum"
+          formControlName="quantum"
+          required
+        />
+      </div>
     </div>
-  </div>
-  <div class="col-sm-6 col-md-3">
-    <div class="form-group mt-3 mb-3">
-      <label>Deputed Supervisor</label>
-      <input
-        type="text"
-        class="form-control"
-        placeholder="Enter Deputed Supervisor"
-        formControlName="deputedSupervisior"
-        required
-      />
+    <div class="col-sm-6 col-md-3">
+      <div class="form-group mt-3 mb-3">
+        <label>Deputed Supervisor</label>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Enter Deputed Supervisor"
+          formControlName="deputedSupervisior"
+          required
+        />
+      </div>
     </div>
-  </div>
-  <div class="col-sm-6 col-md-3">
-    <div class="form-group mt-3 mb-3">
-      <label>Resources</label>
-      <input
-        type="text"
-        class="form-control"
-        placeholder="Enter Resources"
-        formControlName="resources"
-        required
-      />
+    <div class="col-sm-6 col-md-3">
+      <div class="form-group mt-3 mb-3">
+        <label>Resources</label>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Enter Resources"
+          formControlName="resources"
+          required
+        />
+      </div>
     </div>
-  </div>
-  <div class="col-sm-6 col-md-3">
-    <div class="form-group mt-3 mb-3">
-      <label>APPROVAL</label>
-      <select class="form-select" formControlName="approval" required>
-        <option value="" disabled selected>Select APPROVAL</option>
-        <option value="Yes">Yes</option>
-        <option value="No">No</option>
-      </select>
+    <div class="col-sm-6 col-md-3">
+      <div class="form-group mt-3 mb-3">
+        <label>APPROVAL</label>
+        <select class="form-select" formControlName="approval" required>
+          <option value="" disabled selected>Select APPROVAL</option>
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+      </div>
     </div>
-  </div>
-  <div class="col-sm-6 col-md-3">
-    <div class="form-group mt-3 mb-3">
-      <label>Time Duration (In Minutes)</label>
-      <input
-        type="number"
-        class="form-control"
-        placeholder="Enter Time Duration"
-        formControlName="time"
-        required
-      />
+    <div class="col-sm-6 col-md-3">
+      <div class="form-group mt-3 mb-3">
+        <label>Time Duration (In Minutes)</label>
+        <input
+          type="number"
+          class="form-control"
+          placeholder="Enter Time Duration"
+          formControlName="time"
+          required
+        />
+      </div>
     </div>
-  </div>
-  @if(department ==="ELECTRIC"){
-  <div class="col-sm-6 col-md-3">
-    <div class="form-group mt-3 mb-3">
-      <label>TOWER WAGON/MATERIAL TRAIN</label>
-      <input
-        type="text"
-        class="form-control"
-        placeholder="Enter TOWER WAGON/MATERIAL TRAIN"
-        formControlName="tower"
-        required
-      />
+    @if(department ==="ELECTRIC"){
+    <div class="col-sm-6 col-md-3">
+      <div class="form-group mt-3 mb-3">
+        <label>TOWER WAGON/MATERIAL TRAIN</label>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Enter TOWER WAGON/MATERIAL TRAIN"
+          formControlName="tower"
+          required
+        />
+      </div>
     </div>
-  </div>
-  } @if(department ==="ENGINEERING"){
-  <div class="col-sm-6 col-md-3">
-    <div class="form-group mt-3 mb-3">
-      <label>Machine</label>
-      <select class="form-select" formControlName="machine" required>
-        <option value="" selected disabled>Select Machine</option>
-        <option value="BCM">BCM</option>
-        <option value="BRM">BRM</option>
-        <option value="CSM">CSM</option>
-        <option value="DGS">DGS</option>
-        <option value="DTE">DTE</option>
-        <option value="DUO">DUO</option>
-        <option value="DUOMATIC">DUOMATIC</option>
-        <option value="LADDER">LADDER</option>
-        <option value="MPT">MPT</option>
-        <option value="PBR">PBR</option>
-        <option value="PQRS">PQRS</option>
-        <option value="SBCM">SBCM</option>
-        <option value="T">T</option>
-        <option value="TOWER WAGON">TOWER WAGON</option>
-        <option value="UNIMAT">UNIMAT</option>
-        <option value="UTV">UTV</option>
-        <option value="WIRING TRAIN">WIRING TRAIN</option>
-        <option value="MAST ERECTION TRAIN">MAST ERECTION TRAIN</option>
-        <option value="Others">Others</option>
-      </select>
+    } @if(department ==="ENGINEERING"){
+    <div class="col-sm-6 col-md-3">
+      <div class="form-group mt-3 mb-3">
+        <label>Machine</label>
+        <select class="form-select" formControlName="machine" required>
+          <option value="" selected disabled>Select Machine</option>
+          <option value="BCM">BCM</option>
+          <option value="BRM">BRM</option>
+          <option value="CSM">CSM</option>
+          <option value="DGS">DGS</option>
+          <option value="DTE">DTE</option>
+          <option value="DUO">DUO</option>
+          <option value="DUOMATIC">DUOMATIC</option>
+          <option value="LADDER">LADDER</option>
+          <option value="MPT">MPT</option>
+          <option value="PBR">PBR</option>
+          <option value="PQRS">PQRS</option>
+          <option value="SBCM">SBCM</option>
+          <option value="T">T</option>
+          <option value="TOWER WAGON">TOWER WAGON</option>
+          <option value="UNIMAT">UNIMAT</option>
+          <option value="UTV">UTV</option>
+          <option value="WIRING TRAIN">WIRING TRAIN</option>
+          <option value="MAST ERECTION TRAIN">MAST ERECTION TRAIN</option>
+          <option value="Others">Others</option>
+        </select>
+      </div>
     </div>
-  </div>
-  } @if(department ==="ENGINEERING"||department ==="S&T"){
-  <div class="col-sm-6 col-md-3">
-    <div class="form-group mt-3 mb-3">
-      <label>TPC STAFF </label>
-      <select class="form-select" formControlName="tpcStaff" required>
-        <option value="" disabled selected>Select TPC STAFF</option>
-        <option value="Yes">Yes</option>
-        <option value="No">No</option>
-      </select>
+    } @if(department ==="ENGINEERING"||department ==="S&T"){
+    <div class="col-sm-6 col-md-3">
+      <div class="form-group mt-3 mb-3">
+        <label>TPC STAFF </label>
+        <select class="form-select" formControlName="tpcStaff" required>
+          <option value="" disabled selected>Select TPC STAFF</option>
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+      </div>
     </div>
-  </div>
-  } @if(department ==="ENGINEERING"||department ==="ELECTRIC"){
-  <div class="col-sm-6 col-md-3">
-    <div class="form-group mt-3 mb-3">
-      <label>Line No.</label>
-      <input
-        type="text"
-        class="form-control"
-        placeholder="Enter Line Number"
-        formControlName="lineNo"
-        required
-      />
+    } @if(department ==="ENGINEERING"||department ==="ELECTRIC"){
+    <div class="col-sm-6 col-md-3">
+      <div class="form-group mt-3 mb-3">
+        <label>Line No.</label>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Enter Line Number"
+          formControlName="lineNo"
+          required
+        />
+      </div>
     </div>
-  </div>
 
-  <div class="col-sm-6 col-md-3">
-    <div class="form-group mt-3 mb-3">
-      <label>REMARKS IF ANY</label>
-      <input
-        type="text"
-        class="form-control"
-        placeholder="Enter REMARKS IF ANY"
-        formControlName="remarks"
-        required
-      />
+    <div class="col-sm-6 col-md-3">
+      <div class="form-group mt-3 mb-3">
+        <label>REMARKS IF ANY</label>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Enter REMARKS IF ANY"
+          formControlName="remarks"
+          required
+        />
+      </div>
     </div>
-  </div>
-  <div class="col-sm-6 col-md-3">
-    <div class="form-group mt-3 mb-3">
-      <label>S&T STAFF</label>
-      <select class="form-select" formControlName="s_tStaff" required>
-        <option value="" selected disabled>Select S&T STAFF</option>
-        <option value="Yes">Yes</option>
-        <option value="No">No</option>
-      </select>
+    <div class="col-sm-6 col-md-3">
+      <div class="form-group mt-3 mb-3">
+        <label>S&T STAFF</label>
+        <select class="form-select" formControlName="s_tStaff" required>
+          <option value="" selected disabled>Select S&T STAFF</option>
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+      </div>
     </div>
-  </div>
-  <div class="col-sm-6 col-md-3">
-    <div class="form-group mt-3 mb-3">
-      <input type="checkbox" formControlName="crewCheckbox" />
-      <label>Crew Required</label>
-      @if(machineForm.controls['crewCheckbox'].value){
-      <input
-        type="number"
-        class="form-control"
-        placeholder="Enter Number of Crew Required"
-        formControlName="crew"
-        required
-      />
-      }
+    <div class="col-sm-6 col-md-3">
+      <div class="form-group mt-3 mb-3">
+        <input type="checkbox" formControlName="crewCheckbox" />
+        <label>Crew Required</label>
+        @if(machineForm.controls['crewCheckbox'].value){
+        <input
+          type="number"
+          class="form-control"
+          placeholder="Enter Number of Crew Required"
+          formControlName="crew"
+          required
+        />
+        }
+      </div>
     </div>
-  </div>
-  <div class="col-sm-6 col-md-3">
-    <div class="form-group mt-3 mb-3">
-      <input type="checkbox" formControlName="locoCheckbox" />
-      <label>Loco Required</label>
-      @if(machineForm.controls['locoCheckbox'].value){
-      <input
-        type="number"
-        class="form-control"
-        placeholder="Enter Number of Loco Required"
-        formControlName="loco"
-        required
-      />
-      }
+    <div class="col-sm-6 col-md-3">
+      <div class="form-group mt-3 mb-3">
+        <input type="checkbox" formControlName="locoCheckbox" />
+        <label>Loco Required</label>
+        @if(machineForm.controls['locoCheckbox'].value){
+        <input
+          type="number"
+          class="form-control"
+          placeholder="Enter Number of Loco Required"
+          formControlName="loco"
+          required
+        />
+        }
+      </div>
     </div>
-  </div>
-  } @if(department ==="S&T"){
-  <div class="col-sm-6 col-md-3">
-    <div class="form-group mt-3 mb-3">
-      <label>POINT/BPAC/OTHERS</label>
-      <input
-        type="text"
-        class="form-control"
-        placeholder="Enter POINT/BPAC/OTHERS"
-        formControlName="point"
-        required
-      />
+    } @if(department ==="S&T"){
+    <div class="col-sm-6 col-md-3">
+      <div class="form-group mt-3 mb-3">
+        <label>POINT/BPAC/OTHERS</label>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Enter POINT/BPAC/OTHERS"
+          formControlName="point"
+          required
+        />
+      </div>
     </div>
+    }
   </div>
-  }
 </div>

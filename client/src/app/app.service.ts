@@ -30,4 +30,8 @@ export class AppService {
   setMachineRoll(data): Observable<any> {
     return this.httpClient.post(this.API_HOST + '/machineRolls', data);
   }
+
+  updateMachineRoll(id, data): Observable<any> {
+    return this.httpClient.patch(`${this.API_HOST}/machineRolls/${id}`, data);
+  }
 }

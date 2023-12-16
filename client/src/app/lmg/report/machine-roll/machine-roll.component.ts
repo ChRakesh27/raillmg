@@ -1,27 +1,35 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { AppService } from '../../../app.service';
-import { DateTime } from 'luxon';
 import { localStorageService } from '../../../shared/service/local-storage.service';
 import { HotTableModule, HotTableRegisterer } from '@handsontable/angular';
 import { registerAllModules } from 'handsontable/registry';
 import Handsontable from 'handsontable';
 import * as Papa from 'papaparse';
 import * as XLSX from 'xlsx';
+import { ToastService } from '../../../shared/toast/toast.service';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AvailableSlotsConfig } from '../../../shared/constants/available-slots';
+import { DateTime } from 'luxon';
+import { LmgFormComponent } from "../../../shared/lmg-form/lmg-form.component";
+import { stationList } from '../../../shared/constants/station-list';
 
 registerAllModules();
 @Component({
   selector: 'app-machine-roll',
   standalone: true,
-  imports: [CommonModule, HotTableModule],
   templateUrl: './machine-roll.component.html',
   styleUrl: './machine-roll.component.css',
+  imports: [CommonModule, HotTableModule, FormsModule, LmgFormComponent, ReactiveFormsModule]
 })
 export class MachineRollComponent implements OnInit {
   userData = {};
-  editData = {};
+  machineForm: FormGroup;
   dataSet = []
+  selectedRow = {}
+
   colHeaders = [
+    { data: "_id", title: "id" },
     {
       data: 'edit', title: 'Edit',
       renderer: (instance, TD, row, col, prop, value, cellProperties) => {
@@ -59,10 +67,9 @@ export class MachineRollComponent implements OnInit {
     { data: "s_tStaff", title: "S&T STAFF REQUIRED (YES/NO)" },
     { data: "tpcStaff", title: "TPC STAFF REQUIRED (YES/NO)" },
     { data: "point", title: "POINT/BPAC/OTHERS" },
-    { data: "tower", title: "TOWER WAGON/MATERIAL TRAIN" }
+    { data: "tower", title: "TOWER WAGON/MATERIAL TRAIN" },
+
   ];
-
-
 
   private hotRegisterer = new HotTableRegisterer();
   id = 'hotInstance';
@@ -70,9 +77,13 @@ export class MachineRollComponent implements OnInit {
     rowHeaders: true,
     afterOnCellMouseDown: (event, coords, TD) => {
       const target = event.target as HTMLElement
-      if (target.nodeName.toLowerCase() === 'button' && coords.col === 0) {
-        console.log('->>>>>>>>>>>>>', this.dataSet[coords.row]);
-        this.editData = this.dataSet[coords.row]
+      const hot = this.hotRegisterer.getInstance(this.id);
+      if (target.nodeName.toLowerCase() === 'button' && coords.col === 1) {
+        let _id = hot.getDataAtRow(coords.row)[0]
+        const data = this.dataSet.find((item) => item._id === _id)
+        const { date, avl_start, avl_end, ...rest } = data
+        data['availableSlot'] = `${date} ${avl_start} to ${avl_end} hrs (${DateTime.fromFormat(date, 'MM/dd/yyyy').toFormat('ccc').toUpperCase()})`
+        this.selectedRow = data
       }
     },
     colWidths: '150',
@@ -82,18 +93,29 @@ export class MachineRollComponent implements OnInit {
     manualColumnResize: true,
     filters: true,
     manualColumnMove: true,
+    editor: false,
     dropdownMenu: ['filter_by_value', 'filter_operators', 'filter_action_bar'],
+    hiddenColumns: {
+      columns: [0],
+      indicators: false
+    }
   };
 
-  constructor(private service: AppService, private ls: localStorageService) { }
+  constructor(
+    private service: AppService,
+    private ls: localStorageService,
+    private toastService: ToastService,
+    private fb: FormBuilder
+  ) { }
 
 
   ngOnInit() {
+    this.machineForm = this.fb.group({})
     this.userData = this.ls.getUser();
     this.service.getAllMachineRoll().subscribe((data) => {
       const hot = this.hotRegisterer.getInstance(this.id);
-      this.dataSet = data.map((item) => {
 
+      this.dataSet = data.map((item) => {
         return {
           edit: item.department === this.userData["department"] ? true : false,
           ...item
@@ -104,9 +126,11 @@ export class MachineRollComponent implements OnInit {
   }
 
 
+  onUpdate() {
 
-  onEdit(data) {
-    console.log("🚀 ~ data:", data)
+    this.service.updateMachineRoll(this.selectedRow['_id'], this.machineForm.value).subscribe((data) => {
+      this.toastService.showSuccess("successfully submitted")
+    })
 
   }
 
@@ -130,4 +154,9 @@ export class MachineRollComponent implements OnInit {
   }
 
   onPdfDownload() { }
+
+
+
+
+
 }

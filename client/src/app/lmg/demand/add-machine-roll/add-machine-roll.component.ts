@@ -5,29 +5,40 @@ import {
   Validators,
   ReactiveFormsModule,
   FormBuilder,
-  FormArray,
   FormControl,
 } from '@angular/forms';
 import { AppService } from '../../../app.service';
 import { DateTime } from 'luxon'
-import { AvailableSlotsConfig } from './available-slots';
 import { ToastService } from '../../../shared/toast/toast.service';
 import { localStorageService } from '../../../shared/service/local-storage.service';
+import { LmgFormComponent } from "../../../shared/lmg-form/lmg-form.component";
+import { stationList } from '../../../shared/constants/station-list';
 
 @Component({
   selector: 'app-add-machine-roll',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './add-machine-roll.component.html',
   styleUrl: './add-machine-roll.component.css',
+  imports: [CommonModule, ReactiveFormsModule, LmgFormComponent]
 })
 export class AddMachineRollComponent implements OnInit {
   form!: FormGroup;
   userData = {};
   availableSlots = {};
   value: any;
-  get machineFormArray(): FormArray {
-    return this.form.controls['machineFormArray'] as FormArray;
+  stationList = stationList
+
+  get machineFormGroup(): FormGroup {
+    return this.form.controls['machineFormGroup'] as FormGroup;
+  }
+
+  get machineFormGroupControls(): { [key: string]: FormGroup } {
+    const controls = (this.form.controls['machineFormGroup'] as FormGroup).controls
+    const map = {}
+    for (const ctrl in controls) {
+      map[ctrl] = controls[ctrl] as FormGroup
+    }
+    return map;
   }
 
   get department(): FormControl {
@@ -47,21 +58,24 @@ export class AddMachineRollComponent implements OnInit {
       department: this.fb.control(
         { value: "CONSTRUCTION", disabled: false },
         Validators.required
-
-
       ),
-      machineFormArray: this.fb.array([]),
+      machineFormGroup: this.fb.group({})
     });
   }
 
+  onAddNewForm() {
+    this.form.get('department')?.disable();
+    this.machineFormGroup.addControl('item1', this.fb.group({}))
+  }
+
+
   onSubmit() {
-    if (this.machineFormArray.value.length === 0 || !this.form.valid) {
+    if (Object.keys(this.machineFormGroup).length === 0 || !this.form.valid) {
       this.toastService.showWarning("Please fill all details")
       return
     }
 
-    let payload = []
-    payload = this.machineFormArray.value.map((item) => {
+    const payload = Object.values(this.machineFormGroup.value).map((item: any) => {
       let splitSlot = item.availableSlot.split(' ')
 
       if (!item.crewCheckbox || item.crew == null) {
@@ -83,8 +97,9 @@ export class AddMachineRollComponent implements OnInit {
     });
 
     this.service.setMachineRoll(payload).subscribe(() => {
-      for (let index = this.machineFormArray.length - 1; index >= 0; index--) {
-        this.machineFormArray.removeAt(index);
+      const controls = (this.form.controls['machineFormGroup'] as FormGroup).controls
+      for (const ctrl in controls) {
+        this.machineFormGroup.removeControl(ctrl)
       }
       this.form.get('department')?.enable();
       this.toastService.showSuccess("successfully submitted")
@@ -94,79 +109,13 @@ export class AddMachineRollComponent implements OnInit {
   timeFormate(date, time) {
     let dateTime = new Date(date + " " + time).toISOString()
     let dt = DateTime.fromISO(dateTime);
-    return dt.toLocaleString(DateTime.TIME_SIMPLE);
+    return dt.toLocaleString(DateTime.TIME_24_SIMPLE);
   }
 
-  onAddNewForm() {
-    this.form.get('department')?.disable();
-    const machineForm = this.fb.group({
-      board: [''],
-      section: [''],
-      stationTo: [''],
-      stationFrom: [''],
-      direction: [''],
-      lineNo: [null],
-      machine: [''],
-      series: [null],
-      typeOfWork: [null],
-      time: [null],
-      availableSlot: [''],
-      quantum: [null],
-      deputedSupervisior: [null],
-      resources: [null],
-      ni: [''],
-      yard: [null],
-      remarks: [null],
-      approval: [''],
-      s_tStaff: [''],
-      tpcStaff: [''],
-      point: [null],
-      tower: [null],
-      crew: [null],
-      crewCheckbox: [false],
-      loco: [null],
-      locoCheckbox: [false],
-    });
-
-    this.machineFormArray.push(machineForm);
-
-    const selectCtrl = machineForm.controls['section'] as FormControl
-    selectCtrl.valueChanges.subscribe((change) => {
-      this.prepareAvailableSlots(change, machineForm.controls['direction'].value)
-    })
-    const directionCtrl = machineForm.controls['direction'] as FormControl
-    directionCtrl.valueChanges.subscribe((change) => {
-      this.prepareAvailableSlots(machineForm.controls['section'].value, change)
-    })
-  }
-
-  onDelete(index: number) {
-    this.machineFormArray.removeAt(index);
-    if (this.machineFormArray.length === 0) {
+  onDelete(key: string) {
+    this.machineFormGroup.removeControl(key)
+    if (Object.keys(this.machineFormGroup).length === 0) {
       this.form.get('department')?.enable();
     }
   }
-
-  prepareAvailableSlots(section, direction) {
-    if (!section || !direction) {
-      return
-    }
-    if (this.availableSlots[section + '_' + direction]) {
-      return
-    }
-    const slots = AvailableSlotsConfig[section][direction.toLowerCase()]
-    if (!slots) return
-
-    let dt = DateTime.now()
-    const weekdays = []
-    for (let i = 0; i < 365; i++) {
-      if (slots[dt.weekday]) {
-        weekdays.push(dt.toFormat('MM/dd/yyyy') + slots[dt.weekday])
-      }
-      dt = dt.plus({ days: 1 });
-    }
-
-    this.availableSlots[section + '_' + direction] = weekdays
-  }
-
 }
