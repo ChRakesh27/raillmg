@@ -91,7 +91,11 @@ export class MachineRollComponent implements OnInit {
       if (target.nodeName.toLowerCase() === 'button' && coords.col === 1) {
         const { date, avl_start, avl_end, ...rest } = data
         data['availableSlot'] = `${date} ${avl_start} to ${avl_end} hrs (${DateTime.fromFormat(date, 'MM/dd/yyyy').toFormat('ccc').toUpperCase()})`
-        this.selectedRow = data
+        this.selectedRow = {
+          ...data,
+          crewCheckbox: data['crew'] === 0 ? false : true,
+          locoCheckbox: data['loco'] === 0 ? false : true
+        }
         this.usersInfo = data['info']
       }
       else if (target.nodeName.toLowerCase() === 'button' && coords.col === 2) {
@@ -128,7 +132,7 @@ export class MachineRollComponent implements OnInit {
       const hot = this.hotRegisterer.getInstance(this.id);
       this.dataSet = data.map((item) => {
         return {
-          edit: item.department === this.userData["department"] ? true : false,
+          edit: item.department === this.userData["department"] || this.userData["department"] === 'OPERATING' ? true : false,
           ...item
         };
       });
@@ -137,17 +141,31 @@ export class MachineRollComponent implements OnInit {
   }
 
   onUpdate() {
-    console.log("🚀 ~ this.machineForm.value:", this.machineForm.value)
+
     const dt = DateTime.now()
+    let changes = ''
+    let data = this.machineForm.value
+    for (let key in data) {
+      if (this.selectedRow[key] !== data[key]) {
+        changes += `${key} (${this.selectedRow[key]} to ${data[key]}), `
+      }
+    }
+
+
     this.usersInfo.editBy.push({
-      name: this.userData['username'], dateTime: dt.toLocaleString(DateTime.DATETIME_SHORT)
+      name: this.userData['username'],
+      dateTime: dt.toLocaleString(DateTime.DATETIME_SHORT),
+      changes
     })
+
+
     let payload = {
       info: {
         ...this.usersInfo
       },
       ...this.machineForm.value
     }
+    console.log("🚀 ~ payload:", payload)
 
     this.service.updateMachineRoll(this.selectedRow['_id'], payload).subscribe((data) => {
       const hot = this.hotRegisterer.getInstance(this.id);
@@ -163,9 +181,9 @@ export class MachineRollComponent implements OnInit {
         return item
       })
       hot.updateData(this.dataSet);
-      console.log("🚀 ~ this.dataSet:", this.dataSet)
       this.toastService.showSuccess("successfully submitted")
     })
+
   }
 
   onExcelDownload() {

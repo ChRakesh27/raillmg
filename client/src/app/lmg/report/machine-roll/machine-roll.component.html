@@ -79,37 +79,32 @@
           aria-label="Close"
         ></button>
       </div>
-      <div class="modal-body">
-        <div class="row justify-content-center align-items-center m-2">
-          <h2>Created By:</h2>
-          <div class="col">
-            Name:
-            <span class="fw-bold fs-1"> {{ usersInfo.createBy.name }} </span>
-          </div>
-          <div class="col">
-            Date:
-            <span class="fw-bold fs-5"> {{ usersInfo.createBy.dateTime }}</span>
-          </div>
+      <div class="modal-body text-center">
+        <div class="">
+          <h2>Created By: {{ usersInfo.createBy.name | uppercase }}</h2>
+          <span> Date: {{ usersInfo.createBy.dateTime }}</span>
         </div>
         <hr />
-        <div class="row">
+        <div>
           <h2>Edited By:</h2>
-          @for(editor of usersInfo.editBy; track $index ){
-          <div class="row justify-content-center align-items-center m-2">
-            <div class="col">
-              SNo:
-              <span class="fw-bold fs-6"> {{ $index }} </span>
-            </div>
-            <div class="col">
-              Name:
-              <span class="fw-bold fs-1"> {{ editor.name }} </span>
-            </div>
-            <div class="col">
-              Date:
-              <span class="fw-bold fs-5"> {{ editor.dateTime }}</span>
-            </div>
+          <div class="">
+            <table width="100%">
+              <tr>
+                <th>S.No</th>
+                <th>User Name</th>
+                <th>Changes</th>
+                <th>Date</th>
+              </tr>
+              @for(editor of usersInfo.editBy; track $index ){
+              <tr>
+                <th>{{ $index }}</th>
+                <th>{{ editor.name | uppercase }}</th>
+                <th>{{ editor.changes }}</th>
+                <th>{{ editor.dateTime }}</th>
+              </tr>
+              }
+            </table>
           </div>
-          }
         </div>
       </div>
       <div class="modal-footer">
