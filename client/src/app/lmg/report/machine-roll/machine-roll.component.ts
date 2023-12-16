@@ -114,7 +114,6 @@ export class MachineRollComponent implements OnInit {
     this.userData = this.ls.getUser();
     this.service.getAllMachineRoll().subscribe((data) => {
       const hot = this.hotRegisterer.getInstance(this.id);
-
       this.dataSet = data.map((item) => {
         return {
           edit: item.department === this.userData["department"] ? true : false,
@@ -127,11 +126,18 @@ export class MachineRollComponent implements OnInit {
 
 
   onUpdate() {
-
     this.service.updateMachineRoll(this.selectedRow['_id'], this.machineForm.value).subscribe((data) => {
+      const hot = this.hotRegisterer.getInstance(this.id);
+      this.dataSet = this.dataSet.map((item) => {
+        if (item._id === data._id) {
+          item = this.machineForm.value
+        }
+        return item
+      })
+      hot.updateData(this.dataSet);
+      console.log("🚀 ~ this.dataSet:", this.dataSet)
       this.toastService.showSuccess("successfully submitted")
     })
-
   }
 
   onExcelDownload() {
