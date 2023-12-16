@@ -146,8 +146,9 @@ export class MachineRollComponent implements OnInit {
     let changes = ''
     let data = this.machineForm.value
     for (let key in data) {
-      if (this.selectedRow[key] !== data[key] && this.selectedRow[key] && data[key]) {
-        changes += `${key} (${this.selectedRow[key]} to ${data[key]}), `
+      if (this.selectedRow[key] !== data[key] && data[key]) {
+        let SRK = this.selectedRow[key] === undefined || this.selectedRow[key] === null ? 'empty' : this.selectedRow[key]
+        changes += `${key} (${SRK} to ${data[key]}), `
       }
     }
 
@@ -165,14 +166,13 @@ export class MachineRollComponent implements OnInit {
       },
       ...this.machineForm.value
     }
-    console.log("🚀 ~ payload:", payload)
 
     this.service.updateMachineRoll(this.selectedRow['_id'], payload).subscribe((data) => {
       const hot = this.hotRegisterer.getInstance(this.id);
       this.dataSet = this.dataSet.map((item) => {
         if (item._id === data._id) {
           const data = this.machineForm.value
-          for (let ele in item) {
+          for (let ele in data) {
             if (data[ele] !== undefined) {
               item[ele] = data[ele]
             }
