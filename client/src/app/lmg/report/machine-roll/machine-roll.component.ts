@@ -146,7 +146,7 @@ export class MachineRollComponent implements OnInit {
     let changes = ''
     let data = this.machineForm.value
     for (let key in data) {
-      if (this.selectedRow[key] !== data[key]) {
+      if (this.selectedRow[key] !== data[key] && this.selectedRow[key] && data[key]) {
         changes += `${key} (${this.selectedRow[key]} to ${data[key]}), `
       }
     }
