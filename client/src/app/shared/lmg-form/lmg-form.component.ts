@@ -41,7 +41,6 @@ export class LmgFormComponent implements OnInit, OnChanges {
 
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log("🚀 ~ changes:", changes)
     const values = changes?.formValues?.currentValue
     if (values && Object.keys(values).length !== 0) {
       this.machineForm.patchValue(values)
@@ -77,7 +76,6 @@ export class LmgFormComponent implements OnInit, OnChanges {
     this.machineForm.addControl('crewCheckbox', new FormControl(this.formValues?.crewCheckbox || false))
     this.machineForm.addControl('loco', new FormControl(this.formValues?.loco || null))
     this.machineForm.addControl('locoCheckbox', new FormControl(this.formValues?.locoCheckbox || false))
-    console.log('->>>>>>>>>>>>', this.machineForm.value, this.department);
   }
 
 

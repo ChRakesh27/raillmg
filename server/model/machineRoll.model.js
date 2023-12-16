@@ -4,7 +4,6 @@ const Schema = mongoose.Schema
 
 const machineRollSchema = new Schema({
     _id: { type: mongoose.Types.ObjectId, auto: true },
-    user: { type: String },
     date: { type: String },
     department: { type: String },
     section: { type: String },
@@ -32,6 +31,7 @@ const machineRollSchema = new Schema({
     tpcStaff: { type: String },
     point: { type: String },
     tower: { type: String },
+    info: { type: Object }
 }, {
     versionKey: false
 })

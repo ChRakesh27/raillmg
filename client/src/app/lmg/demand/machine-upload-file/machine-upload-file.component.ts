@@ -94,11 +94,15 @@ export class MachineUploadFileComponent implements OnInit {
   }
 
   onSubmit() {
+    let dt = DateTime.now()
     const hot = this.hotRegisterer.getInstance(this.id);
     this.dataSet = this.jsonData.map((item) => {
       let ModData = {
         department: this.department,
-        user: this.userData['_id'],
+        info: {
+          createBy: { name: this.userData['username'], dateTime: dt.toLocaleString(DateTime.DATETIME_SHORT) },
+          editBy: []
+        },
       }
       for (let key of Object.keys(item)) {
         if (item[key] !== null) {

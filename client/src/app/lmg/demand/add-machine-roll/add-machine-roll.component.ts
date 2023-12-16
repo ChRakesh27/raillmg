@@ -84,13 +84,16 @@ export class AddMachineRollComponent implements OnInit {
       if (!item.locoCheckbox || item.loco == null) {
         item.loco = 0
       }
-
+      let dt = DateTime.now()
       return {
         ...item,
         avl_start: this.timeFormate(splitSlot[0], splitSlot[1]),
         avl_end: this.timeFormate(splitSlot[0], splitSlot[3]),
         date: splitSlot[0],
-        user: this.userData['_id'],
+        info: {
+          createBy: { name: this.userData['username'], dateTime: dt.toLocaleString(DateTime.DATETIME_SHORT) },
+          editBy: []
+        },
         department: this.department.value,
       };
 

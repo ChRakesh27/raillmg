@@ -58,3 +58,65 @@
     </div>
   </div>
 </div>
+
+<div
+  class="modal fade"
+  id="infoStaticBackdrop"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="staticBackdropLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Information</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="row justify-content-center align-items-center m-2">
+          <h2>Created By:</h2>
+          <div class="col">
+            Name:
+            <span class="fw-bold fs-1"> {{ usersInfo.createBy.name }} </span>
+          </div>
+          <div class="col">
+            Date:
+            <span class="fw-bold fs-5"> {{ usersInfo.createBy.dateTime }}</span>
+          </div>
+        </div>
+        <hr />
+        <div class="row">
+          <h2>Edited By:</h2>
+          @for(editor of usersInfo.editBy; track $index ){
+          <div class="row justify-content-center align-items-center m-2">
+            <div class="col">
+              SNo:
+              <span class="fw-bold fs-6"> {{ $index }} </span>
+            </div>
+            <div class="col">
+              Name:
+              <span class="fw-bold fs-1"> {{ editor.name }} </span>
+            </div>
+            <div class="col">
+              Date:
+              <span class="fw-bold fs-5"> {{ editor.dateTime }}</span>
+            </div>
+          </div>
+          }
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

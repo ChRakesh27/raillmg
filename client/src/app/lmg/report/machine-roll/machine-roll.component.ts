@@ -27,11 +27,13 @@ export class MachineRollComponent implements OnInit {
   machineForm: FormGroup;
   dataSet = []
   selectedRow = {}
-
+  usersInfo = {
+    createBy: { name: '', dateTime: "" }, editBy: []
+  }
   colHeaders = [
     { data: "_id", title: "id" },
     {
-      data: 'edit', title: 'Edit',
+      data: 'edit', title: 'EDIT',
       renderer: (instance, TD, row, col, prop, value, cellProperties) => {
         if (value) {
           TD.innerHTML = `<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Edit</button>`
@@ -39,6 +41,12 @@ export class MachineRollComponent implements OnInit {
           TD.innerHTML = ''
         }
         return TD;
+      }
+    },
+    {
+      data: 'info', title: 'INFO',
+      renderer: (instance, TD, row, col, prop, value, cellProperties) => {
+        TD.innerHTML = `<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#infoStaticBackdrop">Info</button>`
       }
     },
     { data: 'department', title: 'DEPARTMENT' },
@@ -78,12 +86,16 @@ export class MachineRollComponent implements OnInit {
     afterOnCellMouseDown: (event, coords, TD) => {
       const target = event.target as HTMLElement
       const hot = this.hotRegisterer.getInstance(this.id);
+      let _id = hot.getDataAtRow(coords.row)[0]
+      const data = this.dataSet.find((item) => item._id === _id)
       if (target.nodeName.toLowerCase() === 'button' && coords.col === 1) {
-        let _id = hot.getDataAtRow(coords.row)[0]
-        const data = this.dataSet.find((item) => item._id === _id)
         const { date, avl_start, avl_end, ...rest } = data
         data['availableSlot'] = `${date} ${avl_start} to ${avl_end} hrs (${DateTime.fromFormat(date, 'MM/dd/yyyy').toFormat('ccc').toUpperCase()})`
         this.selectedRow = data
+        this.usersInfo = data['info']
+      }
+      else if (target.nodeName.toLowerCase() === 'button' && coords.col === 2) {
+        this.usersInfo = data['info']
       }
     },
     colWidths: '150',
@@ -124,13 +136,29 @@ export class MachineRollComponent implements OnInit {
     });
   }
 
-
   onUpdate() {
-    this.service.updateMachineRoll(this.selectedRow['_id'], this.machineForm.value).subscribe((data) => {
+    console.log("🚀 ~ this.machineForm.value:", this.machineForm.value)
+    const dt = DateTime.now()
+    this.usersInfo.editBy.push({
+      name: this.userData['username'], dateTime: dt.toLocaleString(DateTime.DATETIME_SHORT)
+    })
+    let payload = {
+      info: {
+        ...this.usersInfo
+      },
+      ...this.machineForm.value
+    }
+
+    this.service.updateMachineRoll(this.selectedRow['_id'], payload).subscribe((data) => {
       const hot = this.hotRegisterer.getInstance(this.id);
       this.dataSet = this.dataSet.map((item) => {
         if (item._id === data._id) {
-          item = this.machineForm.value
+          const data = this.machineForm.value
+          for (let ele in item) {
+            if (data[ele] !== undefined) {
+              item[ele] = data[ele]
+            }
+          }
         }
         return item
       })
