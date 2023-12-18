@@ -148,7 +148,6 @@ export class AddMachineRollComponent implements OnInit {
       this.prepareAvailableSlots(machineForm.controls['section'].value, change)
     })
 
-    console.log('------------->', this.machineFormArray.controls);
 
   }
 
