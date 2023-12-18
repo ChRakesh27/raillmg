@@ -44,18 +44,26 @@ export class EditMachineRollComponent {
           let payload = {
             info: {
               ...this.usersInfo
-            },
-            prop: newValue
+            }
           }
-
+          payload[prop as string] = newValue
 
           this.service.updateMachineRoll(id, payload).subscribe(() => {
+            const column = this.hotRegisterer.getInstance(this.id).propToCol(prop as string)
+            const cell = this.hotRegisterer.getInstance(this.id).getCell(row, column as number);
+            cell.style.backgroundColor = 'lightgreen';
             this.toastService.showSuccess("successfully Updated")
           })
+
         }
       });
     },
-    ...hotSettings
+    ...hotSettings,
+    cells: (row, col) => {
+      return {
+        className: 1 > 0 ? 'highlighted-cell' : 'positive-value',
+      };
+    },
   };
 
   constructor(
