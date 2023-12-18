@@ -179,6 +179,35 @@
             </li>
           </ul>
         </li>
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle active"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Edit
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a
+                class="dropdown-item"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNavDropdown"
+                [routerLink]="['edit', 'machine-roll']"
+                >Machine Roll</a
+              >
+            </li>
+            <li>
+              <a
+                class="dropdown-item"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNavDropdown"
+                >Maintenance Roll</a
+              >
+            </li>
+          </ul>
+        </li>
       </ul>
       <div class="">
         <label
