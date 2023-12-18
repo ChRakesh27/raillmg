@@ -59,11 +59,7 @@ export class EditMachineRollComponent {
       });
     },
     ...hotSettings,
-    cells: (row, col) => {
-      return {
-        className: 1 > 0 ? 'highlighted-cell' : 'positive-value',
-      };
-    },
+
   };
 
   constructor(

@@ -19,6 +19,13 @@
       (change)="onFileUpload($event)"
     />
   </div>
+  <div class="m-5">
+    <button class="btn btn-primary ms-3" (click)="onSubmit()">Submit</button>
+    <button class="btn btn-outline-danger ms-3" (click)="onDelete()">
+      Delete
+    </button>
+  </div>
+
   <div class="">
     <h3>Preview</h3>
     <hot-table
@@ -27,15 +34,9 @@
       [hotId]="id"
       [settings]="hotSettings"
       licenseKey="non-commercial-and-evaluation"
+      [hidden]="!jsonData.length"
     >
     </hot-table>
-  </div>
-
-  <div class="m-5">
-    <button class="btn btn-primary ms-3" (click)="onSubmit()">Submit</button>
-    <button class="btn btn-outline-danger ms-3" (click)="onDelete()">
-      Delete
-    </button>
   </div>
   }
 </div>
