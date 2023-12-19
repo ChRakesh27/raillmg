@@ -85,13 +85,13 @@ export class EditComponent implements OnInit {
           }
         }
         payload[prop as string] = newValue
-        // this.service.updateMachineRoll(id, payload).subscribe(() => {
-        const column = this.hotRegisterer.getInstance(this.id).propToCol(prop as string)
-        const cell = this.hotRegisterer.getInstance(this.id).getCell(row, column as number);
-        cell.style.backgroundColor = 'lightgreen';
-        cell.className = 'updatedCell'
-        this.toastService.showSuccess("successfully Updated")
-        // })
+        this.service.updateMachineRoll(id, payload).subscribe(() => {
+          const column = this.hotRegisterer.getInstance(this.id).propToCol(prop as string)
+          const cell = this.hotRegisterer.getInstance(this.id).getCell(row, column as number);
+          cell.style.backgroundColor = 'lightgreen';
+          cell.className = 'updatedCell'
+          this.toastService.showSuccess("successfully Updated")
+        })
 
       });
     },
