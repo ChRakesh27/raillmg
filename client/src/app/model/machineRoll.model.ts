@@ -9,7 +9,7 @@ export interface IMachineRoll {
     machine: String,
     series: String,
     aboutWork: String,
-    time: String,
+    dmd_duration: String,
     availableSlot: IAvailableSlots,
     quantum: String,
     deputedSupervisor: String,

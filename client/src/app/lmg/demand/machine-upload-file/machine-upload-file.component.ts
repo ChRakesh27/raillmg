@@ -42,20 +42,21 @@ export class MachineUploadFileComponent implements OnInit {
   xlToMngKeys = {
     "SECTION": "section",
     "KM/LINE": "lineNo",
-    "Machine Type & No.": "machine",
-    "DISCONNECTION DEMAND HOURS": "time",
+    "MACHINE TYPE & NO.": "machine",
+    "DISCONNECTION DEMAND HOURS": "dmd_duration",
+    "BLOCK DEMAND HOURS": "dmd_duration",
     "QUANTUM": "quantum",
-    "DEPUTED SUPERVISIOR": "deputedSupervisior",
+    "DEPUTED SUPERVISOR": "deputedSupervisor",
     "RESOURCES": "resources",
     "CREW": "crew",
     "LOCO": "loco",
     "BOARD": "board",
     "TYPE OF WORK": "typeOfWork",
-    "Whether NI work/PNI work or Non-NI Work": "ni",
+    "WHETHER NI WORK/PNI WORK OR NON-NI WORK": "ni",
     "YARD": "yard",
     "REMARKS IF ANY": "remarks",
     "APPROVAL REQUIRED OR NOT": "approval",
-    "S&T STAFF REQUIRED (YES/NO": "s_tStaff",
+    "S&T STAFF REQUIRED (YES/NO)": "s_tStaff",
     "TPC STAFF REQUIRED (YES/NO)": "tpcStaff",
     "POINT/BPAC/OTHERS": "point",
     "TOWER WAGON/MATERIAL TRAIN": "tower",
@@ -82,8 +83,6 @@ export class MachineUploadFileComponent implements OnInit {
       const ws: XLSX.WorkSheet = wb.Sheets[wsname];
 
       this.jsonData = XLSX.utils.sheet_to_json(ws, { raw: false })
-
-
       this.colHeader = Object.keys(this.jsonData[0])
 
       hot.updateData(this.jsonData);
@@ -96,6 +95,7 @@ export class MachineUploadFileComponent implements OnInit {
   onSubmit() {
     let dt = DateTime.now()
     const hot = this.hotRegisterer.getInstance(this.id);
+
     this.dataSet = this.jsonData.map((item) => {
       let ModData = {
         department: this.department,
@@ -106,15 +106,16 @@ export class MachineUploadFileComponent implements OnInit {
       }
       for (let key of Object.keys(item)) {
         if (item[key] !== null) {
-          key = key.toUpperCase().trim()
-          if (key === 'AVAILABLE SLOT') {
+          let upperKey = key.toUpperCase().trim()
+          if (upperKey === 'AVAILABLE SLOT') {
             let splitSlot = item['AVAILABLE SLOT'].split(' ')
             ModData["date"] = splitSlot[0]
             ModData["avl_start"] = this.timeFormate(splitSlot[0], splitSlot[1])
             ModData["avl_end"] = this.timeFormate(splitSlot[0], splitSlot[3])
+            ModData["avl_duration"] = 180
           } else {
-            if (this.xlToMngKeys[key] !== undefined)
-              ModData[this.xlToMngKeys[key]] = item[key]
+            if (this.xlToMngKeys[upperKey] !== undefined)
+              ModData[this.xlToMngKeys[upperKey]] = item[key]
           }
         }
       }
@@ -122,6 +123,7 @@ export class MachineUploadFileComponent implements OnInit {
     })
 
     if (this.dataSet.length !== 0) {
+      console.log("🚀 ~ this.dataSet:", this.dataSet)
       this.service.setMachineRoll(this.dataSet).subscribe(() => {
         this.toastService.showSuccess("successfully submitted")
         this.onDelete()
@@ -142,6 +144,7 @@ export class MachineUploadFileComponent implements OnInit {
     this.department = ""
     const hot = this.hotRegisterer.getInstance(this.id);
     this.dataSet = []
+    this.jsonData = []
     hot.updateData(this.dataSet);
   }
 

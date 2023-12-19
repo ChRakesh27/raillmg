@@ -13,14 +13,15 @@ const machineRollSchema = new Schema({
     lineNo: { type: String },
     machine: { type: String },
     series: { type: String },
-    time: { type: Number },
+    dmd_duration: { type: Number },
+    avl_duration: { type: Number },
     avl_start: { type: String },
     avl_end: { type: String },
     quantum: { type: String },
-    deputedSupervisior: { type: String },
+    deputedSupervisor: { type: String },
     resources: { type: String },
-    crew: { type: Number },
-    loco: { type: Number },
+    crew: { type: Number, default: 0 },
+    loco: { type: Number, default: 0 },
     board: { type: String },
     typeOfWork: { type: String },
     ni: { type: String },
@@ -31,7 +32,11 @@ const machineRollSchema = new Schema({
     tpcStaff: { type: String },
     point: { type: String },
     tower: { type: String },
-    info: { type: Object }
+    info: { type: Object },
+    grant_status: { type: String, default: 'Pending' },
+    time_granted: { type: String },
+    status: { type: String },
+    Avl_status: { type: Boolean, default: true },
 }, {
     versionKey: false
 })

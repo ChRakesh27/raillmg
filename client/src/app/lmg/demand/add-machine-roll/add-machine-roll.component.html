@@ -8,7 +8,7 @@
     <div class="row align-items-center">
       <div class="col-auto me-auto">
         <div class="form-group mt-3 mb-3">
-          <label>Department</label>
+          <label>DEPARTMENT</label>
           <select class="form-select" formControlName="department">
             <option value="CONSTRUCTION">CONSTRUCTION</option>
             <option value="ENGINEERING">ENGINEERING</option>
@@ -63,31 +63,31 @@
                 <div class="row">
                   <div class="col-sm-6 col-md-3">
                     <div class="form-group mt-3 mb-3">
-                      <label>Board</label>
+                      <label>BOARD</label>
                       <select
                         class="form-select"
                         formControlName="board"
                         required
                       >
                         <option value="" selected disabled>Select Board</option>
-                        <option value="BD1">BD1</option>
-                        <option value="BD2">BD2</option>
-                        <option value="BD3">BD3</option>
-                        <option value="BD4">BD4</option>
-                        <option value="BD5">BD5</option>
+                        <option value="BG1">BG1</option>
+                        <option value="BG2">BG2</option>
+                        <option value="BG3">BG3</option>
+                        <option value="BG4">BG4</option>
+                        <option value="BG5">BG5</option>
                       </select>
                     </div>
                   </div>
                   <div class="col-sm-6 col-md-3">
                     <div class="form-group mt-3 mb-3">
-                      <label>Section</label>
+                      <label>SECTION</label>
                       <select
                         class="form-select"
                         formControlName="section"
                         required
                       >
                         <option value="" selected disabled>
-                          Select Section
+                          SELECT SECTION
                         </option>
                         @for(section of sectionList; track $index){
                         <option value="{{ section }}">{{ section }}</option>
@@ -97,14 +97,14 @@
                   </div>
                   <div class="col-sm-6 col-md-3">
                     <div class="form-group mt-3 mb-3">
-                      <label>Station From</label>
+                      <label>STATION FROM</label>
                       <select
                         class="form-select"
                         formControlName="stationFrom"
                         required
                       >
                         <option value="" selected disabled>
-                          Select Station
+                          SELECT STATION
                         </option>
                         @for(station of stations; track $index){
                         <option value="{{ station }}">{{ station }}</option>
@@ -114,14 +114,14 @@
                   </div>
                   <div class="col-sm-6 col-md-3">
                     <div class="form-group mt-3 mb-3">
-                      <label>Station To</label>
+                      <label>STATION TO</label>
                       <select
                         class="form-select"
                         formControlName="stationTo"
                         required
                       >
                         <option value="" selected disabled>
-                          Select Station
+                          SELECT STATION
                         </option>
                         @for(station of stations; track $index){
                         <option value="{{ station }}">{{ station }}</option>
@@ -131,14 +131,14 @@
                   </div>
                   <div class="col-sm-6 col-md-3">
                     <div class="form-group mt-3 mb-3">
-                      <label>Direction</label>
+                      <label>DIRECTION</label>
                       <select
                         class="form-select"
                         formControlName="direction"
                         required
                       >
                         <option value="" selected disabled>
-                          Select Direction
+                          SELECT DIRECTION
                         </option>
                         <option value="BOTH">BOTH</option>
                         <option value="UP">UP</option>
@@ -148,11 +148,11 @@
                   </div>
                   <div class="col-sm-6 col-md-3">
                     <div class="form-group mt-3 mb-3">
-                      <label>Series</label>
+                      <label>SERIES</label>
                       <input
                         type="text"
                         class="form-control"
-                        placeholder="Enter Series"
+                        placeholder="ENTER SERIES"
                         formControlName="series"
                         required
                       />
@@ -160,10 +160,10 @@
                   </div>
                   <div class="col-sm-6 col-md-3">
                     <div class="form-group mt-3 mb-3">
-                      <label>Whether NI work/PNI work or Non-NI Work</label>
+                      <label>WHETHER NI WORK/PNI WORK OR NON-NI WORK</label>
                       <select class="form-select" formControlName="ni" required>
                         <option value="" selected disabled>
-                          Select NI/Non-NI Work
+                          SELECT NI/NON-NI WORK
                         </option>
                         <option value="Yes">Yes</option>
                         <option value="No">no</option>
@@ -172,11 +172,11 @@
                   </div>
                   <div class="col-sm-6 col-md-3">
                     <div class="form-group mt-3 mb-3">
-                      <label>Yard</label>
+                      <label>YARD</label>
                       <input
                         type="text"
                         class="form-control"
-                        placeholder="Enter Yard"
+                        placeholder="ENTER YARD"
                         formControlName="yard"
                         required
                       />
@@ -184,11 +184,11 @@
                   </div>
                   <div class="col-sm-6 col-md-3">
                     <div class="form-group mt-3 mb-3">
-                      <label>Type of Work</label>
+                      <label>TYPE OF WORK</label>
                       <input
                         type="text"
                         class="form-control"
-                        placeholder="Enter Type of Work"
+                        placeholder="ENTER TYPE OF WORK"
                         formControlName="typeOfWork"
                         required
                       />
@@ -196,14 +196,14 @@
                   </div>
                   <div class="col-sm-6 col-md-3">
                     <div class="form-group mt-3 mb-3">
-                      <label>Available Slot</label>
+                      <label>AVAILABLE SLOT</label>
                       <select
                         class="form-select"
                         formControlName="availableSlot"
                         required
                       >
                         <option value="" selected disabled>
-                          Select Available Slot
+                          SELECT AVAILABLE SLOT
                         </option>
                         @for(date of availableSlots[
                         machineFormArray.controls[i].get("section").value+'_'+
@@ -216,11 +216,11 @@
                   </div>
                   <div class="col-sm-6 col-md-3">
                     <div class="form-group mt-3 mb-3">
-                      <label>Quantum</label>
+                      <label>QUANTUM</label>
                       <input
                         type="text"
                         class="form-control"
-                        placeholder="Enter Quantum"
+                        placeholder="ENTER QUANTUM"
                         formControlName="quantum"
                         required
                       />
@@ -228,23 +228,23 @@
                   </div>
                   <div class="col-sm-6 col-md-3">
                     <div class="form-group mt-3 mb-3">
-                      <label>Deputed Supervisor</label>
+                      <label>DEPUTED SUPERVISOR</label>
                       <input
                         type="text"
                         class="form-control"
-                        placeholder="Enter Deputed Supervisor"
-                        formControlName="deputedSupervisior"
+                        placeholder="ENTER DEPUTED SUPERVISOR"
+                        formControlName="deputedSupervisor"
                         required
                       />
                     </div>
                   </div>
                   <div class="col-sm-6 col-md-3">
                     <div class="form-group mt-3 mb-3">
-                      <label>Resources</label>
+                      <label>RESOURCES</label>
                       <input
                         type="text"
                         class="form-control"
-                        placeholder="Enter Resources"
+                        placeholder="ENTER RESOURCES"
                         formControlName="resources"
                         required
                       />
@@ -259,7 +259,7 @@
                         required
                       >
                         <option value="" disabled selected>
-                          Select APPROVAL
+                          SELECT APPROVAL
                         </option>
                         <option value="Yes">Yes</option>
                         <option value="No">No</option>
@@ -268,12 +268,12 @@
                   </div>
                   <div class="col-sm-6 col-md-3">
                     <div class="form-group mt-3 mb-3">
-                      <label>Time Duration (In Minutes)</label>
+                      <label>BLOCK DEMAND MINUTES</label>
                       <input
                         type="number"
                         class="form-control"
-                        placeholder="Enter Time Duration"
-                        formControlName="time"
+                        placeholder="ENTER BLOCK DEMAND MINUTES"
+                        formControlName="dmd_duration"
                         required
                       />
                     </div>
@@ -285,7 +285,7 @@
                       <input
                         type="text"
                         class="form-control"
-                        placeholder="Enter TOWER WAGON/MATERIAL TRAIN"
+                        placeholder="ENTER TOWER WAGON/MATERIAL TRAIN"
                         formControlName="tower"
                         required
                       />
@@ -294,36 +294,18 @@
                   } @if(department.value ==="ENGINEERING"){
                   <div class="col-sm-6 col-md-3">
                     <div class="form-group mt-3 mb-3">
-                      <label>Machine</label>
+                      <label>MACHINE</label>
                       <select
                         class="form-select"
                         formControlName="machine"
                         required
                       >
                         <option value="" selected disabled>
-                          Select Machine
+                          SELECT MACHINE
                         </option>
-                        <option value="BCM">BCM</option>
-                        <option value="BRM">BRM</option>
-                        <option value="CSM">CSM</option>
-                        <option value="DGS">DGS</option>
-                        <option value="DTE">DTE</option>
-                        <option value="DUO">DUO</option>
-                        <option value="DUOMATIC">DUOMATIC</option>
-                        <option value="LADDER">LADDER</option>
-                        <option value="MPT">MPT</option>
-                        <option value="PBR">PBR</option>
-                        <option value="PQRS">PQRS</option>
-                        <option value="SBCM">SBCM</option>
-                        <option value="T">T</option>
-                        <option value="TOWER WAGON">TOWER WAGON</option>
-                        <option value="UNIMAT">UNIMAT</option>
-                        <option value="UTV">UTV</option>
-                        <option value="WIRING TRAIN">WIRING TRAIN</option>
-                        <option value="MAST ERECTION TRAIN">
-                          MAST ERECTION TRAIN
-                        </option>
-                        <option value="Others">Others</option>
+                        @for(type of machineType; track $index){
+                        <option value="{{ type }}">{{ type }}</option>
+                        }
                       </select>
                     </div>
                   </div>
@@ -338,7 +320,7 @@
                         required
                       >
                         <option value="" disabled selected>
-                          Select TPC STAFF
+                          SELECT TPC STAFF
                         </option>
                         <option value="Yes">Yes</option>
                         <option value="No">No</option>
@@ -349,11 +331,11 @@
                   ==="ELECTRIC"){
                   <div class="col-sm-6 col-md-3">
                     <div class="form-group mt-3 mb-3">
-                      <label>Line No.</label>
+                      <label>LINE NO.</label>
                       <input
                         type="text"
                         class="form-control"
-                        placeholder="Enter Line Number"
+                        placeholder="ENTER LINE NUMBER"
                         formControlName="lineNo"
                         required
                       />
@@ -366,7 +348,7 @@
                       <input
                         type="text"
                         class="form-control"
-                        placeholder="Enter REMARKS IF ANY"
+                        placeholder="ENTER REMARKS IF ANY"
                         formControlName="remarks"
                         required
                       />
@@ -381,7 +363,7 @@
                         required
                       >
                         <option value="" selected disabled>
-                          Select S&T STAFF
+                          SELECT S&T STAFF
                         </option>
                         <option value="Yes">Yes</option>
                         <option value="No">No</option>
@@ -391,12 +373,12 @@
                   <div class="col-sm-6 col-md-3">
                     <div class="form-group mt-3 mb-3">
                       <input type="checkbox" formControlName="crewCheckbox" />
-                      <label>Crew Required</label>
+                      <label>CREW REQUIRED</label>
                       @if(machineFormArray.controls[i].get('crewCheckbox').value){
                       <input
                         type="number"
                         class="form-control"
-                        placeholder="Enter Number of Crew Required"
+                        placeholder="ENTER NUMBER OF CREW REQUIRED"
                         formControlName="crew"
                         required
                       />
@@ -406,12 +388,12 @@
                   <div class="col-sm-6 col-md-3">
                     <div class="form-group mt-3 mb-3">
                       <input type="checkbox" formControlName="locoCheckbox" />
-                      <label>Loco Required</label>
+                      <label>LOCO REQUIRED</label>
                       @if(machineFormArray.controls[i].get('locoCheckbox').value){
                       <input
                         type="number"
                         class="form-control"
-                        placeholder="Enter Number of Loco Required"
+                        placeholder="ENTER NUMBER OF LOCO REQUIRED"
                         formControlName="loco"
                         required
                       />
@@ -425,7 +407,7 @@
                       <input
                         type="text"
                         class="form-control"
-                        placeholder="Enter POINT/BPAC/OTHERS"
+                        placeholder="ENTER POINT/BPAC/OTHERS"
                         formControlName="point"
                         required
                       />
@@ -441,15 +423,3 @@
     </div>
   </form>
 </div>
-
-<!-- <div class="col-sm-6 col-md-3">
-  <div class="form-group mt-3 mb-3">
-    <label>DISCONNECTION DEMAND HOURS</label>
-    <input
-      type="text"
-      class="form-control"
-      placeholder="Enter DISCONNECTION DEMAND HOURS"
-      formControlName="lineNo"
-    />
-  </div>
-</div> -->

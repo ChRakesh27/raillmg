@@ -16,5 +16,12 @@ export const hotSettings: Handsontable.GridSettings = {
     hiddenColumns: {
         columns: [0],
         indicators: false
+    },
+    cells: function (row, col) {
+        return {
+            className: row % 2 == 0 ? 'evenCell' : 'oddCell',
+
+        };
     }
+
 }

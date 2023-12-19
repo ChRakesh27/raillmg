@@ -83,6 +83,8 @@ export class AddMachineRollComponent implements OnInit {
         avl_end: this.timeFormate(splitSlot[0], splitSlot[3]),
         date: splitSlot[0],
         department: this.department.value,
+        //-------------------------
+        avl_duration: 180,
         info: {
           createBy: { name: this.userData['username'], dateTime: dt.toLocaleString(DateTime.DATETIME_SHORT) },
           editBy: []
@@ -118,10 +120,10 @@ export class AddMachineRollComponent implements OnInit {
       machine: [''],
       series: [null],
       typeOfWork: [null],
-      time: [null],
+      dmd_duration: [null],
       availableSlot: [''],
       quantum: [null],
-      deputedSupervisior: [null],
+      deputedSupervisor: [null],
       resources: [null],
       ni: [''],
       yard: [null],
