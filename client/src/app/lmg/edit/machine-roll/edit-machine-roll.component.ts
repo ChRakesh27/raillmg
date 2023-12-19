@@ -28,34 +28,36 @@ export class EditMachineRollComponent {
       changes?.forEach(([row, prop, oldValue, newValue]) => {
         const hot = this.hotRegisterer.getInstance(this.id);
         let id = hot.getDataAtRow(row)[0]
-        if (oldValue != newValue) {
-          const data = this.dataSet.find((item) => item._id === id)
-          this.usersInfo = data['info']
-
-          const dt = DateTime.now()
-
-          this.usersInfo.editBy.push({
-            name: this.userData['username'],
-            dateTime: dt.toLocaleString(DateTime.DATETIME_SHORT),
-            changes: `${prop} -> ${oldValue} to ${newValue} `
-          })
-
-
-          let payload = {
-            info: {
-              ...this.usersInfo
-            }
-          }
-          payload[prop as string] = newValue
-
-          this.service.updateMachineRoll(id, payload).subscribe(() => {
-            const column = this.hotRegisterer.getInstance(this.id).propToCol(prop as string)
-            const cell = this.hotRegisterer.getInstance(this.id).getCell(row, column as number);
-            cell.style.backgroundColor = 'lightgreen';
-            this.toastService.showSuccess("successfully Updated")
-          })
-
+        if (oldValue == newValue || (newValue == '' && oldValue == undefined)) {
+          return
         }
+        const data = this.dataSet.find((item) => item._id === id)
+        this.usersInfo = data['info']
+
+        const dt = DateTime.now()
+
+        this.usersInfo.editBy.push({
+          name: this.userData['username'],
+          dateTime: dt.toLocaleString(DateTime.DATETIME_SHORT),
+          changes: `${prop} -> ${oldValue} to ${newValue} `
+        })
+
+
+        let payload = {
+          info: {
+            ...this.usersInfo
+          }
+        }
+        payload[prop as string] = newValue
+
+        this.service.updateMachineRoll(id, payload).subscribe(() => {
+          const column = this.hotRegisterer.getInstance(this.id).propToCol(prop as string)
+          const cell = this.hotRegisterer.getInstance(this.id).getCell(row, column as number);
+          cell.style.backgroundColor = 'lightgreen';
+          cell.className = 'updatedCell'
+          this.toastService.showSuccess("successfully Updated")
+        })
+
       });
     },
     ...hotSettings,

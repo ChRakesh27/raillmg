@@ -92,6 +92,36 @@
         </li>
         <li class="nav-item dropdown">
           <a
+            class="nav-link dropdown-toggle active"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Verify Demand
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a
+                class="dropdown-item"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNavDropdown"
+                [routerLink]="['verify-demand', 'rolling-block']"
+                >Rolling</a
+              >
+            </li>
+            <li>
+              <a
+                class="dropdown-item"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNavDropdown"
+                [routerLink]="['verify-demand', 'non-rolling-block']"
+                >Non-Rolling</a
+              >
+            </li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a
             class="nav-link dropdown-toggle"
             role="button"
             data-bs-toggle="dropdown"

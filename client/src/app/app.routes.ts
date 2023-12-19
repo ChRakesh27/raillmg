@@ -12,6 +12,8 @@ import { MaintenanceRollComponent } from './lmg/demand/maintenance-roll/maintena
 import { MaintenanceNonRollComponent } from './lmg/demand/maintenance-non-roll/maintenance-non-roll.component';
 import { MachineUploadFileComponent } from './lmg/demand/machine-upload-file/machine-upload-file.component';
 import { EditMachineRollComponent } from './lmg/edit/machine-roll/edit-machine-roll.component';
+import { RollingBlockComponent } from './lmg/verify-demand/rolling-block/rolling-block.component';
+import { NonRollingBlockComponent } from './lmg/verify-demand/non-rolling-block/non-rolling-block.component';
 
 export const routes: Routes = [
     {
@@ -47,6 +49,19 @@ export const routes: Routes = [
                         component: MachineUploadFileComponent
                     },
 
+                ]
+            },
+            {
+                path: "verify-demand",
+                children: [
+                    {
+                        path: "rolling-block",
+                        component: RollingBlockComponent
+                    },
+                    {
+                        path: "non-rolling-block",
+                        component: NonRollingBlockComponent
+                    }
                 ]
             },
             {

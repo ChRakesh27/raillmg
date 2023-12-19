@@ -24,4 +24,5 @@ export const hotSettings: Handsontable.GridSettings = {
         };
     }
 
+
 }
