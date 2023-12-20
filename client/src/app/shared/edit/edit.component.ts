@@ -41,28 +41,23 @@ export class EditComponent implements OnInit {
 
   hotSettings: Handsontable.GridSettings = {
     ...hotSettings,
-    cells: (row, col) => {
+    cells: (row, col, prop) => {
+      let cp = { className: row % 2 == 0 ? 'evenCell' : 'oddCell' };
       if (this.cells === false) {
-        return { className: row % 2 == 0 ? 'evenCell' : 'oddCell' }
+        return cp
       }
-      let cp = {};
       if (this.dataSet.length === 0) {
         return
       }
-      if (col === 3) {
-        return { readOnly: true, className: row % 2 == 0 ? 'evenCell' : 'oddCell' }
+      if (prop === 'grant_status' && this.userData.department === 'OPERATING') {
+        cp['readOnly'] = false
+      } else if (prop === 'Avl_status' && this.userData.department === this.dataSet[row]?.department) {
+        cp['readOnly'] = false
       }
-
-      if (col === 1) {
-        cp['readOnly'] = this.userData.department !== 'OPERATING'
-      } else {
-        if (this.userData.department === this.dataSet[row]?.department) {
-          cp['readOnly'] = false
-        } else {
-          cp['readOnly'] = true
-        }
+      else {
+        cp['readOnly'] = true
       }
-      return { cp, className: row % 2 == 0 ? 'evenCell' : 'oddCell' }
+      return cp
     },
     afterChange: (changes) => {
       changes?.forEach(([row, prop, oldValue, newValue]) => {
