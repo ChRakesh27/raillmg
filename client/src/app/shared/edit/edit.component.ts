@@ -116,7 +116,7 @@ export class EditComponent implements OnInit {
       dt = dt.plus({ days: 1 });
       let nextDay = dt.toFormat('MM/dd/yyyy')
       data = data.filter(item => {
-        return item.date === curDay || item.data === nextDay
+        return item.date === curDay || item.date === nextDay
       })
 
       // if (this.userData.department !== 'OPERATING') {
