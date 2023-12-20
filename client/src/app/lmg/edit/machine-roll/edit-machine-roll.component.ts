@@ -31,6 +31,15 @@ export class EditMachineRollComponent {
         if (oldValue == newValue || (newValue == '' && oldValue == undefined)) {
           return
         }
+        if (prop === 'date') {
+          const parsedDate = DateTime.fromFormat(newValue, 'MM/dd/yyyy');
+
+          if (!parsedDate.isValid) {
+            this.toastService.showDanger("Date should be MM/DD/YYYY format")
+            return
+          }
+        }
+
         const data = this.dataSet.find((item) => item._id === id)
         this.usersInfo = data['info']
 
@@ -61,7 +70,6 @@ export class EditMachineRollComponent {
       });
     },
     ...hotSettings,
-
   };
 
   constructor(
