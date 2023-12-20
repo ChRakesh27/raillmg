@@ -43,14 +43,14 @@ export class EditComponent implements OnInit {
     ...hotSettings,
     cells: (row, col) => {
       if (this.cells === false) {
-        return
+        return { className: row % 2 == 0 ? 'evenCell' : 'oddCell' }
       }
       let cp = {};
       if (this.dataSet.length === 0) {
         return
       }
       if (col === 3) {
-        return { readOnly: true }
+        return { readOnly: true, className: row % 2 == 0 ? 'evenCell' : 'oddCell' }
       }
 
       if (col === 1) {
@@ -62,7 +62,7 @@ export class EditComponent implements OnInit {
           cp['readOnly'] = true
         }
       }
-      return cp
+      return { cp, className: row % 2 == 0 ? 'evenCell' : 'oddCell' }
     },
     afterChange: (changes) => {
       changes?.forEach(([row, prop, oldValue, newValue]) => {
@@ -110,6 +110,15 @@ export class EditComponent implements OnInit {
     this.userData = this.ls.getUser()
     this.service.getAllMachineRoll().subscribe((data) => {
       const hot = this.hotRegisterer.getInstance(this.id);
+
+      let dt = DateTime.now()
+      let curDay = dt.toFormat('MM/dd/yyyy')
+      dt = dt.plus({ days: 1 });
+      let nextDay = dt.toFormat('MM/dd/yyyy')
+      data = data.filter(item => {
+        return item.date === curDay || item.data === nextDay
+      })
+
       // if (this.userData.department !== 'OPERATING') {
       //   data = data.filter(item => {
       //     return item.department === this.userData.department

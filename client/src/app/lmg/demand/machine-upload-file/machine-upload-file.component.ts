@@ -109,10 +109,15 @@ export class MachineUploadFileComponent implements OnInit {
           let upperKey = key.toUpperCase().trim()
           if (upperKey === 'AVAILABLE SLOT') {
             let splitSlot = item['AVAILABLE SLOT'].split(' ')
+
+            const startTime = DateTime.fromFormat(splitSlot[1], 'HH:mm');
+            const endTime = DateTime.fromFormat(splitSlot[3], 'HH:mm');
+            const timeDifferenceInMinutes = endTime.diff(startTime, 'minutes').minutes;
+
             ModData["date"] = splitSlot[0]
             ModData["avl_start"] = this.timeFormate(splitSlot[0], splitSlot[1])
             ModData["avl_end"] = this.timeFormate(splitSlot[0], splitSlot[3])
-            ModData["avl_duration"] = 180
+            ModData["avl_duration"] = timeDifferenceInMinutes
           } else {
             if (this.xlToMngKeys[upperKey] !== undefined)
               ModData[this.xlToMngKeys[upperKey]] = item[key]
@@ -123,7 +128,6 @@ export class MachineUploadFileComponent implements OnInit {
     })
 
     if (this.dataSet.length !== 0) {
-      console.log("🚀 ~ this.dataSet:", this.dataSet)
       this.service.setMachineRoll(this.dataSet).subscribe(() => {
         this.toastService.showSuccess("successfully submitted")
         this.onDelete()

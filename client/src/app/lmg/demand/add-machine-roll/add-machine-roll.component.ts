@@ -50,6 +50,11 @@ export class AddMachineRollComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+
+
+
+
+
     this.userData = this.ls.getUser();
     this.form = this.fb.group({
       department: this.fb.control(
@@ -77,14 +82,16 @@ export class AddMachineRollComponent implements OnInit {
         item.loco = 0
       }
       const dt = DateTime.now()
+      const startTime = DateTime.fromFormat(splitSlot[1], 'HH:mm');
+      const endTime = DateTime.fromFormat(splitSlot[3], 'HH:mm');
+      const timeDifferenceInMinutes = endTime.diff(startTime, 'minutes').minutes;
       return {
         ...item,
         avl_start: this.timeFormate(splitSlot[0], splitSlot[1]),
         avl_end: this.timeFormate(splitSlot[0], splitSlot[3]),
         date: splitSlot[0],
         department: this.department.value,
-        //-------------------------
-        avl_duration: 180,
+        avl_duration: timeDifferenceInMinutes,
         info: {
           createBy: { name: this.userData['username'], dateTime: dt.toLocaleString(DateTime.DATETIME_SHORT) },
           editBy: []
