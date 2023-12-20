@@ -80,16 +80,18 @@ export class EditMachineRollComponent {
 
   ngOnInit() {
     this.userData = this.ls.getUser();
-    this.service.getAllMachineRoll().subscribe((data) => {
-      const hot = this.hotRegisterer.getInstance(this.id);
-      if (this.userData.department !== 'OPERATING') {
-        data = data.filter(item => {
-          return item.department === this.userData.department
-        })
-      }
-      this.dataSet = data
-      hot.updateData(data);
-    });
+    Promise.resolve().then(() => {
+      this.service.getAllMachineRoll().subscribe((data) => {
+        const hot = this.hotRegisterer.getInstance(this.id);
+        if (this.userData.department !== 'OPERATING') {
+          data = data.filter(item => {
+            return item.department === this.userData.department
+          })
+        }
+        this.dataSet = data
+        hot.updateData(data);
+      });
+    })
   }
 
 }
