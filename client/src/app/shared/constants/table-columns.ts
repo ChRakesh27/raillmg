@@ -4,8 +4,10 @@ import { stationList } from "./station-list";
 
 export const columns = [
     { data: "_id", title: "id" },
-    { data: 'date', title: 'DATE' },
-    { data: 'department', title: 'DEPARTMENT' },
+    {
+        data: 'date', title: 'DATE', type: 'date', dateFormat: 'MM/DD/YYYY', correctFormat: true,
+    },
+    { data: 'department', title: 'DEPARTMENT', readonly: true, editor: false, },
     { data: "board", title: "BOARD", type: 'select', selectOptions: ['BG1', 'BG2', 'BG3', 'BG4', 'BG5'] },
     { data: "section", title: "SECTION", type: 'select', selectOptions: sectionList },
     { data: 'avl_start', title: ' SLOT START' },
@@ -33,3 +35,13 @@ export const columns = [
     { data: "point", title: "POINT/BPAC/OTHERS" },
     { data: "tower", title: "TOWER WAGON/MATERIAL TRAIN" },
 ];
+
+// datePickerConfig: {
+//     // First day of the week (0: Sunday, 1: Monday, etc)
+//     firstDay: 0,
+//         showWeekNumber: true,
+//             disableDayFn(date) {
+//         // Disable Sunday and Saturday
+//         return date.getDay() === 0 || date.getDay() === 6;
+//     }
+// }

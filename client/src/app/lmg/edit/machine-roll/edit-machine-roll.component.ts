@@ -53,7 +53,7 @@ export class EditMachineRollComponent {
         this.service.updateMachineRoll(id, payload).subscribe(() => {
           const column = this.hotRegisterer.getInstance(this.id).propToCol(prop as string)
           const cell = this.hotRegisterer.getInstance(this.id).getCell(row, column as number);
-          cell.style.backgroundColor = 'lightgreen';
+          cell.style.backgroundColor = 'lightblue';
           cell.className = 'updatedCell'
           this.toastService.showSuccess("successfully Updated")
         })
