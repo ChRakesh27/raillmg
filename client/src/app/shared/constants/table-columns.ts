@@ -34,6 +34,7 @@ export const columns = [
     { data: "tpcStaff", title: "TPC STAFF" },
     { data: "point", title: "POINT/BPAC/OTHERS" },
     { data: "tower", title: "TOWER WAGON/MATERIAL TRAIN" },
+    { data: "edit", title: "INFORMATION" },
 ];
 
 // datePickerConfig: {

@@ -184,6 +184,23 @@
                   </div>
                   <div class="col-sm-6 col-md-3">
                     <div class="form-group mt-3 mb-3">
+                      <label>MACHINE TYPE</label>
+                      <select
+                        class="form-select"
+                        formControlName="machine"
+                        required
+                      >
+                        <option value="" selected disabled>
+                          SELECT MACHINE
+                        </option>
+                        @for(type of machineType; track $index){
+                        <option value="{{ type }}">{{ type }}</option>
+                        }
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-sm-6 col-md-3">
+                    <div class="form-group mt-3 mb-3">
                       <label>TYPE OF WORK</label>
                       <input
                         type="text"
@@ -289,24 +306,6 @@
                         formControlName="tower"
                         required
                       />
-                    </div>
-                  </div>
-                  } @if(department.value ==="ENGINEERING"){
-                  <div class="col-sm-6 col-md-3">
-                    <div class="form-group mt-3 mb-3">
-                      <label>MACHINE</label>
-                      <select
-                        class="form-select"
-                        formControlName="machine"
-                        required
-                      >
-                        <option value="" selected disabled>
-                          SELECT MACHINE
-                        </option>
-                        @for(type of machineType; track $index){
-                        <option value="{{ type }}">{{ type }}</option>
-                        }
-                      </select>
                     </div>
                   </div>
                   } @if(department.value ==="ENGINEERING"||department.value

@@ -3,15 +3,18 @@ import { columns } from "./table-columns";
 
 export const hotSettings: Handsontable.GridSettings = {
     rowHeaders: true,
-    colWidths: '150',
     columns: columns,
     columnHeaderHeight: 50,
-    rowHeights: 50,
-    height: 'auto',
     multiColumnSorting: true,
     manualColumnResize: true,
     filters: true,
     manualColumnMove: true,
+    rowHeights: 23,
+    colWidths: 100,
+    width: '100%',
+    height: '70vh',
+    viewportColumnRenderingOffset: 20,
+    viewportRowRenderingOffset: "auto",
     dropdownMenu: ['filter_by_value', 'filter_operators', 'filter_action_bar'],
     hiddenColumns: {
         columns: [0],

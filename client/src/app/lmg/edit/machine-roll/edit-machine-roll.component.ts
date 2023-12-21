@@ -83,11 +83,17 @@ export class EditMachineRollComponent {
     Promise.resolve().then(() => {
       this.service.getAllMachineRoll().subscribe((data) => {
         const hot = this.hotRegisterer.getInstance(this.id);
-        if (this.userData.department !== 'OPERATING') {
-          data = data.filter(item => {
-            return item.department === this.userData.department
-          })
-        }
+        data = data.map(item => {
+          let editString = ''
+          for (let ele of item.info.editBy) {
+            editString += `${ele.changes},Slot time changed: ${ele.dateTime} User Name: ${ele.name}\n\n`
+          }
+          item['edit'] = editString
+          if (this.userData.department === 'OPERATING' || item.department === this.userData.department) {
+            return item
+          }
+        })
+
         this.dataSet = data
         hot.updateData(data);
       });
