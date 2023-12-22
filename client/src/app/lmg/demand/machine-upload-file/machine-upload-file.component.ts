@@ -8,22 +8,24 @@ import { AppService } from '../../../app.service';
 import { localStorageService } from '../../../shared/service/local-storage.service';
 import { ToastService } from '../../../shared/toast/toast.service';
 import { DateTime } from 'luxon';
+import { IMachineRoll } from '../../../shared/model/machineRoll.model';
+import { IUser } from '../../../shared/model/user.model';
 
 @Component({
   selector: 'app-machine-upload-file',
   standalone: true,
   imports: [HotTableModule, FormsModule],
   templateUrl: './machine-upload-file.component.html',
-  styleUrl: './machine-upload-file.component.css'
+  styleUrl: './machine-upload-file.component.css',
 })
 export class MachineUploadFileComponent implements OnInit {
-  department = ""
-  dataSet = []
-  jsonData = []
-  userData = {}
+  department = '';
+  dataSet = [];
+  jsonData = [];
+  userData: IUser;
   private hotRegisterer = new HotTableRegisterer();
   id = 'hotInstancePre';
-  colHeader = []
+  colHeader = [];
   hotSettings: Handsontable.GridSettings = {
     allowRemoveColumn: true,
     allowInsertColumn: false,
@@ -36,120 +38,127 @@ export class MachineUploadFileComponent implements OnInit {
     filters: true,
     manualColumnMove: true,
     rowHeaders: true,
-    dropdownMenu: ['remove_col', 'remove_row', 'clear_column', 'undo', 'redo', 'filter_by_value', 'filter_operators', 'filter_action_bar'],
+    dropdownMenu: [
+      'remove_col',
+      'remove_row',
+      'clear_column',
+      'undo',
+      'redo',
+      'filter_by_value',
+      'filter_operators',
+      'filter_action_bar',
+    ],
   };
 
   xlToMngKeys = {
-    "SECTION": "section",
-    "KM/LINE": "lineNo",
-    "MACHINE TYPE & NO.": "machine",
-    "DISCONNECTION DEMAND HOURS": "dmd_duration",
-    "BLOCK DEMAND HOURS": "dmd_duration",
-    "QUANTUM": "quantum",
-    "DEPUTED SUPERVISOR": "deputedSupervisor",
-    "RESOURCES": "resources",
-    "CREW": "crew",
-    "LOCO": "loco",
-    "BOARD": "board",
-    "TYPE OF WORK": "typeOfWork",
-    "WHETHER NI WORK/PNI WORK OR NON-NI WORK": "ni",
-    "YARD": "yard",
-    "REMARKS IF ANY": "remarks",
-    "APPROVAL REQUIRED OR NOT": "approval",
-    "S&T STAFF REQUIRED (YES/NO)": "s_tStaff",
-    "TPC STAFF REQUIRED (YES/NO)": "tpcStaff",
-    "POINT/BPAC/OTHERS": "point",
-    "TOWER WAGON/MATERIAL TRAIN": "tower",
-  }
+    SECTION: 'section',
+    'KM/LINE': 'lineNo',
+    'MACHINE TYPE & NO.': 'machine',
+    'DISCONNECTION DEMAND HOURS': 'dmd_duration',
+    'BLOCK DEMAND HOURS': 'dmd_duration',
+    QUANTUM: 'quantum',
+    'DEPUTED SUPERVISOR': 'deputedSupervisor',
+    RESOURCES: 'resources',
+    CREW: 'crew',
+    LOCO: 'loco',
+    BOARD: 'board',
+    'TYPE OF WORK': 'typeOfWork',
+    'WHETHER NI WORK/PNI WORK OR NON-NI WORK': 'ni',
+    YARD: 'yard',
+    'REMARKS IF ANY': 'remarks',
+    'APPROVAL REQUIRED OR NOT': 'approval',
+    'S&T STAFF REQUIRED (YES/NO)': 's_tStaff',
+    'TPC STAFF REQUIRED (YES/NO)': 'tpcStaff',
+    'POINT/BPAC/OTHERS': 'point',
+    'TOWER WAGON/MATERIAL TRAIN': 'tower',
+  };
 
-  constructor(private service: AppService,
+  constructor(
+    private service: AppService,
     private toastService: ToastService,
-    private ls: localStorageService) { }
+    private ls: localStorageService
+  ) { }
 
   ngOnInit(): void {
     this.userData = this.ls.getUser();
-
   }
 
   onFileUpload(e) {
     let wb = null;
-    const reader = new FileReader()
-    const file = e.target.files[0]
+    const reader = new FileReader();
+    const file = e.target.files[0];
     reader.onload = (event) => {
       const hot = this.hotRegisterer.getInstance(this.id);
-      const data = reader.result
+      const data = reader.result;
       wb = XLSX.read(data, { type: 'binary', raw: false });
       const wsname: string = wb.SheetNames[0];
       const ws: XLSX.WorkSheet = wb.Sheets[wsname];
 
-      this.jsonData = XLSX.utils.sheet_to_json(ws, { raw: false })
-      this.colHeader = Object.keys(this.jsonData[0])
+      this.jsonData = XLSX.utils.sheet_to_json(ws, { raw: false });
+      this.colHeader = Object.keys(this.jsonData[0]);
 
       hot.updateData(this.jsonData);
-    }
+    };
 
     reader.readAsBinaryString(file);
-
   }
 
   onSubmit() {
-    let dt = DateTime.now()
-    const hot = this.hotRegisterer.getInstance(this.id);
-
     this.dataSet = this.jsonData.map((item) => {
-      let ModData = {
-        department: this.department,
-        info: {
-          createBy: { name: this.userData['username'], dateTime: dt.toLocaleString(DateTime.DATETIME_SHORT) },
-          editBy: []
-        },
-      }
+      let modData = {} as IMachineRoll;
+      modData.department = this.department;
+      modData.createdAt = new Date().toISOString();
+      modData.createdBy = this.userData.username;
+      modData.updatedAt = new Date().toISOString();
+      modData.updatedBy = this.userData.username;
+      modData.logs = [];
       for (let key of Object.keys(item)) {
-        if (item[key] !== null) {
-          let upperKey = key.toUpperCase().trim()
-          if (upperKey === 'AVAILABLE SLOT') {
-            let splitSlot = item['AVAILABLE SLOT'].split(' ')
+        if (!item[key]) continue;
 
-            const startTime = DateTime.fromFormat(splitSlot[1], 'HH:mm');
-            const endTime = DateTime.fromFormat(splitSlot[3], 'HH:mm');
-            const timeDifferenceInMinutes = endTime.diff(startTime, 'minutes').minutes;
+        let upperKey = key.trim().toUpperCase();
+        if (upperKey === 'AVAILABLE SLOT') {
+          let splitSlot = item['AVAILABLE SLOT'].split(' ');
 
-            ModData["date"] = splitSlot[0]
-            ModData["avl_start"] = this.timeFormate(splitSlot[0], splitSlot[1])
-            ModData["avl_end"] = this.timeFormate(splitSlot[0], splitSlot[3])
-            ModData["avl_duration"] = timeDifferenceInMinutes
-          } else {
-            if (this.xlToMngKeys[upperKey] !== undefined)
-              ModData[this.xlToMngKeys[upperKey]] = item[key]
-          }
+          const startTime = DateTime.fromFormat(splitSlot[1], 'HH:mm');
+          const endTime = DateTime.fromFormat(splitSlot[3], 'HH:mm');
+          const timeDifferenceInMinutes = endTime.diff(
+            startTime,
+            'minutes'
+          ).minutes;
+
+          modData.date = splitSlot[0];
+          modData.avl_start = this.timeFormate(splitSlot[0], splitSlot[1]);
+          modData.avl_end = this.timeFormate(splitSlot[0], splitSlot[3]);
+          modData.avl_duration = timeDifferenceInMinutes;
+        } else {
+          if (this.xlToMngKeys[upperKey] !== undefined)
+            modData[this.xlToMngKeys[upperKey]] = item[key];
         }
       }
-      return ModData
-    })
+      return modData;
+    });
 
-    if (this.dataSet.length !== 0) {
-      this.service.setMachineRoll(this.dataSet).subscribe(() => {
-        this.toastService.showSuccess("successfully submitted")
-        this.onDelete()
-      })
+    if (!this.dataSet.length) {
+      this.toastService.showWarning('Please upload xlsx file');
     } else {
-      this.toastService.showWarning("Please upload xlsx file")
+      this.service.setMachineRoll(this.dataSet).subscribe(() => {
+        this.toastService.showSuccess('successfully submitted');
+        this.onDelete();
+      });
     }
-
   }
 
   timeFormate(date, time) {
-    let dateTime = new Date(date + " " + time).toISOString()
+    let dateTime = new Date(date + ' ' + time).toISOString();
     let dt = DateTime.fromISO(dateTime);
     return dt.toLocaleString(DateTime.TIME_24_SIMPLE);
   }
 
   onDelete() {
-    this.department = ""
+    this.department = '';
     const hot = this.hotRegisterer.getInstance(this.id);
-    this.dataSet = []
-    this.jsonData = []
+    this.dataSet = [];
+    this.jsonData = [];
     hot.updateData(this.dataSet);
   }
-
 }

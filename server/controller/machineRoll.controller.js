@@ -35,7 +35,7 @@ router.patch("/:id", async (req, res) => {
     try {
         const id = req.params.id
         const data = req.body;
-        const docs = await machineRoll.findByIdAndUpdate(id, data)
+        const docs = await machineRoll.findByIdAndUpdate(id, data, { new: true })
         res.send(docs)
     } catch (err) {
         res.send(err)

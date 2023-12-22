@@ -13,6 +13,16 @@
   color: #fff;
 }
 
+.handsontable .wraptext {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.htCommentsContainer .htCommentTextArea {
+  width: 400px !important;
+}
+
 .editCell {
   background: lightblue !important;
 }

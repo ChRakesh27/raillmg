@@ -1,6 +1,6 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { IUser } from '../../model/user.model';
+import { IUser } from '../model/user.model';
 import { Subject } from 'rxjs';
 
 @Injectable({

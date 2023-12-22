@@ -2,6 +2,16 @@ const mongoose = require("mongoose")
 
 const Schema = mongoose.Schema
 
+const LogSchema = new Schema({
+    updatedBy: { type: String },
+    updatedAt: { type: Date },
+    field: { type: String },
+    oldValue: { type: String },
+    newValue: { type: String }
+}, {
+    versionKey: false
+})
+
 const machineRollSchema = new Schema({
     _id: { type: mongoose.Types.ObjectId, auto: true },
     date: { type: String },
@@ -32,11 +42,15 @@ const machineRollSchema = new Schema({
     tpcStaff: { type: String },
     point: { type: String },
     tower: { type: String },
-    info: { type: Object },
     grant_status: { type: String, default: 'Pending' },
     time_granted: { type: String },
     status: { type: String },
     Avl_status: { type: Boolean, default: true },
+    logs: { type: [LogSchema], default: [] },
+    createdBy: { type: String },
+    createdAt: { type: Date },
+    updatedBy: { type: String },
+    updatedAt: { type: Date },
 }, {
     versionKey: false
 })
