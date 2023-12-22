@@ -134,15 +134,16 @@ export class VerifyDemandComponent {
         let curDay = dt.toFormat('MM/dd/yyyy')
         dt = dt.plus({ days: 1 });
         let nextDay = dt.toFormat('MM/dd/yyyy')
-        data = data.map(item => {
+        data = data.filter(item => {
           let editString = ''
           for (let ele of item.info.editBy) {
-            editString += `${ele.changes},Slot time changed: ${ele.dateTime} User Name: ${ele.name}\n\n`
+            editString += `${ele.changes},\nSlot time changed: ${ele.dateTime} User Name: ${ele.name}\n\n`
           }
           item['edit'] = editString
           if (item.date === curDay || item.date === nextDay) {
-            return item
+            return true
           }
+          return false
         })
         // if (this.userData.department !== 'OPERATING') {
         //   data = data.filter(item => {

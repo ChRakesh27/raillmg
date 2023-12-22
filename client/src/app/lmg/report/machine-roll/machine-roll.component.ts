@@ -36,6 +36,15 @@ export class MachineRollComponent implements OnInit {
     Promise.resolve().then(() => {
       this.service.getAllMachineRoll().subscribe((data) => {
         const hot = this.hotRegisterer.getInstance(this.id);
+        data = data.map(item => {
+          let editString = ''
+          for (let ele of item.info.editBy) {
+            editString += `${ele.changes}, Slot time changed: ${ele.dateTime}. User Name: ${ele.name}\n\n`
+          }
+          item['edit'] = editString
+          return item
+        })
+
         hot.updateData(data);
       });
     })

@@ -9,11 +9,11 @@ export const hotSettings: Handsontable.GridSettings = {
     manualColumnResize: true,
     filters: true,
     manualColumnMove: true,
-    rowHeights: 23,
-    colWidths: 100,
+    rowHeights: 40,
+    colWidths: 300,
     width: '100%',
     height: '70vh',
-    viewportColumnRenderingOffset: 20,
+    viewportColumnRenderingOffset: 40,
     viewportRowRenderingOffset: "auto",
     dropdownMenu: ['filter_by_value', 'filter_operators', 'filter_action_bar'],
     hiddenColumns: {
@@ -23,7 +23,6 @@ export const hotSettings: Handsontable.GridSettings = {
     cells: function (row, col) {
         return {
             className: row % 2 == 0 ? 'evenCell' : 'oddCell',
-
         };
     }
 

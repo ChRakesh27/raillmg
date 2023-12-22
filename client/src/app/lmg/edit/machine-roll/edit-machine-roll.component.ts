@@ -86,7 +86,7 @@ export class EditMachineRollComponent {
         data = data.map(item => {
           let editString = ''
           for (let ele of item.info.editBy) {
-            editString += `${ele.changes},Slot time changed: ${ele.dateTime} User Name: ${ele.name}\n\n`
+            editString += `${ele.changes},\nSlot time changed: ${ele.dateTime}\n User Name: ${ele.name}\n\n`
           }
           item['edit'] = editString
           if (this.userData.department === 'OPERATING' || item.department === this.userData.department) {
