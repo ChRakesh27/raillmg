@@ -21,6 +21,7 @@
 
 .htCommentsContainer .htCommentTextArea {
   width: 400px !important;
+  height: 200px !important;
 }
 
 .editCell {

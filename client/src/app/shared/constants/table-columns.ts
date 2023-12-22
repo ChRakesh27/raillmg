@@ -14,14 +14,16 @@ const LogInfoRender = (
   cellProperties: Handsontable.CellProperties
 ) => {
   TD.className = (row % 2 == 0 ? 'evenCell' : 'oddCell') + ' wraptext';
-  let text = '';
+  let text = [];
   if (!value?.length) return;
   for (let log of value) {
-    text += `user ${log.updatedBy} modified ${log.field} from ${log.oldValue} to ${log.newValue}. | `;
+    text.push(
+      `user ${log.updatedBy} modified ${log.field} from ${log.oldValue} to ${log.newValue}.`
+    );
   }
-  TD.innerHTML = text;
+  TD.innerHTML = text.join(' | ');
   cellProperties.comment = {
-    value: text.replaceAll('|', '\n'),
+    value: text.join('\n'),
     readOnly: true,
   };
 };
