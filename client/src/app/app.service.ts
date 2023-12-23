@@ -11,7 +11,7 @@ export class AppService {
 
   isLoading$ = new Subject<boolean>();
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {}
 
   loginUser(username, password): Observable<any> {
     return this.httpClient.get<any>(

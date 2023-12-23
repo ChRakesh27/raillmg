@@ -7,6 +7,7 @@ import { IUser } from '../../shared/model/user.model';
 import { hotSettings } from '../../shared/constants/hotSettings';
 import { localStorageService } from '../../shared/service/local-storage.service';
 import { ToastService } from '../../shared/toast/toast.service';
+import { ILog, IMachineRoll } from '../../shared/model/machineRoll.model';
 
 @Component({
   selector: 'app-verify-demand',
@@ -16,18 +17,7 @@ import { ToastService } from '../../shared/toast/toast.service';
   styleUrl: './verify-demand.component.css',
 })
 export class VerifyDemandComponent {
-  userData: IUser = {
-    _id: undefined,
-    username: undefined,
-    email: undefined,
-    designation: undefined,
-    department: undefined,
-    mobile: undefined,
-  };
-  usersInfo = {
-    createBy: { name: '', dateTime: '' },
-    editBy: [],
-  };
+  userData: IUser;
 
   dataSet = [];
 
@@ -67,7 +57,35 @@ export class VerifyDemandComponent {
     },
     { data: 'time_granted', title: 'TIME GRANTED' },
     { data: 'remarks', title: 'REMARKS' },
-    { data: 'edit', title: 'INFORMATION' },
+    {
+      data: 'logs',
+      title: 'INFORMATION',
+      editor: false,
+      width: 400,
+      renderer: (
+        instance: Handsontable.Core,
+        TD: HTMLTableCellElement,
+        row: number,
+        col: number,
+        prop: string | number,
+        value: ILog[],
+        cellProperties: Handsontable.CellProperties
+      ) => {
+        TD.className = (row % 2 == 0 ? 'evenCell' : 'oddCell') + ' wraptext';
+        let text = [];
+        if (!value?.length) return;
+        for (let log of value) {
+          text.push(
+            `user ${log.updatedBy} modified ${log.field} from ${log.oldValue} to ${log.newValue}.`
+          );
+        }
+        TD.innerHTML = text.join(' | ');
+        cellProperties.comment = {
+          value: text.join('\n'),
+          readOnly: true,
+        };
+      },
+    },
   ];
 
   nonRollingColumns = [
@@ -80,7 +98,35 @@ export class VerifyDemandComponent {
     },
     ...this.constColumns,
     { data: 'remarks', title: 'REMARKS' },
-    { data: 'edit', title: 'INFORMATION' },
+    {
+      data: 'logs',
+      title: 'INFORMATION',
+      editor: false,
+      width: 400,
+      renderer: (
+        instance: Handsontable.Core,
+        TD: HTMLTableCellElement,
+        row: number,
+        col: number,
+        prop: string | number,
+        value: ILog[],
+        cellProperties: Handsontable.CellProperties
+      ) => {
+        TD.className = (row % 2 == 0 ? 'evenCell' : 'oddCell') + ' wraptext';
+        let text = [];
+        if (!value?.length) return;
+        for (let log of value) {
+          text.push(
+            `user ${log.updatedBy} modified ${log.field} from ${log.oldValue} to ${log.newValue}.`
+          );
+        }
+        TD.innerHTML = text.join(' | ');
+        cellProperties.comment = {
+          value: text.join('\n'),
+          readOnly: true,
+        };
+      },
+    },
     // { data: "grant_status", title: "Grant Status", type: 'select', selectOptions: ['Pending', 'Granted', 'Not Granted'] },
     // { data: "time_granted", title: "Time Granted" },
   ];
@@ -93,32 +139,31 @@ export class VerifyDemandComponent {
     height: '35vh',
     afterChange: (changes) => {
       changes?.forEach(([row, prop, oldValue, newValue]) => {
+        const headerKey = prop as string;
+
         const hot = this.hotRegisterer.getInstance(this.id_rolling);
         let id = hot.getDataAtRow(row)[0];
         if (oldValue == newValue || (newValue == '' && oldValue == undefined)) {
           return;
         }
         const data = this.dataSet.find((item) => item._id === id);
-        this.usersInfo = data['info'];
-        const dt = DateTime.now();
-        this.usersInfo.editBy.push({
-          name: this.userData['username'],
-          dateTime: dt.toLocaleString(DateTime.DATETIME_SHORT),
-          changes: `${prop} -> ${oldValue} to ${newValue} `,
-        });
-        let payload = {
-          info: {
-            ...this.usersInfo,
-          },
+
+        const log = {
+          updatedBy: this.userData['username'],
+          updatedAt: new Date().toISOString(),
+          field: headerKey,
+          oldValue,
+          newValue,
         };
-        payload[prop as string] = newValue;
+        let payload: Partial<IMachineRoll> = {
+          [headerKey]: newValue,
+          updatedBy: this.userData['username'],
+          updatedAt: new Date().toISOString(),
+          logs: [...data.logs, log],
+        };
         this.service.updateMachineRoll(id, payload).subscribe(() => {
-          const column = this.hotRegisterer
-            .getInstance(this.id_rolling)
-            .propToCol(prop as string);
-          const cell = this.hotRegisterer
-            .getInstance(this.id_rolling)
-            .getCell(row, column as number);
+          const column = hot.propToCol(headerKey);
+          const cell = hot.getCell(row, column as number);
           cell.style.backgroundColor = 'lightblue';
           cell.className = 'updatedCell';
           this.toastService.showSuccess('successfully Updated');
@@ -167,11 +212,11 @@ export class VerifyDemandComponent {
         dt = dt.plus({ days: 1 });
         let nextDay = dt.toFormat('MM/dd/yyyy');
         data = data.filter((item) => {
-          let editString = '';
-          for (let ele of item.info.editBy) {
-            editString += `${ele.changes},\nSlot time changed: ${ele.dateTime} User Name: ${ele.name}\n\n`;
-          }
-          item['edit'] = editString;
+          // let editString = '';
+          // for (let ele of item.logs.editBy) {
+          //   editString += `${ele.changes},\nSlot time changed: ${ele.dateTime} User Name: ${ele.name}\n\n`;
+          // }
+          // item['edit'] = editString;
           if (item.date === curDay || item.date === nextDay) {
             return true;
           }

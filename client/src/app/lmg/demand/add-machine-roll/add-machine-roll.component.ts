@@ -9,13 +9,14 @@ import {
   FormControl,
 } from '@angular/forms';
 import { AppService } from '../../../app.service';
-import { DateTime } from 'luxon'
+import { DateTime } from 'luxon';
 import { AvailableSlotsConfig } from '../../../shared/constants/available-slots';
 import { ToastService } from '../../../shared/toast/toast.service';
 import { localStorageService } from '../../../shared/service/local-storage.service';
 import { stationList } from '../../../shared/constants/station-list';
 import { machineType } from '../../../shared/constants/machineType';
 import { sectionList } from '../../../shared/constants/section-list';
+import { IUser } from '../../../shared/model/user.model';
 
 @Component({
   selector: 'app-add-machine-roll',
@@ -26,12 +27,12 @@ import { sectionList } from '../../../shared/constants/section-list';
 })
 export class AddMachineRollComponent implements OnInit {
   form!: FormGroup;
-  userData = {};
+  userData: Partial<IUser> = {};
   availableSlots = {};
 
-  stations = stationList
-  machineType = machineType
-  sectionList = sectionList
+  stations = stationList;
+  machineType = machineType;
+  sectionList = sectionList;
   value: any;
 
   get machineFormArray(): FormArray {
@@ -47,18 +48,13 @@ export class AddMachineRollComponent implements OnInit {
     private service: AppService,
     private toastService: ToastService,
     private ls: localStorageService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-
-
-
-
-
     this.userData = this.ls.getUser();
     this.form = this.fb.group({
       department: this.fb.control(
-        { value: "CONSTRUCTION", disabled: false },
+        { value: 'CONSTRUCTION', disabled: false },
         Validators.required
       ),
       machineFormArray: this.fb.array([]),
@@ -67,24 +63,27 @@ export class AddMachineRollComponent implements OnInit {
 
   onSubmit() {
     if (this.machineFormArray.value.length === 0 || !this.form.valid) {
-      this.toastService.showWarning("Please fill all details")
-      return
+      this.toastService.showWarning('Please fill all details');
+      return;
     }
 
-    let payload = []
+    let payload = [];
     payload = this.machineFormArray.value.map((item) => {
-      let splitSlot = item.availableSlot.split(' ')
+      let splitSlot = item.availableSlot.split(' ');
 
       if (!item.crewCheckbox || item.crew == null) {
-        item.crew = 0
+        item.crew = 0;
       }
       if (!item.locoCheckbox || item.loco == null) {
-        item.loco = 0
+        item.loco = 0;
       }
-      const dt = DateTime.now()
+      const dt = DateTime.now();
       const startTime = DateTime.fromFormat(splitSlot[1], 'HH:mm');
       const endTime = DateTime.fromFormat(splitSlot[3], 'HH:mm');
-      const timeDifferenceInMinutes = endTime.diff(startTime, 'minutes').minutes;
+      const timeDifferenceInMinutes = endTime.diff(
+        startTime,
+        'minutes'
+      ).minutes;
       return {
         ...item,
         avl_start: this.timeFormate(splitSlot[0], splitSlot[1]),
@@ -92,12 +91,12 @@ export class AddMachineRollComponent implements OnInit {
         date: splitSlot[0],
         department: this.department.value,
         avl_duration: timeDifferenceInMinutes,
-        info: {
-          createBy: { name: this.userData['username'], dateTime: dt.toLocaleString(DateTime.DATETIME_SHORT) },
-          editBy: []
-        },
+        createdAt: new Date().toISOString(),
+        createdBy: this.userData.username,
+        updatedAt: new Date().toISOString(),
+        updatedBy: this.userData.username,
+        logs: [],
       };
-
     });
 
     this.service.setMachineRoll(payload).subscribe(() => {
@@ -105,12 +104,11 @@ export class AddMachineRollComponent implements OnInit {
         this.machineFormArray.removeAt(index);
       }
       this.form.get('department')?.enable();
-      this.toastService.showSuccess("successfully submitted")
+      this.toastService.showSuccess('successfully submitted');
     });
-
   }
   timeFormate(date, time) {
-    let dateTime = new Date(date + " " + time).toISOString()
+    let dateTime = new Date(date + ' ' + time).toISOString();
     let dt = DateTime.fromISO(dateTime);
     return dt.toLocaleString(DateTime.TIME_24_SIMPLE);
   }
@@ -148,16 +146,17 @@ export class AddMachineRollComponent implements OnInit {
 
     this.machineFormArray.push(machineForm);
 
-    const selectCtrl = machineForm.controls['section'] as FormControl
+    const selectCtrl = machineForm.controls['section'] as FormControl;
     selectCtrl.valueChanges.subscribe((change) => {
-      this.prepareAvailableSlots(change, machineForm.controls['direction'].value)
-    })
-    const directionCtrl = machineForm.controls['direction'] as FormControl
+      this.prepareAvailableSlots(
+        change,
+        machineForm.controls['direction'].value
+      );
+    });
+    const directionCtrl = machineForm.controls['direction'] as FormControl;
     directionCtrl.valueChanges.subscribe((change) => {
-      this.prepareAvailableSlots(machineForm.controls['section'].value, change)
-    })
-
-
+      this.prepareAvailableSlots(machineForm.controls['section'].value, change);
+    });
   }
 
   onDelete(index: number) {
@@ -169,24 +168,23 @@ export class AddMachineRollComponent implements OnInit {
 
   prepareAvailableSlots(section, direction) {
     if (!section || !direction) {
-      return
+      return;
     }
     if (this.availableSlots[section + '_' + direction]) {
-      return
+      return;
     }
-    const slots = AvailableSlotsConfig[section][direction.toLowerCase()]
-    if (!slots) return
+    const slots = AvailableSlotsConfig[section][direction.toLowerCase()];
+    if (!slots) return;
 
-    let dt = DateTime.now()
-    const weekdays = []
+    let dt = DateTime.now();
+    const weekdays = [];
     for (let i = 0; i < 365; i++) {
       if (slots[dt.weekday]) {
-        weekdays.push(dt.toFormat('MM/dd/yyyy') + slots[dt.weekday])
+        weekdays.push(dt.toFormat('MM/dd/yyyy') + slots[dt.weekday]);
       }
       dt = dt.plus({ days: 1 });
     }
 
-    this.availableSlots[section + '_' + direction] = weekdays
+    this.availableSlots[section + '_' + direction] = weekdays;
   }
-
 }

@@ -68,7 +68,7 @@ export class EditMachineRollComponent {
             .subscribe((res: IMachineRoll) => {
               Object.assign(data, res);
               hot.render();
-              const column = hot.propToCol(prop as string);
+              const column = hot.propToCol(headerKey);
               const cell = hot.getCell(row, column as number);
               cell.style.backgroundColor = 'lightblue';
               cell.className = 'updatedCell';
