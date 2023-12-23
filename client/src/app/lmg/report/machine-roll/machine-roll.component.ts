@@ -14,42 +14,30 @@ registerAllModules();
   standalone: true,
   templateUrl: './machine-roll.component.html',
   styleUrl: './machine-roll.component.css',
-  imports: [HotTableModule]
+  imports: [HotTableModule],
 })
 export class MachineRollComponent implements OnInit {
-
   private hotRegisterer = new HotTableRegisterer();
   id = 'hotInstance';
   hotSettings: Handsontable.GridSettings = {
     editor: false,
     readOnly: true,
-    ...hotSettings
+    ...hotSettings,
   };
 
   constructor(
     private service: AppService,
     private toastService: ToastService
-  ) { }
-
+  ) {}
 
   ngOnInit() {
     Promise.resolve().then(() => {
       this.service.getAllMachineRoll().subscribe((data) => {
         const hot = this.hotRegisterer.getInstance(this.id);
-        data = data.map(item => {
-          let editString = ''
-          for (let ele of item.info.editBy) {
-            editString += `${ele.changes}, Slot time changed: ${ele.dateTime}. User Name: ${ele.name}\n\n`
-          }
-          item['edit'] = editString
-          return item
-        })
-
         hot.updateData(data);
       });
-    })
+    });
   }
-
 
   onExcelDownload() {
     const hot = this.hotRegisterer.getInstance(this.id);
@@ -68,13 +56,8 @@ export class MachineRollComponent implements OnInit {
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Dates');
     XLSX.utils.sheet_add_aoa(worksheet, jsonData.data);
     XLSX.writeFile(workbook, 'MachineRolls.xlsx');
-    this.toastService.showSuccess("Downloaded Excel file")
+    this.toastService.showSuccess('Downloaded Excel file');
   }
 
-  onPdfDownload() { }
-
-
-
-
-
+  onPdfDownload() {}
 }
