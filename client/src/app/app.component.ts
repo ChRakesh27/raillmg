@@ -4,6 +4,9 @@ import { RouterOutlet } from '@angular/router';
 import { AppService } from './app.service';
 import { SpinnerComponent } from './shared/spinner/spinner.component';
 import { ToastComponent } from './shared/toast/toast.component';
+import { AdminDashboardComponent } from './admin/admin-dashboard/admin-dashboard.component';
+import { AddMachineRollComponent } from './lmg/demand/add-machine-roll/add-machine-roll.component';
+import { NavbarComponent } from './shared/navbar/navbar.component';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -13,17 +16,17 @@ import { ToastComponent } from './shared/toast/toast.component';
     CommonModule,
     RouterOutlet,
     SpinnerComponent,
-    ToastComponent
-  ]
+    ToastComponent,
+    AdminDashboardComponent,
+    AddMachineRollComponent,
+    NavbarComponent,
+  ],
 })
 export class AppComponent implements OnInit {
   isLoading = false;
-  constructor(private service: AppService) {
-
-  }
+  constructor(private service: AppService) {}
 
   ngOnInit() {
     this.service.isLoading$.subscribe((res) => (this.isLoading = res));
-
   }
 }

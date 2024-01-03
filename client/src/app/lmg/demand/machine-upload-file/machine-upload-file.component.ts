@@ -10,6 +10,7 @@ import { ToastService } from '../../../shared/toast/toast.service';
 import { DateTime } from 'luxon';
 import { IMachineRoll } from '../../../shared/model/machineRoll.model';
 import { IUser } from '../../../shared/model/user.model';
+import { hotSettings } from '../../../shared/constants/hotSettings';
 
 @Component({
   selector: 'app-machine-upload-file',
@@ -27,6 +28,14 @@ export class MachineUploadFileComponent implements OnInit {
   id = 'hotInstancePre';
   colHeader = [];
   hotSettings: Handsontable.GridSettings = {
+    className: 'htCenter htMiddle',
+    columnHeaderHeight: 40,
+    rowHeights: 30,
+    comments: true,
+    width: '100%',
+    height: '35vh',
+    viewportColumnRenderingOffset: 40,
+    viewportRowRenderingOffset: 'auto',
     allowRemoveColumn: true,
     allowInsertColumn: false,
     allowInsertRow: false,
@@ -77,7 +86,7 @@ export class MachineUploadFileComponent implements OnInit {
     private service: AppService,
     private toastService: ToastService,
     private ls: localStorageService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.userData = this.ls.getUser();
@@ -127,8 +136,8 @@ export class MachineUploadFileComponent implements OnInit {
           ).minutes;
 
           modData.date = splitSlot[0];
-          modData.avl_start = this.timeFormate(splitSlot[0], splitSlot[1]);
-          modData.avl_end = this.timeFormate(splitSlot[0], splitSlot[3]);
+          modData.avl_start = splitSlot[1];
+          modData.avl_end = splitSlot[3];
           modData.avl_duration = timeDifferenceInMinutes;
         } else {
           if (this.xlToMngKeys[upperKey] !== undefined)
@@ -146,12 +155,6 @@ export class MachineUploadFileComponent implements OnInit {
         this.onDelete();
       });
     }
-  }
-
-  timeFormate(date, time) {
-    let dateTime = new Date(date + ' ' + time).toISOString();
-    let dt = DateTime.fromISO(dateTime);
-    return dt.toLocaleString(DateTime.TIME_24_SIMPLE);
   }
 
   onDelete() {

@@ -9,38 +9,24 @@
             <form [formGroup]="userForm">
               <div class="form-group mt-3 mb-3">
                 <label for="usename">User Name</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="username"
-                  placeholder="Enter User Name"
-                  formControlName="username"
-                />
+                <input type="text" class="form-control" id="username" placeholder="Enter User Name"
+                  formControlName="username" />
               </div>
               <div class="form-group mt-3 mb-3">
                 <label for="password">Password</label>
-                <input
-                  type="password"
-                  class="form-control"
-                  id="password"
-                  placeholder="Password"
-                  formControlName="password"
-                />
+                <input type="password" class="form-control" id="password" placeholder="Password"
+                  formControlName="password" />
               </div>
-              <button
-                type="submit"
-                class="btn btn-primary w-100 btn-lg mt-5"
-                (click)="onLogin()"
-              >
+              <button type="submit" class="btn btn-primary w-100 btn-lg mt-5" (click)="onLogin()">
                 Login
               </button>
             </form>
-            <div class="text-center mt-2 user-footer">
+            <!-- <div class="text-center mt-2 user-footer">
               <span>Don't have an account?</span>
               <button type="button" class="btn btn-link" routerLink="/register">
                 Sign up
               </button>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>

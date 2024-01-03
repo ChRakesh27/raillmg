@@ -13,83 +13,87 @@ import { MaintenanceNonRollComponent } from './lmg/demand/maintenance-non-roll/m
 import { MachineUploadFileComponent } from './lmg/demand/machine-upload-file/machine-upload-file.component';
 import { EditMachineRollComponent } from './lmg/edit/machine-roll/edit-machine-roll.component';
 import { VerifyDemandComponent } from './lmg/verify-demand/verify-demand.component';
+import { AdminDashboardComponent } from './admin/admin-dashboard/admin-dashboard.component';
 
 export const routes: Routes = [
-    {
-        path: 'lmg',
-        component: LmgComponent,
-        canActivate: [authGuard],
-        children: [
-            {
-                path: '',
-                component: HomePageComponent
-            },
-            {
-                path: "demand",
-                children: [
-                    {
-                        path: "machine-roll",
-                        component: AddMachineRollComponent
-                    },
-                    {
-                        path: "machine-non-roll",
-                        component: MachineNonRollComponent
-                    },
-                    {
-                        path: "maintenance-roll",
-                        component: MaintenanceRollComponent
-                    },
-                    {
-                        path: "maintenance-non-roll",
-                        component: MaintenanceNonRollComponent
-                    },
-                    {
-                        path: "machine-upload-file",
-                        component: MachineUploadFileComponent
-                    },
-
-                ]
-            },
-            {
-                path: "verify-demand",
-                component: VerifyDemandComponent
-            },
-            {
-                path: "report",
-                children: [
-                    {
-                        path: "rolling",
-                        component: MachineRollComponent
-                    }
-                ]
-            },
-            {
-                path: "edit",
-                children: [
-                    {
-                        path: "machine-roll",
-                        component: EditMachineRollComponent
-                    }
-                ]
-            }
-        ]
-    },
-
-    {
-        path: 'login',
-        component: LoginComponent,
-    },
-    {
-        path: 'register',
-        component: RegisterComponent,
-    },
-    {
-        path: 'admin',
-        component: AdminComponent,
-    },
-    {
+  {
+    path: 'lmg',
+    component: LmgComponent,
+    canActivate: [authGuard],
+    children: [
+      {
         path: '',
-        redirectTo: '/login',
-        pathMatch: 'full'
-    },
+        component: HomePageComponent,
+      },
+      {
+        path: 'demand',
+        children: [
+          {
+            path: 'machine-roll',
+            component: AddMachineRollComponent,
+          },
+          {
+            path: 'machine-non-roll',
+            component: MachineNonRollComponent,
+          },
+          {
+            path: 'maintenance-roll',
+            component: MaintenanceRollComponent,
+          },
+          {
+            path: 'maintenance-non-roll',
+            component: MaintenanceNonRollComponent,
+          },
+          {
+            path: 'machine-upload-file',
+            component: MachineUploadFileComponent,
+          },
+        ],
+      },
+      {
+        path: 'verify-demand',
+        component: VerifyDemandComponent,
+      },
+      {
+        path: 'report',
+        children: [
+          {
+            path: 'rolling',
+            component: MachineRollComponent,
+          },
+        ],
+      },
+      {
+        path: 'edit',
+        children: [
+          {
+            path: 'machine-roll',
+            component: EditMachineRollComponent,
+          },
+        ],
+      },
+      {
+        path: 'add-details',
+        component: AdminDashboardComponent,
+      },
+    ],
+  },
+
+  {
+    path: 'login',
+    component: LoginComponent,
+  },
+  {
+    path: 'register',
+    component: RegisterComponent,
+  },
+  {
+    path: 'admin',
+    component: AdminComponent,
+  },
+  {
+    path: '',
+    redirectTo: '/login',
+    pathMatch: 'full',
+  },
 ];

@@ -37,10 +37,10 @@ export class EditMachineRollComponent {
             return;
           }
           if (headerKey === 'date') {
-            const parsedDate = DateTime.fromFormat(newValue, 'MM/dd/yyyy');
+            const parsedDate = DateTime.fromFormat(newValue, 'dd/MM/yyyy');
 
             if (!parsedDate.isValid) {
-              this.toastService.showDanger('Date should be MM/DD/YYYY format');
+              this.toastService.showDanger('Date should be DD/MM/YYYY format');
               return;
             }
           }

@@ -34,7 +34,7 @@ export const columns: Handsontable.ColumnSettings[] = [
     data: 'date',
     title: 'DATE',
     type: 'date',
-    dateFormat: 'MM/DD/YYYY',
+    dateFormat: 'dd/MM/YYYY',
     correctFormat: true,
   },
   { data: 'department', title: 'DEPARTMENT', readonly: true, editor: false },

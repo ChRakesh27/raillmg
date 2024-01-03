@@ -208,9 +208,9 @@ export class VerifyDemandComponent {
         const hot1 = this.hotRegisterer.getInstance(this.id_rolling);
         const hot2 = this.hotRegisterer.getInstance(this.id_non_rolling);
         let dt = DateTime.now();
-        let curDay = dt.toFormat('MM/dd/yyyy');
+        let curDay = dt.toFormat('dd/MM/yyyy');
         dt = dt.plus({ days: 1 });
-        let nextDay = dt.toFormat('MM/dd/yyyy');
+        let nextDay = dt.toFormat('dd/MM/yyyy');
         data = data.filter((item) => {
           // let editString = '';
           // for (let ele of item.logs.editBy) {

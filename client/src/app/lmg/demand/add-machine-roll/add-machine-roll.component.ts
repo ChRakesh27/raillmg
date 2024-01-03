@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import {
   FormGroup,
   Validators,
@@ -7,6 +8,7 @@ import {
   FormBuilder,
   FormArray,
   FormControl,
+  FormsModule,
 } from '@angular/forms';
 import { AppService } from '../../../app.service';
 import { DateTime } from 'luxon';
@@ -21,7 +23,7 @@ import { IUser } from '../../../shared/model/user.model';
 @Component({
   selector: 'app-add-machine-roll',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, NgbPopoverModule, FormsModule],
   templateUrl: './add-machine-roll.component.html',
   styleUrl: './add-machine-roll.component.css',
 })
@@ -29,7 +31,7 @@ export class AddMachineRollComponent implements OnInit {
   form!: FormGroup;
   userData: Partial<IUser> = {};
   availableSlots = {};
-
+  cautions = [];
   stations = stationList;
   machineType = machineType;
   sectionList = sectionList;
@@ -68,7 +70,7 @@ export class AddMachineRollComponent implements OnInit {
     }
 
     let payload = [];
-    payload = this.machineFormArray.value.map((item) => {
+    payload = this.machineFormArray.value.map((item, index) => {
       let splitSlot = item.availableSlot.split(' ');
 
       if (!item.crewCheckbox || item.crew == null) {
@@ -77,6 +79,8 @@ export class AddMachineRollComponent implements OnInit {
       if (!item.locoCheckbox || item.loco == null) {
         item.loco = 0;
       }
+      item.caution = this.cautions[index];
+
       const dt = DateTime.now();
       const startTime = DateTime.fromFormat(splitSlot[1], 'HH:mm');
       const endTime = DateTime.fromFormat(splitSlot[3], 'HH:mm');
@@ -86,8 +90,8 @@ export class AddMachineRollComponent implements OnInit {
       ).minutes;
       return {
         ...item,
-        avl_start: this.timeFormate(splitSlot[0], splitSlot[1]),
-        avl_end: this.timeFormate(splitSlot[0], splitSlot[3]),
+        avl_start: splitSlot[1],
+        avl_end: splitSlot[3],
         date: splitSlot[0],
         department: this.department.value,
         avl_duration: timeDifferenceInMinutes,
@@ -99,6 +103,7 @@ export class AddMachineRollComponent implements OnInit {
       };
     });
 
+    console.log('🚀 ~ payload:', payload);
     this.service.setMachineRoll(payload).subscribe(() => {
       for (let index = this.machineFormArray.length - 1; index >= 0; index--) {
         this.machineFormArray.removeAt(index);
@@ -106,11 +111,6 @@ export class AddMachineRollComponent implements OnInit {
       this.form.get('department')?.enable();
       this.toastService.showSuccess('successfully submitted');
     });
-  }
-  timeFormate(date, time) {
-    let dateTime = new Date(date + ' ' + time).toISOString();
-    let dt = DateTime.fromISO(dateTime);
-    return dt.toLocaleString(DateTime.TIME_24_SIMPLE);
   }
 
   onAddNewForm() {
@@ -142,8 +142,10 @@ export class AddMachineRollComponent implements OnInit {
       crewCheckbox: [false],
       loco: [null],
       locoCheckbox: [false],
+      cautionCheckbox: [false],
+      caution: [{ length: '', speed: 0 }],
     });
-
+    this.cautions.push([{ length: '', speed: 0 }]);
     this.machineFormArray.push(machineForm);
 
     const selectCtrl = machineForm.controls['section'] as FormControl;
@@ -158,6 +160,11 @@ export class AddMachineRollComponent implements OnInit {
       this.prepareAvailableSlots(machineForm.controls['section'].value, change);
     });
   }
+  addCaution(index) {
+    this.cautions[index].push({ length: '', speed: 0 });
+    console.log('🚀 ~ this.cautions:', this.cautions);
+  }
+  deleteCaution(i, $index) {}
 
   onDelete(index: number) {
     this.machineFormArray.removeAt(index);
@@ -165,7 +172,12 @@ export class AddMachineRollComponent implements OnInit {
       this.form.get('department')?.enable();
     }
   }
-
+  cautionLength($event, index1, index2) {
+    this.cautions[index1][index2]['length'] = $event.target.value;
+  }
+  cautionSpeed($event, index1, index2) {
+    this.cautions[index1][index2]['speed'] = $event.target.value;
+  }
   prepareAvailableSlots(section, direction) {
     if (!section || !direction) {
       return;
@@ -180,7 +192,7 @@ export class AddMachineRollComponent implements OnInit {
     const weekdays = [];
     for (let i = 0; i < 365; i++) {
       if (slots[dt.weekday]) {
-        weekdays.push(dt.toFormat('MM/dd/yyyy') + slots[dt.weekday]);
+        weekdays.push(dt.toFormat('dd/MM/yyyy') + slots[dt.weekday]);
       }
       dt = dt.plus({ days: 1 });
     }
