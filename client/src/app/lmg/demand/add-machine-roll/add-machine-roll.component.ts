@@ -162,10 +162,10 @@ export class AddMachineRollComponent implements OnInit {
   }
   addCaution(index) {
     this.cautions[index].push({ length: '', speed: 0 });
-    console.log('🚀 ~ this.cautions:', this.cautions);
   }
-  deleteCaution(i, $index) {}
-
+  deleteCaution(i, index) {
+    this.cautions[i] = this.cautions[i].filter((ele, ind) => index != ind);
+  }
   onDelete(index: number) {
     this.machineFormArray.removeAt(index);
     if (this.machineFormArray.length === 0) {
