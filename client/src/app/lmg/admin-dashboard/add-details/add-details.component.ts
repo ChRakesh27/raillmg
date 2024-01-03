@@ -9,14 +9,15 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+
 @Component({
-  selector: 'app-admin-dashboard',
+  selector: 'app-add-details',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, FormsModule],
-  templateUrl: './admin-dashboard.component.html',
-  styleUrl: './admin-dashboard.component.css',
+  templateUrl: './add-details.component.html',
+  styleUrl: './add-details.component.css',
 })
-export class AdminDashboardComponent implements OnInit {
+export class AddDetailsComponent {
   board = '';
   section = '';
   stations = [];

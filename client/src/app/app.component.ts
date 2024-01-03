@@ -4,8 +4,6 @@ import { RouterOutlet } from '@angular/router';
 import { AppService } from './app.service';
 import { SpinnerComponent } from './shared/spinner/spinner.component';
 import { ToastComponent } from './shared/toast/toast.component';
-import { AdminDashboardComponent } from './admin/admin-dashboard/admin-dashboard.component';
-import { AddMachineRollComponent } from './lmg/demand/add-machine-roll/add-machine-roll.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 @Component({
   selector: 'app-root',
@@ -17,8 +15,6 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
     RouterOutlet,
     SpinnerComponent,
     ToastComponent,
-    AdminDashboardComponent,
-    AddMachineRollComponent,
     NavbarComponent,
   ],
 })
