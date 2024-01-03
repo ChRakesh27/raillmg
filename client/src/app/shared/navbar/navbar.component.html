@@ -111,10 +111,11 @@
           <ul class="dropdown-menu">
             <li>
               <a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
-                routerLink="add-details">Add details</a>
+                [routerLink]="['dashboard', 'add-details']">Add details</a>
             </li>
             <li>
-              <a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown">Edit details</a>
+              <a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                [routerLink]="['dashboard', 'edit-details']">Edit details</a>
             </li>
           </ul>
         </li>

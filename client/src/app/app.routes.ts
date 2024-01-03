@@ -13,6 +13,7 @@ import { MachineUploadFileComponent } from './lmg/demand/machine-upload-file/mac
 import { EditMachineRollComponent } from './lmg/edit/machine-roll/edit-machine-roll.component';
 import { VerifyDemandComponent } from './lmg/verify-demand/verify-demand.component';
 import { AdminDashboardComponent } from './admin/admin-dashboard/admin-dashboard.component';
+import { EditDetailsComponent } from './admin/edit-details/edit-details.component';
 
 export const routes: Routes = [
   {
@@ -72,8 +73,17 @@ export const routes: Routes = [
         ],
       },
       {
-        path: 'add-details',
-        component: AdminDashboardComponent,
+        path: 'dashboard',
+        children: [
+          {
+            path: 'add-details',
+            component: AdminDashboardComponent,
+          },
+          {
+            path: 'edit-details',
+            component: EditDetailsComponent,
+          },
+        ],
       },
     ],
   },
