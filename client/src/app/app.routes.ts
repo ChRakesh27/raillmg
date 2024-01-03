@@ -6,7 +6,6 @@ import { LoginComponent } from './login/login.component';
 import { AddMachineRollComponent } from './lmg/demand/add-machine-roll/add-machine-roll.component';
 import { authGuard } from './shared/service/auth-guard.service';
 import { LmgComponent } from './lmg/lmg.component';
-import { AdminComponent } from './admin/admin-login/admin.component';
 import { MachineNonRollComponent } from './lmg/demand/machine-non-roll/machine-non-roll.component';
 import { MaintenanceRollComponent } from './lmg/demand/maintenance-roll/maintenance-roll.component';
 import { MaintenanceNonRollComponent } from './lmg/demand/maintenance-non-roll/maintenance-non-roll.component';
@@ -86,10 +85,6 @@ export const routes: Routes = [
   {
     path: 'register',
     component: RegisterComponent,
-  },
-  {
-    path: 'admin',
-    component: AdminComponent,
   },
   {
     path: '',
