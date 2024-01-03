@@ -51,6 +51,7 @@ const machineRollSchema = new Schema({
     createdAt: { type: Date },
     updatedBy: { type: String },
     updatedAt: { type: Date },
+    caution: { type: Array },
 }, {
     versionKey: false
 })
