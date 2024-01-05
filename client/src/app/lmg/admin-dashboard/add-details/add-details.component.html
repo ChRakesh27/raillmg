@@ -157,21 +157,78 @@
                     }
                   </select>
                 </div>
+                <div class="">
+                  <div class="">DIRECTION</div>
+
+                  @for (item of directions; track $index) {
+                  <input type="checkbox" class="btn-check" id='{{$index}}' [(ngModel)]="directions[$index]['checked']">
+                  <label class="btn btn-outline-primary ms-3" for={{$index}}>{{item['direction']}}</label>
+
+                  }
+                </div>
                 <label>AVAILABLE SLOT</label>
                 <br>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                  AVAILABLE SLOT
-                </button>
+                <div class="avl-slot">
+                  <hr>
+                  @for (direction of directions; track $index) {
+                  @if(direction['checked']){
+                  <div class="">
+                    <h3 class="">{{direction['direction']}}</h3>
+                    <div class="">Repeat on</div>
+                    <input type="checkbox" class="btn-check" id="Sunday{{selectedAvl}}{{$index}}"
+                      [(ngModel)]="direction.days[0]">
+                    <label class="btn btn-outline-primary ms-3" for="Sunday{{selectedAvl}}{{$index}}">S</label>
+                    <input type="checkbox" class="btn-check" id="Monday{{selectedAvl}}{{$index}}"
+                      [(ngModel)]="direction.days[1]">
+                    <label class="btn btn-outline-primary ms-3" for="Monday{{selectedAvl}}{{$index}}">M</label>
+                    <input type="checkbox" class="btn-check" id="Tuesday{{selectedAvl}}{{$index}}"
+                      [(ngModel)]="direction.days[2]">
+                    <label class="btn btn-outline-primary ms-3" for="Tuesday{{selectedAvl}}{{$index}}">T</label>
+                    <input type="checkbox" class="btn-check" id="Wednesday{{selectedAvl}}{{$index}}"
+                      [(ngModel)]="direction.days[3]">
+                    <label class="btn btn-outline-primary ms-3" for="Wednesday{{selectedAvl}}{{$index}}">W</label>
+                    <input type="checkbox" class="btn-check" id="Thursday{{selectedAvl}}{{$index}}"
+                      [(ngModel)]="direction.days[4]">
+                    <label class="btn btn-outline-primary ms-3" for="Thursday{{selectedAvl}}{{$index}}">T</label>
+                    <input type="checkbox" class="btn-check" id="Friday{{selectedAvl}}{{$index}}"
+                      [(ngModel)]="direction.days[5]">
+                    <label class="btn btn-outline-primary ms-3" for="Friday{{selectedAvl}}{{$index}}">F</label>
+                    <input type="checkbox" class="btn-check" id="Saturday{{selectedAvl}}{{$index}}"
+                      [(ngModel)]="direction.days[6]">
+                    <label class="btn btn-outline-primary ms-3" for="Saturday{{selectedAvl}}{{$index}}">S</label>
+                    <div class="mt-3">Timing</div>
+                    <div class="row  justify-content-center">
+                      <div class="col-6 ">
+                        <label>Start:</label>
+                        <ngb-timepicker [(ngModel)]="direction['start']" />
+                      </div>
+                      <div class="col-6">
+                        <label>end:</label>
+                        <ngb-timepicker [(ngModel)]="direction['end']" />
+                      </div>
+                    </div>
+                    <hr>
+                  </div>
+                  }
+                  }
 
+                </div>
+                <button type="button" class="btn btn-primary" (click)="onSubmitAvl()">Submit</button>
               </div>
               <div class="col-6">
                 <div class="">STATION</div>
                 @for(item of dataSet; track $index){
                 @if(item.section === section && item.board===board){
-                DIRECTIONS:{{item.directions}}
+                <div class="">
+                  DIRECTIONS:{{item.directions}}
+                </div>
                 @for(ele of item.directions; track $index){
-                DAYS:{{item.slots[ele].days}}
-                TIME:{{item.slots[ele].time}}
+                <div class="">
+                  DAYS:{{item.slots[ele].days}}
+                </div>
+                <div class="">
+                  TIME:{{item.slots[ele].time}}
+                </div>
                 }
                 }
                 }

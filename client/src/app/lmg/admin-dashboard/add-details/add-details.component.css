@@ -5,9 +5,13 @@
 }
 .AddDetails {
   border-right: 2px solid;
-  height: 85vh;
+  height: 84vh;
 }
 .details {
   overflow: scroll;
-  height: 89vh;
+  height: 86vh;
+}
+.avl-slot {
+  overflow: scroll;
+  height: 50%;
 }
