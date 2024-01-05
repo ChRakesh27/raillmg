@@ -100,7 +100,6 @@ export class AddDetailsComponent {
     Promise.resolve().then(() => {
       this.service.getAllRailDetails('boards').subscribe((data) => {
         for (let item of data) {
-          console.log('🚀 ~ item:', item);
           this.boardList.push(item.board);
         }
       });

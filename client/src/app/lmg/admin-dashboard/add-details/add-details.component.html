@@ -1,174 +1,209 @@
 <div class="m-3">
   <div class="row">
-    <div class="col-6 AddDetails">
+    <div class="">
       <div ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-pills">
         <ng-container ngbNavItem="board">
           <button ngbNavLink>BOARD</button>
           <ng-template ngbNavContent>
-            <div class="mt-5"></div>
-            <label>BOARD</label>
-            <input id="typeahead-format" class="form-control" type="text" name="board" [(ngModel)]="board"
-              [ngbTypeahead]="search" [resultFormatter]="formatter" />
-            <button class="btn btn-primary" (click)="addBoard()">ADD</button>
-          </ng-template>
+            <div class="row ">
+              <div class="col-6 AddDetails">
+                <label>BOARD</label>
+                <input id="typeahead-format" class="form-control" type="text" name="board" [(ngModel)]="board"
+                  [ngbTypeahead]="search" [resultFormatter]="formatter" />
+                <button class="btn btn-primary" (click)="addBoard()">ADD</button>
+              </div>
+              <div class="col-6">
+                <div class="">Board</div>
+                @for(board of boardList; track $index){
+                {{board}}
+                }
+              </div>
+            </div>
 
+          </ng-template>
         </ng-container>
 
         <ng-container ngbNavItem="section">
           <button ngbNavLink>SECTION</button>
           <ng-template ngbNavContent>
-            <div class="mt-5"></div>
-            <div class="form-group">
-              <label>BOARD</label>
-              <select class="form-select">
-                <option value="" selected disabled>Select Board</option>
-                @for(board of boardList; track $index){
-                <option value="{{board}}">{{board}}</option>
+            <div class="row ">
+              <div class="col-6 AddDetails">
+                <div class="form-group">
+                  <label>BOARD</label>
+                  <select class="form-select" [(ngModel)]="board">
+                    <option value="" selected disabled>Select Board</option>
+                    @for(board of boardList; track $index){
+                    <option value="{{board}}">{{board}}</option>
+                    }
+                  </select>
+                </div>
+                <label>SECTION</label>
+                <input id="typeahead-format" type="text" class="form-control" name="section" [(ngModel)]="section"
+                  [ngbTypeahead]="search" [resultFormatter]="formatter" />
+                <button class="btn btn-primary" (click)="addSection()">ADD</button>
+              </div>
+              <div class="col-6">
+                <div class="">section</div>
+                @for(item of dataSet; track $index){
+                @if(item.board===board){
+                {{item.section}}
                 }
-              </select>
+                }
+              </div>
             </div>
-            <label>SECTION</label>
-            <input id="typeahead-format" type="text" class="form-control" name="section" [(ngModel)]="section"
-              [ngbTypeahead]="search" [resultFormatter]="formatter" />
-            <button class="btn btn-primary" (click)="addSection()">ADD</button>
           </ng-template>
         </ng-container>
 
-        <ng-container ngbNavItem="MPS">
+        <ng-container ngbNavItem="mps">
           <button ngbNavLink>MPS</button>
           <ng-template ngbNavContent>
-            <div class="mt-5"></div>
-            <div class="form-group">
-              <label>BOARD</label>
-              <select class="form-select" [(ngModel)]="board">
-                <option value="" selected disabled>Select Board</option>
-                @for(board of boardList; track $index){
-                <option value="{{board}}">{{board}}</option>
+            <div class="row ">
+              <div class="col-6 AddDetails">
+                <div class="form-group">
+                  <label>BOARD</label>
+                  <select class="form-select" [(ngModel)]="board">
+                    <option value="" selected disabled>Select Board</option>
+                    @for(board of boardList; track $index){
+                    <option value="{{board}}">{{board}}</option>
+                    }
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>SECTION</label>
+                  <select class="form-select" [(ngModel)]="section">
+                    <option value="" selected disabled>Select Board</option>
+                    @for(section of sectionList; track $index){
+                    <option value="{{section}}">{{section}}</option>
+                    }
+                  </select>
+                </div>
+                <label>MPS</label>
+                <input id="typeahead-format" class="form-control" type="number" name="mps" [(ngModel)]="mps"
+                  [ngbTypeahead]="search" [resultFormatter]="formatter" />
+                <button class="btn btn-primary" (click)="addMPS()">ADD</button>
+              </div>
+              <div class="col-6">
+                <div class="">mps</div>
+                @for(item of dataSet; track $index){
+                @if(item.section===section && item.board===board){
+                {{item.mps}}
                 }
-              </select>
-            </div>
-            <div class="form-group">
-              <label>SECTION</label>
-              <select class="form-select" [(ngModel)]="section">
-                <option value="" selected disabled>Select Board</option>
-                @for(section of sectionList; track $index){
-                <option value="{{section}}">{{section}}</option>
                 }
-              </select>
+              </div>
             </div>
-            <label>MPS</label>
-            <input id="typeahead-format" class="form-control" type="number" name="mps" [(ngModel)]="mps"
-              [ngbTypeahead]="search" [resultFormatter]="formatter" />
-            <button class="btn btn-primary" (click)="addMPS()">ADD</button>
           </ng-template>
         </ng-container>
 
         <ng-container ngbNavItem="station">
           <button ngbNavLink>STATION</button>
           <ng-template ngbNavContent>
-            <div class="mt-5"></div>
-            <div class="form-group">
-              <label>BOARD</label>
-              <select class="form-select">
-                <option value="" selected disabled>Select Board</option>
-                @for(board of boardList; track $index){
-                <option value="{{board}}">{{board}}</option>
+            <div class="row ">
+              <div class="col-6 AddDetails">
+                <div class="form-group">
+                  <label>BOARD</label>
+                  <select class="form-select" [(ngModel)]="board">
+                    <option value="" selected disabled>Select Board</option>
+                    @for(board of boardList; track $index){
+                    <option value="{{board}}">{{board}}</option>
+                    }
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>SECTION</label>
+                  <select class="form-select" [(ngModel)]="section">
+                    <option value="" selected disabled>Select Board</option>
+                    @for(section of sectionList; track $index){
+                    <option value="{{section}}">{{section}}</option>
+                    }
+                  </select>
+                </div>
+                <label>STATION</label>
+                <input id="typeahead-format" class="form-control" type="text" name="station" [(ngModel)]="station"
+                  [ngbTypeahead]="search" [resultFormatter]="formatter" />
+                <button class="btn btn-primary" (click)="addStation()">ADD</button>
+              </div>
+              <div class="col-6">
+                <div class="">STATION</div>
+                @for(item of dataSet; track $index){
+                @if(item.section === section && item.board===board){
+                {{item.stations}}
                 }
-              </select>
-            </div>
-            <div class="form-group">
-              <label>SECTION</label>
-              <select class="form-select" [(ngModel)]="section">
-                <option value="" selected disabled>Select Board</option>
-                @for(section of sectionList; track $index){
-                <option value="{{section}}">{{section}}</option>
                 }
-              </select>
+              </div>
             </div>
-            <label>STATION</label>
-            <input id="typeahead-format" class="form-control" type="text" name="station" [(ngModel)]="station"
-              [ngbTypeahead]="search" [resultFormatter]="formatter" />
-            <button class="btn btn-primary" (click)="addStation()">ADD</button>
           </ng-template>
         </ng-container>
 
         <ng-container ngbNavItem="slot">
           <button ngbNavLink>SLOT</button>
           <ng-template ngbNavContent>
-            <div class="mt-5"></div>
-            <div class="form-group">
-              <label>BOARD</label>
-              <select class="form-select" [(ngModel)]="board">
-                <option value="" selected disabled>Select Board</option>
-                @for(board of boardList; track $index){
-                <option value="{{board}}">{{board}}</option>
+            <div class="row ">
+              <div class="col-6 AddDetails">
+                <div class="form-group">
+                  <label>BOARD</label>
+                  <select class="form-select" [(ngModel)]="board">
+                    <option value="" selected disabled>Select Board</option>
+                    @for(board of boardList; track $index){
+                    <option value="{{board}}">{{board}}</option>
+                    }
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>SECTION</label>
+                  <select class="form-select" [(ngModel)]="section">
+                    <option value="" selected disabled>Select Board</option>
+                    @for(section of sectionList; track $index){
+                    <option value="{{section}}">{{section}}</option>
+                    }
+                  </select>
+                </div>
+                <label>AVAILABLE SLOT</label>
+                <br>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                  AVAILABLE SLOT
+                </button>
+
+              </div>
+              <div class="col-6">
+                <div class="">STATION</div>
+                @for(item of dataSet; track $index){
+                @if(item.section === section && item.board===board){
+                DIRECTIONS:{{item.directions}}
+                @for(ele of item.directions; track $index){
+                DAYS:{{item.slots[ele].days}}
+                TIME:{{item.slots[ele].time}}
                 }
-              </select>
-            </div>
-            <div class="form-group">
-              <label>SECTION</label>
-              <select class="form-select" [(ngModel)]="section">
-                <option value="" selected disabled>Select Board</option>
-                @for(section of sectionList; track $index){
-                <option value="{{section}}">{{section}}</option>
                 }
-              </select>
+                }
+              </div>
             </div>
-            <label>AVAILABLE SLOT</label>
-            <br>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-              AVAILABLE SLOT
-            </button>
           </ng-template>
         </ng-container>
 
         <ng-container ngbNavItem="machine">
-          <button ngbNavLink>machine</button>
+          <button ngbNavLink>MACHINE</button>
           <ng-template ngbNavContent>
-            <div class="mt-5"></div>
-            <label>MACHINE</label>
-            <input id="typeahead-format" class="form-control" type="text" name="machine" [(ngModel)]="machine"
-              [ngbTypeahead]="search" [resultFormatter]="formatter" />
-            <button class="btn btn-primary" (click)="addMachine()">ADD</button>
+            <div class="row">
+              <div class="col-6 AddDetails">
+                <label>MACHINE</label>
+                <input id="typeahead-format" class="form-control" type="text" name="machine" [(ngModel)]="machine"
+                  [ngbTypeahead]="search" [resultFormatter]="formatter" />
+                <button class="btn btn-primary" (click)="addMachine()">ADD</button>
+              </div>
+              <div class="col-6">
+                <div class="">MACHINES</div>
+                @for(item of machineList; track $index){
+                {{item.machine}}
+                }
+              </div>
+            </div>
+
           </ng-template>
         </ng-container>
 
       </div>
 
       <div [ngbNavOutlet]="nav" class="ms-4"></div>
-    </div>
-    <div class="col-6">
-      <div class="details">
-        <div class="">
-          <h3>Details:</h3>
-          <hr>
-          @for(board of sup_board_wise | keyvalue; track $index){
-          <div class="d-flex align-items-center">
-            <div class="">
-              BOARD:
-            </div>
-            <h3> {{board.key}}</h3>
-          </div>
-          @for(item of sup_board_wise[board.key]; track $index){
-          <div>SECTION: <b>{{item['section']}}</b></div>
-          <div>DIRECTIONS: {{item['directions']}}</div>
-          <div>MPS: <b>{{item['mps']}}</b></div>
-          <div>STATIONS: <b>{{item['stations']}}</b></div>
-          <div>SLOTS: <b>{{item['slots'] | json}}</b></div>
-          <hr>
-          }
-          <hr>
-          }
-        </div>
-        <div class="">
-          <h3>Machines</h3>
-          <ul>
-            @for(item of machineList; track $index){
-            <li>{{item.machine}}</li>
-            }
-          </ul>
-        </div>
-      </div>
     </div>
   </div>
 </div>
