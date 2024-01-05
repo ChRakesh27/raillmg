@@ -34,4 +34,24 @@ export class AppService {
   updateMachineRoll(id, data): Observable<any> {
     return this.httpClient.patch(`${this.API_HOST}/machineRolls/${id}`, data);
   }
+
+  getRailDetails(id): Observable<any> {
+    return this.httpClient.get(`${this.API_HOST}/railDetails/${id}`);
+  }
+
+  getAllRailDetails(url): Observable<any> {
+    // return this.httpClient.get(`${this.API_HOST}/railDetails}`);
+    return this.httpClient.get(`${this.API_HOST}/${url}`);
+  }
+
+  addRailDetails(url, data): Observable<any> {
+    return this.httpClient.post(`${this.API_HOST}/${url}`, data);
+  }
+
+  updateRailDetails(url, id, data): Observable<any> {
+    return this.httpClient.patch(`${this.API_HOST}/${url}/${id}`, data);
+  }
+  deleteRailDetails(url, id): Observable<any> {
+    return this.httpClient.delete(`${this.API_HOST}/${url}/${id}`);
+  }
 }
