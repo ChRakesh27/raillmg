@@ -310,7 +310,6 @@
                       </div>
                       <div class="row text-center" *ngFor="let caution of cautions[i]; let $index = index"
                         [attr.data-index]="i">
-
                         <div class="col-5">
                           <input type="text" class="form-control" placeholder="ENTER LENGTH OF CAUTION" name="length"
                             (change)="cautionLength($event,i,$index)" />

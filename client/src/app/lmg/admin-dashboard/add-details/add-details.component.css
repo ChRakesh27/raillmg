@@ -3,3 +3,11 @@
   margin: 10px 0px;
   padding: 10px 2px;
 }
+.AddDetails {
+  border-right: 2px solid;
+  height: 89vh;
+}
+.details {
+  overflow: scroll;
+  height: 89vh;
+}

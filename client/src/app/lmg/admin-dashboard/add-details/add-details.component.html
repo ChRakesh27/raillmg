@@ -1,88 +1,241 @@
-<!-- <nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top shadow">
-  <div class="container-fluid">
-    <div class="collapse navbar-collapse navStyle justify-content-between h-25" id="navbarNavDropdown">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link active" role="button">
-            Add details
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active" role="button">
-            edit details
-          </a>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav> -->
-
-<div class="container mt-5">
+<div class="m-3">
   <div class="row">
-    <div class="col-6">
-      <div class="row">
-        <div class="col">
-          <h3 class="">BOARD</h3>
-          <input type="text" placeholder="ENTER BOARD" [(ngModel)]="board" />
-        </div>
-        <div class="col">
-          <h3>SECTION</h3>
-          <input type="text" placeholder="ENTER SECTION" [(ngModel)]="section" />
-        </div>
-      </div>
-    </div>
-    <div class="col-6 text-end">
-      <button class="btn btn-primary" (click)="onSubmit()">submit</button>
-    </div>
-  </div>
-  <div class="">
-    <div class="section">
-      <div class="">
-        <div class="station">
-          <div class="">
-            <h3 class="">STATIONS <button class="btn btn-primary" (click)="onAddStation()">Add</button></h3>
-            @for(station of stations; track $index){
-            <div class="mt-3">
-              <input type="text" placeholder="ENTER STATIONS {{$index+1}}" [(ngModel)]="stations[$index]" />
+    <div class="col-6 AddDetails">
+      <div ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-pills">
+        <ng-container ngbNavItem="board">
+          <button ngbNavLink>BOARD</button>
+          <ng-template ngbNavContent>
+            <div class="mt-5"></div>
+            <label>BOARD</label>
+            <input id="typeahead-format" class="form-control" type="text" name="board" [(ngModel)]="board"
+              [ngbTypeahead]="search" [resultFormatter]="formatter" />
+            <button class="btn btn-primary" (click)="addBoard()">ADD</button>
+          </ng-template>
+
+        </ng-container>
+
+        <ng-container ngbNavItem="section">
+          <button ngbNavLink>SECTION</button>
+          <ng-template ngbNavContent>
+            <div class="mt-5"></div>
+            <div class="form-group">
+              <label>BOARD</label>
+              <select class="form-select">
+                <option value="" selected disabled>Select Board</option>
+                @for(board of boardList; track $index){
+                <option value="{{board}}">{{board}}</option>
+                }
+              </select>
             </div>
-            }
+            <label>SECTION</label>
+            <input id="typeahead-format" type="text" class="form-control" name="section" [(ngModel)]="section"
+              [ngbTypeahead]="search" [resultFormatter]="formatter" />
+            <button class="btn btn-primary" (click)="addSection()">ADD</button>
+          </ng-template>
+        </ng-container>
+
+        <ng-container ngbNavItem="MPS">
+          <button ngbNavLink>MPS</button>
+          <ng-template ngbNavContent>
+            <div class="mt-5"></div>
+            <div class="form-group">
+              <label>BOARD</label>
+              <select class="form-select" [(ngModel)]="board">
+                <option value="" selected disabled>Select Board</option>
+                @for(board of boardList; track $index){
+                <option value="{{board}}">{{board}}</option>
+                }
+              </select>
+            </div>
+            <div class="form-group">
+              <label>SECTION</label>
+              <select class="form-select" [(ngModel)]="section">
+                <option value="" selected disabled>Select Board</option>
+                @for(section of sectionList; track $index){
+                <option value="{{section}}">{{section}}</option>
+                }
+              </select>
+            </div>
+            <label>MPS</label>
+            <input id="typeahead-format" class="form-control" type="number" name="mps" [(ngModel)]="mps"
+              [ngbTypeahead]="search" [resultFormatter]="formatter" />
+            <button class="btn btn-primary" (click)="addMPS()">ADD</button>
+          </ng-template>
+        </ng-container>
+
+        <ng-container ngbNavItem="station">
+          <button ngbNavLink>STATION</button>
+          <ng-template ngbNavContent>
+            <div class="mt-5"></div>
+            <div class="form-group">
+              <label>BOARD</label>
+              <select class="form-select">
+                <option value="" selected disabled>Select Board</option>
+                @for(board of boardList; track $index){
+                <option value="{{board}}">{{board}}</option>
+                }
+              </select>
+            </div>
+            <div class="form-group">
+              <label>SECTION</label>
+              <select class="form-select" [(ngModel)]="section">
+                <option value="" selected disabled>Select Board</option>
+                @for(section of sectionList; track $index){
+                <option value="{{section}}">{{section}}</option>
+                }
+              </select>
+            </div>
+            <label>STATION</label>
+            <input id="typeahead-format" class="form-control" type="text" name="station" [(ngModel)]="station"
+              [ngbTypeahead]="search" [resultFormatter]="formatter" />
+            <button class="btn btn-primary" (click)="addStation()">ADD</button>
+          </ng-template>
+        </ng-container>
+
+        <ng-container ngbNavItem="slot">
+          <button ngbNavLink>SLOT</button>
+          <ng-template ngbNavContent>
+            <div class="mt-5"></div>
+            <div class="form-group">
+              <label>BOARD</label>
+              <select class="form-select" [(ngModel)]="board">
+                <option value="" selected disabled>Select Board</option>
+                @for(board of boardList; track $index){
+                <option value="{{board}}">{{board}}</option>
+                }
+              </select>
+            </div>
+            <div class="form-group">
+              <label>SECTION</label>
+              <select class="form-select" [(ngModel)]="section">
+                <option value="" selected disabled>Select Board</option>
+                @for(section of sectionList; track $index){
+                <option value="{{section}}">{{section}}</option>
+                }
+              </select>
+            </div>
+            <label>AVAILABLE SLOT</label>
+            <br>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+              AVAILABLE SLOT
+            </button>
+          </ng-template>
+        </ng-container>
+
+        <ng-container ngbNavItem="machine">
+          <button ngbNavLink>machine</button>
+          <ng-template ngbNavContent>
+            <div class="mt-5"></div>
+            <label>MACHINE</label>
+            <input id="typeahead-format" class="form-control" type="text" name="machine" [(ngModel)]="machine"
+              [ngbTypeahead]="search" [resultFormatter]="formatter" />
+            <button class="btn btn-primary" (click)="addMachine()">ADD</button>
+          </ng-template>
+        </ng-container>
+
+      </div>
+
+      <div [ngbNavOutlet]="nav" class="ms-4"></div>
+    </div>
+    <div class="col-6">
+      <div class="details">
+        <div class="">
+          <h3>Details:</h3>
+          <hr>
+          @for(board of sup_board_wise | keyvalue; track $index){
+          <div class="d-flex align-items-center">
+            <div class="">
+              BOARD:
+            </div>
+            <h3> {{board.key}}</h3>
           </div>
+          @for(item of sup_board_wise[board.key]; track $index){
+          <div>SECTION: <b>{{item['section']}}</b></div>
+          <div>DIRECTIONS: {{item['directions']}}</div>
+          <div>MPS: <b>{{item['mps']}}</b></div>
+          <div>STATIONS: <b>{{item['stations']}}</b></div>
+          <div>SLOTS: <b>{{item['slots'] | json}}</b></div>
+          <hr>
+          }
+          <hr>
+          }
+        </div>
+        <div class="">
+          <h3>Machines</h3>
+          <ul>
+            @for(item of machineList; track $index){
+            <li>{{item.machine}}</li>
+            }
+          </ul>
         </div>
       </div>
     </div>
-  </div>
-  <h3>Add:</h3>
-  <div class="">board: {{board}}</div>
-  <div class="">section: {{section}}</div>
-  <div class="">stations:
-    <ul>
-      @for(item of stations; track $index){
-      <li class="">{{item}}</li>
-      }
-    </ul>
   </div>
 </div>
 
 
 
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">AVAILABLE SLOTS</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body ">
+        <div class="">
+          <div class="">DIRECTION</div>
+          @for (item of directions; track $index) {
+          <input type="checkbox" class="btn-check" id='{{$index}}' [(ngModel)]="directions[$index]['checked']">
+          <label class="btn btn-outline-primary" for={{$index}}>{{item['direction']}}</label>
+          }
+        </div>
+        <hr>
+        @for (direction of directions; track $index) {
+        @if(direction['checked']){
+        <div class="">
+          <h3 class="">{{direction['direction']}}</h3>
+          <div class="">Repeat on</div>
+          <input type="checkbox" class="btn-check" id="Sunday{{selectedAvl}}{{$index}}" [(ngModel)]="direction.days[0]">
+          <label class="btn btn-outline-primary" for="Sunday{{selectedAvl}}{{$index}}">S</label>
+          <input type="checkbox" class="btn-check" id="Monday{{selectedAvl}}{{$index}}" [(ngModel)]="direction.days[1]">
+          <label class="btn btn-outline-primary" for="Monday{{selectedAvl}}{{$index}}">M</label>
+          <input type="checkbox" class="btn-check" id="Tuesday{{selectedAvl}}{{$index}}"
+            [(ngModel)]="direction.days[2]">
+          <label class="btn btn-outline-primary" for="Tuesday{{selectedAvl}}{{$index}}">T</label>
+          <input type="checkbox" class="btn-check" id="Wednesday{{selectedAvl}}{{$index}}"
+            [(ngModel)]="direction.days[3]">
+          <label class="btn btn-outline-primary" for="Wednesday{{selectedAvl}}{{$index}}">W</label>
+          <input type="checkbox" class="btn-check" id="Thursday{{selectedAvl}}{{$index}}"
+            [(ngModel)]="direction.days[4]">
+          <label class="btn btn-outline-primary" for="Thursday{{selectedAvl}}{{$index}}">T</label>
+          <input type="checkbox" class="btn-check" id="Friday{{selectedAvl}}{{$index}}" [(ngModel)]="direction.days[5]">
+          <label class="btn btn-outline-primary" for="Friday{{selectedAvl}}{{$index}}">F</label>
+          <input type="checkbox" class="btn-check" id="Saturday{{selectedAvl}}{{$index}}"
+            [(ngModel)]="direction.days[6]">
+          <label class="btn btn-outline-primary" for="Saturday{{selectedAvl}}{{$index}}">S</label>
+          <div class="mt-3">Timing</div>
+          <div class="row  justify-content-center">
+            <div class="col-6 ">
+              <label>Start:</label>
+              <ngb-timepicker [(ngModel)]="direction['start']" />
+            </div>
+            <div class="col-6">
+              <label>end:</label>
+              <ngb-timepicker [(ngModel)]="direction['end']" />
+            </div>
+          </div>
+          <hr>
+        </div>
+        }
+        }
 
-
-
-
-<!-- <div class="">
-    <div class="">Repeat on</div>
-    <input type="checkbox" class="btn-check" id="Sunday">
-    <label class="btn btn-outline-primary" for="Sunday">Sunday</label>
-    <input type="checkbox" class="btn-check" id="Monday">
-    <label class="btn btn-outline-primary" for="Monday">Monday</label>
-    <input type="checkbox" class="btn-check" id="Tuesday">
-    <label class="btn btn-outline-primary" for="Tuesday">Tuesday</label>
-    <input type="checkbox" class="btn-check" id="Wednesday">
-    <label class="btn btn-outline-primary" for="Wednesday">Wednesday</label>
-    <input type="checkbox" class="btn-check" id="Thursday">
-    <label class="btn btn-outline-primary" for="Thursday">Thursday</label>
-    <input type="checkbox" class="btn-check" id="Friday">
-    <label class="btn btn-outline-primary" for="Friday">Friday</label>
-    <input type="checkbox" class="btn-check" id="Saturday">
-    <label class="btn btn-outline-primary" for="Saturday">Saturday</label>
-  </div> -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="onSubmitAvl()">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>

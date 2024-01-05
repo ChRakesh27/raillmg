@@ -61,6 +61,10 @@ export class AddMachineRollComponent implements OnInit {
       ),
       machineFormArray: this.fb.array([]),
     });
+
+    // this.service.getAllRailDetails().subscribe((data) => {
+    //   console.log(data);
+    // });
   }
 
   onSubmit() {
@@ -103,7 +107,6 @@ export class AddMachineRollComponent implements OnInit {
       };
     });
 
-    console.log('🚀 ~ payload:', payload);
     this.service.setMachineRoll(payload).subscribe(() => {
       for (let index = this.machineFormArray.length - 1; index >= 0; index--) {
         this.machineFormArray.removeAt(index);
