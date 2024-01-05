@@ -11,7 +11,6 @@ export const hotSettings: Handsontable.GridSettings = {
   filters: true,
   manualColumnMove: true,
   rowHeights: 30,
-  colWidths: 300,
   comments: true,
   width: '100%',
   height: '70vh',
