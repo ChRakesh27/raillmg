@@ -7,11 +7,8 @@
   border-right: 2px solid;
   height: 84vh;
 }
-.details {
-  overflow: scroll;
-  height: 86vh;
-}
+
 .avl-slot {
   overflow: scroll;
-  height: 50%;
+  height: 50vh;
 }
