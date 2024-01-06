@@ -8,9 +8,9 @@
             <div class="row ">
               <div class="col-6 AddDetails">
                 <label>BOARD</label>
-                <input id="typeahead-format" class="form-control" type="text" name="board" [(ngModel)]="board"
-                  [ngbTypeahead]="search" [resultFormatter]="formatter" />
-                <button class="btn btn-primary" (click)="addBoard()">ADD</button>
+                <input id="typeahead-format" class="form-control mt-3 mb-3" type="text" name="board"
+                  (change)="onSelectBoard($event)" [ngbTypeahead]="search" [resultFormatter]="formatter" />
+                <button class="btn btn-primary form-control mt-3" (click)="addBoard()">ADD</button>
               </div>
               <div class="col-6">
                 <div class="">Board</div>
@@ -30,7 +30,7 @@
               <div class="col-6 AddDetails">
                 <div class="form-group">
                   <label>BOARD</label>
-                  <select class="form-select" [(ngModel)]="board">
+                  <select class="form-select mt-3 mb-3" (change)="onSelectBoard($event)">
                     <option value="" selected disabled>Select Board</option>
                     @for(board of boardList; track $index){
                     <option value="{{board}}">{{board}}</option>
@@ -38,11 +38,12 @@
                   </select>
                 </div>
                 <label>SECTION</label>
-                <input id="typeahead-format" type="text" class="form-control" name="section" [(ngModel)]="section"
-                  [ngbTypeahead]="search" [resultFormatter]="formatter" />
-                <button class="btn btn-primary" (click)="addSection()">ADD</button>
+                <input id="typeahead-format" type="text" class="form-control mt-3 mb-3" name="section"
+                  (change)="onSelectSection($event)" [ngbTypeahead]="search" [resultFormatter]="formatter" />
+                <button class="btn btn-primary form-control mt-3" (click)="addSection()">ADD</button>
               </div>
               <div class="col-6">
+
                 <div class="">section</div>
                 @for(item of dataSet; track $index){
                 @if(item.board===board){
@@ -61,7 +62,7 @@
               <div class="col-6 AddDetails">
                 <div class="form-group">
                   <label>BOARD</label>
-                  <select class="form-select" [(ngModel)]="board">
+                  <select class="form-select mt-3 mb-3" (change)="onSelectBoard($event)">
                     <option value="" selected disabled>Select Board</option>
                     @for(board of boardList; track $index){
                     <option value="{{board}}">{{board}}</option>
@@ -70,7 +71,7 @@
                 </div>
                 <div class="form-group">
                   <label>SECTION</label>
-                  <select class="form-select" [(ngModel)]="section">
+                  <select class="form-select mt-3 mb-3" (change)="onSelectSection($event)">
                     <option value="" selected disabled>Select Board</option>
                     @for(section of sectionList; track $index){
                     <option value="{{section}}">{{section}}</option>
@@ -78,9 +79,9 @@
                   </select>
                 </div>
                 <label>MPS</label>
-                <input id="typeahead-format" class="form-control" type="number" name="mps" [(ngModel)]="mps"
+                <input id="typeahead-format" class="form-control mt-3 mb-3" type="number" name="mps" [(ngModel)]="mps"
                   [ngbTypeahead]="search" [resultFormatter]="formatter" />
-                <button class="btn btn-primary" (click)="addMPS()">ADD</button>
+                <button class="btn btn-primary form-control mt-3" (click)="addMPS()">ADD</button>
               </div>
               <div class="col-6">
                 <div class="">mps</div>
@@ -101,7 +102,7 @@
               <div class="col-6 AddDetails">
                 <div class="form-group">
                   <label>BOARD</label>
-                  <select class="form-select" [(ngModel)]="board">
+                  <select class="form-select mt-3 mb-3" (change)="onSelectBoard($event)">
                     <option value="" selected disabled>Select Board</option>
                     @for(board of boardList; track $index){
                     <option value="{{board}}">{{board}}</option>
@@ -110,7 +111,7 @@
                 </div>
                 <div class="form-group">
                   <label>SECTION</label>
-                  <select class="form-select" [(ngModel)]="section">
+                  <select class="form-select mt-3 mb-3" (change)="onSelectSection($event)">
                     <option value="" selected disabled>Select Board</option>
                     @for(section of sectionList; track $index){
                     <option value="{{section}}">{{section}}</option>
@@ -118,9 +119,9 @@
                   </select>
                 </div>
                 <label>STATION</label>
-                <input id="typeahead-format" class="form-control" type="text" name="station" [(ngModel)]="station"
-                  [ngbTypeahead]="search" [resultFormatter]="formatter" />
-                <button class="btn btn-primary" (click)="addStation()">ADD</button>
+                <input id="typeahead-format" class="form-control mt-3 mb-3" type="text" name="station"
+                  [(ngModel)]="station" [ngbTypeahead]="search" [resultFormatter]="formatter" />
+                <button class="btn btn-primary form-control mt-3" (click)="addStation()">ADD</button>
               </div>
               <div class="col-6">
                 <div class="">STATION</div>
@@ -138,10 +139,10 @@
           <button ngbNavLink>SLOT</button>
           <ng-template ngbNavContent>
             <div class="row ">
-              <div class="col-6 AddDetails">
+              <div class="col-6 avlslot">
                 <div class="form-group">
                   <label>BOARD</label>
-                  <select class="form-select" [(ngModel)]="board">
+                  <select class="form-select mt-3 mb-3" (change)="onSelectBoard($event)">
                     <option value="" selected disabled>Select Board</option>
                     @for(board of boardList; track $index){
                     <option value="{{board}}">{{board}}</option>
@@ -150,7 +151,7 @@
                 </div>
                 <div class="form-group">
                   <label>SECTION</label>
-                  <select class="form-select" [(ngModel)]="section">
+                  <select class="form-select mt-3 mb-3" (change)="onSelectSection($event)">
                     <option value="" selected disabled>Select Board</option>
                     @for(section of sectionList; track $index){
                     <option value="{{section}}">{{section}}</option>
@@ -159,61 +160,60 @@
                 </div>
                 <div class="">
                   <div class="">DIRECTION</div>
-
                   @for (item of directions; track $index) {
                   <input type="checkbox" class="btn-check" id='{{$index}}' [(ngModel)]="directions[$index]['checked']">
                   <label class="btn btn-outline-primary ms-3" for={{$index}}>{{item['direction']}}</label>
-
                   }
                 </div>
                 <label>AVAILABLE SLOT</label>
                 <br>
                 <div class="avl-slot">
                   <hr>
-                  @for (direction of directions; track $index) {
-                  @if(direction['checked']){
                   <div class="">
-                    <h3 class="">{{direction['direction']}}</h3>
-                    <div class="">Repeat on</div>
-                    <input type="checkbox" class="btn-check" id="Sunday{{selectedAvl}}{{$index}}"
-                      [(ngModel)]="direction.days[0]">
-                    <label class="btn btn-outline-primary ms-3" for="Sunday{{selectedAvl}}{{$index}}">S</label>
-                    <input type="checkbox" class="btn-check" id="Monday{{selectedAvl}}{{$index}}"
-                      [(ngModel)]="direction.days[1]">
-                    <label class="btn btn-outline-primary ms-3" for="Monday{{selectedAvl}}{{$index}}">M</label>
-                    <input type="checkbox" class="btn-check" id="Tuesday{{selectedAvl}}{{$index}}"
-                      [(ngModel)]="direction.days[2]">
-                    <label class="btn btn-outline-primary ms-3" for="Tuesday{{selectedAvl}}{{$index}}">T</label>
-                    <input type="checkbox" class="btn-check" id="Wednesday{{selectedAvl}}{{$index}}"
-                      [(ngModel)]="direction.days[3]">
-                    <label class="btn btn-outline-primary ms-3" for="Wednesday{{selectedAvl}}{{$index}}">W</label>
-                    <input type="checkbox" class="btn-check" id="Thursday{{selectedAvl}}{{$index}}"
-                      [(ngModel)]="direction.days[4]">
-                    <label class="btn btn-outline-primary ms-3" for="Thursday{{selectedAvl}}{{$index}}">T</label>
-                    <input type="checkbox" class="btn-check" id="Friday{{selectedAvl}}{{$index}}"
-                      [(ngModel)]="direction.days[5]">
-                    <label class="btn btn-outline-primary ms-3" for="Friday{{selectedAvl}}{{$index}}">F</label>
-                    <input type="checkbox" class="btn-check" id="Saturday{{selectedAvl}}{{$index}}"
-                      [(ngModel)]="direction.days[6]">
-                    <label class="btn btn-outline-primary ms-3" for="Saturday{{selectedAvl}}{{$index}}">S</label>
-                    <div class="mt-3">Timing</div>
-                    <div class="row  justify-content-center">
-                      <div class="col-6 ">
-                        <label>Start:</label>
-                        <ngb-timepicker [(ngModel)]="direction['start']" />
+                    @for (direction of directions; track $index) {
+                    @if(direction['checked']){
+                    <div class="">
+                      <h3 class="">{{direction['direction']}}</h3>
+                      <div class="">Repeat on</div>
+                      <input type="checkbox" class="btn-check" id="Sunday{{selectedAvl}}{{$index}}"
+                        [(ngModel)]="direction.days[0]">
+                      <label class="btn btn-outline-primary ms-3" for="Sunday{{selectedAvl}}{{$index}}">S</label>
+                      <input type="checkbox" class="btn-check" id="Monday{{selectedAvl}}{{$index}}"
+                        [(ngModel)]="direction.days[1]">
+                      <label class="btn btn-outline-primary ms-3" for="Monday{{selectedAvl}}{{$index}}">M</label>
+                      <input type="checkbox" class="btn-check" id="Tuesday{{selectedAvl}}{{$index}}"
+                        [(ngModel)]="direction.days[2]">
+                      <label class="btn btn-outline-primary ms-3" for="Tuesday{{selectedAvl}}{{$index}}">T</label>
+                      <input type="checkbox" class="btn-check" id="Wednesday{{selectedAvl}}{{$index}}"
+                        [(ngModel)]="direction.days[3]">
+                      <label class="btn btn-outline-primary ms-3" for="Wednesday{{selectedAvl}}{{$index}}">W</label>
+                      <input type="checkbox" class="btn-check" id="Thursday{{selectedAvl}}{{$index}}"
+                        [(ngModel)]="direction.days[4]">
+                      <label class="btn btn-outline-primary ms-3" for="Thursday{{selectedAvl}}{{$index}}">T</label>
+                      <input type="checkbox" class="btn-check" id="Friday{{selectedAvl}}{{$index}}"
+                        [(ngModel)]="direction.days[5]">
+                      <label class="btn btn-outline-primary ms-3" for="Friday{{selectedAvl}}{{$index}}">F</label>
+                      <input type="checkbox" class="btn-check" id="Saturday{{selectedAvl}}{{$index}}"
+                        [(ngModel)]="direction.days[6]">
+                      <label class="btn btn-outline-primary ms-3" for="Saturday{{selectedAvl}}{{$index}}">S</label>
+                      <div class="mt-3">Timing</div>
+                      <div class="row">
+                        <div class="col-6">
+                          <label>Start:</label>
+                          <ngb-timepicker [(ngModel)]="direction['start']" />
+                        </div>
+                        <div class="col-6">
+                          <label>end:</label>
+                          <ngb-timepicker [(ngModel)]="direction['end']" />
+                        </div>
                       </div>
-                      <div class="col-6">
-                        <label>end:</label>
-                        <ngb-timepicker [(ngModel)]="direction['end']" />
-                      </div>
+                      <hr>
                     </div>
-                    <hr>
+                    }
+                    }
                   </div>
-                  }
-                  }
-
                 </div>
-                <button type="button" class="btn btn-primary" (click)="onSubmitAvl()">Submit</button>
+                <button type="button" class="btn btn-primary form-control" (click)="onSubmitAvl()">ADD</button>
               </div>
               <div class="col-6">
                 <div class="">STATION</div>
@@ -243,9 +243,9 @@
             <div class="row">
               <div class="col-6 AddDetails">
                 <label>MACHINE</label>
-                <input id="typeahead-format" class="form-control" type="text" name="machine" [(ngModel)]="machine"
-                  [ngbTypeahead]="search" [resultFormatter]="formatter" />
-                <button class="btn btn-primary" (click)="addMachine()">ADD</button>
+                <input id="typeahead-format" class="form-control mt-3 mb-3" type="text" name="machine"
+                  [(ngModel)]="machine" [ngbTypeahead]="search" [resultFormatter]="formatter" />
+                <button class="btn btn-primary form-control mt-3" (click)="addMachine()">ADD</button>
               </div>
               <div class="col-6">
                 <div class="">MACHINES</div>
@@ -266,7 +266,7 @@
 </div>
 
 
-
+<!-- 
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
   aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -330,4 +330,4 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->

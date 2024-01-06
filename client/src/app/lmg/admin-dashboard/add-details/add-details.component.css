@@ -5,10 +5,10 @@
 }
 .AddDetails {
   border-right: 2px solid;
-  height: 84vh;
+  height: 80vh;
+  margin-top: 30px;
 }
 
-.avl-slot {
-  overflow: scroll;
-  height: 50vh;
+.avlslot {
+  border-right: 2px solid;
 }

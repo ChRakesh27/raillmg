@@ -25,7 +25,7 @@ router.patch('/:id', async (req, res) => {
     try {
         const id = req.params.id
         const data = req.body;
-        const docs = await boards.findByIdAndUpdate(id, data);
+        const docs = await boards.findByIdAndUpdate(id, data, { new: true });
         res.send(docs)
     } catch (error) {
         res.send(error)

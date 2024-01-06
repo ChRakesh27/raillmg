@@ -41,11 +41,12 @@ export class AddDetailsComponent {
   station = '';
   machine = '';
   slot = '';
-
+  sectionSeleted = {};
   boardList = [];
   sectionList = [];
   machineList = [];
   stationList = [];
+  selectIndex: number;
   dataSet = [];
 
   directions = [
@@ -89,8 +90,6 @@ export class AddDetailsComponent {
     'friday',
     'saturday',
   ];
-
-  sup_board_wise = {};
   constructor(
     private service: AppService,
     private toastService: ToastService
@@ -107,15 +106,6 @@ export class AddDetailsComponent {
     Promise.resolve().then(() => {
       this.service.getAllRailDetails('railDetails').subscribe((data) => {
         this.dataSet = data;
-        for (let item of data) {
-          if (!this.sectionList.includes(item.section)) {
-            this.sectionList.push(item.section);
-          }
-          if (this.sup_board_wise[item.board] === undefined) {
-            this.sup_board_wise[item.board] = [];
-          }
-          this.sup_board_wise[item.board].push(item);
-        }
       });
     });
     Promise.resolve().then(() => {
@@ -139,6 +129,29 @@ export class AddDetailsComponent {
               .slice(0, 10)
       )
     );
+
+  onSelectBoard(e) {
+    this.board = e.target.value;
+    for (let item of this.dataSet) {
+      if (item.board === this.board) {
+        this.sectionList.push(item.section);
+      }
+    }
+  }
+
+  onSelectSection(e) {
+    this.section = e.target.value;
+    for (let index in this.dataSet) {
+      if (
+        this.dataSet[index].board === this.board &&
+        this.dataSet[index].section === this.section
+      ) {
+        this.sectionSeleted = this.dataSet[index];
+        this.selectIndex = +index;
+      }
+    }
+    this.dataSet.forEach(function (item, i) {});
+  }
 
   onSubmitAvl() {
     for (let item of this.directions) {
@@ -171,70 +184,99 @@ export class AddDetailsComponent {
           startHur + ':' + startMin + ' to ' + endHur + ':' + endMin + ' hrs',
       };
     }
-
-    const sectionSeleted = this.dataSet.find(
-      (ele) => ele.section === this.section
-    );
     const payload = {
       directions: Object.keys(this.avlPreview),
-      slots: { ...sectionSeleted.slots, ...this.avlPreview },
+      slots: { ...this.sectionSeleted['slots'], ...this.avlPreview },
     };
-
+    if (
+      this.board == '' &&
+      this.section == '' &&
+      Object.keys(this.avlPreview).length == 0
+    ) {
+      this.toastService.showWarning('enter valid Details');
+      return;
+    }
     this.service
-      .updateRailDetails('railDetails', sectionSeleted._id, payload)
+      .updateRailDetails('railDetails', this.sectionSeleted['_id'], payload)
       .subscribe((res) => {
         this.toastService.showSuccess('successfully submitted');
+        this.dataSet[this.selectIndex] = res;
       });
   }
 
   addBoard() {
+    if (this.board == '') {
+      this.toastService.showWarning('enter valid Details');
+      return;
+    }
+
     const payload = {
       board: this.board,
     };
     this.service.addRailDetails('boards', payload).subscribe((res) => {
       this.toastService.showSuccess('successfully submitted');
       this.boardList.push(this.board);
+      this.board = '';
     });
   }
 
   addSection() {
+    if (this.board == '' && this.section == '') {
+      this.toastService.showWarning('enter valid Details');
+      return;
+    }
     const payload = { board: this.board, section: this.section };
     this.service.addRailDetails('railDetails', payload).subscribe((res) => {
+      this.dataSet[this.dataSet.length] = res;
+      this.sectionList.push(this.section);
       this.toastService.showSuccess('successfully submitted');
+      this.section = '';
     });
   }
 
   addMPS() {
-    const sectionSeleted = this.dataSet.find(
-      (ele) => ele.section === this.section
-    );
+    if (this.board == '' && this.section == '' && this.mps == '') {
+      this.toastService.showWarning('enter valid Details');
+      return;
+    }
     const payload = { mps: this.mps };
     this.service
-      .updateRailDetails('railDetails', sectionSeleted._id, payload)
+      .updateRailDetails('railDetails', this.sectionSeleted['_id'], payload)
       .subscribe((res) => {
+        this.dataSet[this.selectIndex] = res;
         this.toastService.showSuccess('successfully submitted');
+        this.mps = '';
       });
   }
 
   addStation() {
-    const sectionSeleted = this.dataSet.find(
-      (ele) => ele.section === this.section
-    );
-    const payload = { stations: [...sectionSeleted.stations, this.station] };
+    if (this.board == '' && this.section == '' && this.station == '') {
+      this.toastService.showWarning('enter valid Details');
+      return;
+    }
+    const payload = {
+      stations: [...this.sectionSeleted['stations'], this.station],
+    };
     this.service
-      .updateRailDetails('railDetails', sectionSeleted._id, payload)
+      .updateRailDetails('railDetails', this.sectionSeleted['_id'], payload)
       .subscribe((res) => {
         this.toastService.showSuccess('successfully submitted');
+        this.dataSet[this.selectIndex] = res;
+        this.stationList.push(this.station);
+        this.station = '';
       });
   }
 
-  addSlot() {}
-
   addMachine() {
+    if (this.machine == '') {
+      this.toastService.showWarning('enter valid Details');
+      return;
+    }
     const payload = { machine: this.machine };
     this.service.addRailDetails('machines', payload).subscribe((res) => {
       this.toastService.showSuccess('successfully submitted');
       this.machineList.push(res);
+      this.machine = '';
     });
   }
 }
