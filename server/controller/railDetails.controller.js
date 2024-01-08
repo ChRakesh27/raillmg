@@ -5,7 +5,13 @@ const router = express.Router()
 
 router.get('/', async (req, res) => {
     try {
-        const docs = await railDetails.find();
+        let docs = []
+        if (req.query.board) {
+            docs = await railDetails.find({ board: req.query.board });
+        } else {
+            docs = await railDetails.find();
+        }
+        console.log("🚀 ~ docs:", docs)
         res.send(docs)
     } catch (error) {
         res.send(error)
