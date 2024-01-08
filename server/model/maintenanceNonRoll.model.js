@@ -59,5 +59,5 @@ const maintenanceNonRollSchema = new Schema({
 
 
 
-const maintenanceNonRoll = mongoose.model("machineRoll", maintenanceNonRollSchema);
+const maintenanceNonRoll = mongoose.model("maintenanceNonRoll", maintenanceNonRollSchema);
 module.exports = maintenanceNonRoll
