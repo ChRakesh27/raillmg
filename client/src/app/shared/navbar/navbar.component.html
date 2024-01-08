@@ -69,18 +69,22 @@
           <ul class="dropdown-menu">
             <li>
               <a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
-                [routerLink]="['report', 'rolling']">Demand Rolling</a>
+                [routerLink]="['report', 'machineRolls']">Machine Roll</a>
             </li>
             <li>
-              <a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown">Demand
+              <a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                [routerLink]="['report', 'machineNonRolls']">Machine
                 Non-Rolling</a>
             </li>
             <li>
-              <a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown">Machine Block</a>
+              <a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                [routerLink]="['report', 'maintenanceRolls']">maintenance
+                Roll</a>
             </li>
             <li>
-              <a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown">maintenance
-                Block</a>
+              <a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                [routerLink]="['report', 'maintenanceNonRolls']">maintenance
+                Non-Roll</a>
             </li>
             <li>
               <a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown">Block summary</a>
@@ -105,7 +109,7 @@
         </li>
         @if(userData['department']==='OPERATING'){
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <a class="nav-link dropdown-toggle active" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Dashboard
           </a>
           <ul class="dropdown-menu">

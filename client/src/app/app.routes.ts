@@ -58,7 +58,19 @@ export const routes: Routes = [
         path: 'report',
         children: [
           {
-            path: 'rolling',
+            path: 'machineRolls',
+            component: MachineRollComponent,
+          },
+          {
+            path: 'machineNonRolls',
+            component: MachineRollComponent,
+          },
+          {
+            path: 'maintenanceRolls',
+            component: MachineRollComponent,
+          },
+          {
+            path: 'maintenanceNonRolls',
             component: MachineRollComponent,
           },
         ],

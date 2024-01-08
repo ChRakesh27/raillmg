@@ -130,7 +130,6 @@ export class AddMachineConstComponent implements OnInit {
     });
 
     this.service.setMachineRoll(this.domain, payload).subscribe((res) => {
-      console.log('🚀 ~ res:', res);
       for (let index = this.machineFormArray.length - 1; index >= 0; index--) {
         this.machineFormArray.removeAt(index);
       }

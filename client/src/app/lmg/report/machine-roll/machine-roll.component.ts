@@ -7,6 +7,7 @@ import * as Papa from 'papaparse';
 import * as XLSX from 'xlsx';
 import { ToastService } from '../../../shared/toast/toast.service';
 import { hotSettings } from '../../../shared/constants/hotSettings';
+import { ActivatedRoute, Router } from '@angular/router';
 
 registerAllModules();
 @Component({
@@ -27,12 +28,15 @@ export class MachineRollComponent implements OnInit {
 
   constructor(
     private service: AppService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private route: Router
   ) {}
 
   ngOnInit() {
+    const domain = this.route.url.split('/');
+    const url = domain[domain.length - 1];
     Promise.resolve().then(() => {
-      this.service.getAllMachineRoll('machineRolls').subscribe((data) => {
+      this.service.getAllMachineRoll(url).subscribe((data) => {
         const hot = this.hotRegisterer.getInstance(this.id);
         hot.updateData(data);
       });
