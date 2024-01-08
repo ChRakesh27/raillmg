@@ -12,7 +12,7 @@ const LogSchema = new Schema({
     versionKey: false
 })
 
-const maintancesNonRollSchema = new Schema({
+const maintenanceRollSchema = new Schema({
     _id: { type: mongoose.Types.ObjectId, auto: true },
     date: { type: String },
     department: { type: String },
@@ -59,5 +59,5 @@ const maintancesNonRollSchema = new Schema({
 
 
 
-const maintancesNonRoll = mongoose.model("machineRoll", maintancesNonRollSchema);
-module.exports = maintancesNonRoll
+const maintenanceRoll = mongoose.model("maintenanceRoll", maintenanceRollSchema);
+module.exports = maintenanceRoll
