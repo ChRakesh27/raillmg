@@ -25,7 +25,7 @@ export class VerifyDemandComponent {
   id_rolling = 'hotInstance_rolling';
   id_non_rolling = 'hotInstance_non-rolling';
   constColumns = [
-    { data: 'date', title: 'Date' },
+    { data: 'date', title: 'Date', width: 100 },
     { data: 'department', title: 'DEPARTMENT' },
     {
       data: 'board',
@@ -133,9 +133,6 @@ export class VerifyDemandComponent {
 
   hotSettings: Handsontable.GridSettings = {
     ...hotSettings,
-    rowHeights: 40,
-    colWidths: 180,
-    width: '100%',
     height: '35vh',
     afterChange: (changes) => {
       changes?.forEach(([row, prop, oldValue, newValue]) => {

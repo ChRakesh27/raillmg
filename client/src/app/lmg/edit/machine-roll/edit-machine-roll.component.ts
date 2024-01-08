@@ -44,7 +44,6 @@ export class EditMachineRollComponent {
               return;
             }
           }
-
           let data = this.dataSet.find((item) => item._id === id);
           if (!data.logs.length) data.logs = [];
 

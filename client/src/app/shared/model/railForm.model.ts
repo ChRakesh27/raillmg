@@ -3,14 +3,7 @@ export interface IRailForm {
   board: string;
   section: string;
   mps: number;
-  slots: {
-    id: number;
-    direction: string;
-    days: String[];
-    start: object;
-    end: object;
-    checked: boolean;
-  }[];
+  slots: {};
   directions: string[];
   stations: string[];
 }

@@ -14,7 +14,6 @@ import { IRailForm } from '../model/railForm.model';
 import { DateTime } from 'luxon';
 import { AppService } from '../../app.service';
 import { AvailableSlotsConfig } from '../constants/available-slots';
-import { stationList } from '../constants/station-list';
 import { IUser } from '../model/user.model';
 import { localStorageService } from '../service/local-storage.service';
 import { ToastService } from '../toast/toast.service';
@@ -33,12 +32,13 @@ export class AddMachineConstComponent implements OnInit {
   userData: Partial<IUser> = {};
   availableSlots = {};
   cautions = [];
-  stations = stationList;
+  stations = [];
   machineType: { _id: ''; machine: '' }[];
   boardlist: { _id: ''; board: '' }[];
   sectionList = [];
   value: any;
   railDetails: IRailForm[] = [];
+  dataSet = [];
   get machineFormArray(): FormArray {
     return this.form.controls['machineFormArray'] as FormArray;
   }
@@ -74,21 +74,21 @@ export class AddMachineConstComponent implements OnInit {
         this.boardlist = data;
       });
     });
-    // Promise.resolve().then(() => {
-    //   this.service.getAllRailDetails('railDetails').subscribe((data) => {
-    //     this.railDetails = data;
-    //   });
-    // });
   }
 
   onBoardSelect(index, event) {
-    this.railDetails[index].board = event.target.value;
-    // this.service.getAllRailDetails('railDetails?board:').subscribe((data) => {
-    //   console.log('🚀 ~ data:', data);
-    //   // this.sectionList=data
-    // });
+    this.service
+      .getAllRailDetails('railDetails?board=' + event.target.value)
+      .subscribe((data) => {
+        this.dataSet = data;
+        this.sectionList = data.map((ele) => ele.section);
+      });
   }
-
+  onSectionSelect(index, event) {
+    this.railDetails = this.dataSet.filter(
+      (ele) => ele.section === event.target.value
+    );
+  }
   onSubmit() {
     if (this.machineFormArray.value.length === 0 || !this.form.valid) {
       this.toastService.showWarning('Please fill all details');
@@ -129,7 +129,8 @@ export class AddMachineConstComponent implements OnInit {
       };
     });
 
-    this.service.setMachineRoll(this.domain, payload).subscribe(() => {
+    this.service.setMachineRoll(this.domain, payload).subscribe((res) => {
+      console.log('🚀 ~ res:', res);
       for (let index = this.machineFormArray.length - 1; index >= 0; index--) {
         this.machineFormArray.removeAt(index);
       }
@@ -185,12 +186,14 @@ export class AddMachineConstComponent implements OnInit {
     this.machineFormArray.push(machineForm);
 
     const selectCtrl = machineForm.controls['section'] as FormControl;
+
     selectCtrl.valueChanges.subscribe((change) => {
       this.prepareAvailableSlots(
         change,
         machineForm.controls['direction'].value
       );
     });
+
     const directionCtrl = machineForm.controls['direction'] as FormControl;
     directionCtrl.valueChanges.subscribe((change) => {
       this.prepareAvailableSlots(machineForm.controls['section'].value, change);
@@ -199,9 +202,11 @@ export class AddMachineConstComponent implements OnInit {
   addCaution(index) {
     this.cautions[index].push({ length: '', speed: 0 });
   }
+
   deleteCaution(i, index) {
     this.cautions[i] = this.cautions[i].filter((ele, ind) => index != ind);
   }
+
   onDelete(index: number) {
     this.machineFormArray.removeAt(index);
     this.railDetails.splice(index, 1);
@@ -209,31 +214,49 @@ export class AddMachineConstComponent implements OnInit {
       this.form.get('department')?.enable();
     }
   }
+
   cautionLength($event, index1, index2) {
     this.cautions[index1][index2]['length'] = $event.target.value;
   }
+
   cautionSpeed($event, index1, index2) {
     this.cautions[index1][index2]['speed'] = $event.target.value;
   }
+
   prepareAvailableSlots(section, direction) {
+    console.log('🚀 ~ section, direction:', section, direction);
     if (!section || !direction) {
       return;
     }
     if (this.availableSlots[section + '_' + direction]) {
       return;
     }
-    const slots = AvailableSlotsConfig[section][direction.toLowerCase()];
-    if (!slots) return;
-
+    const railData = this.railDetails.find((ele) => ele.section === section);
+    const { days, time } = railData.slots[direction];
+    if (!time) return;
     let dt = DateTime.now();
-    const weekdays = [];
+    const weekdays = {
+      sunday: 0,
+      monday: 1,
+      tuesday: 2,
+      wednesday: 3,
+      thursday: 4,
+      friday: 5,
+      saturday: 6,
+    };
+
+    const avl_slot = [];
     for (let i = 0; i < 365; i++) {
-      if (slots[dt.weekday]) {
-        weekdays.push(dt.toFormat('dd/MM/yyyy') + slots[dt.weekday]);
+      for (let day of days) {
+        if (dt.weekday === weekdays[day]) {
+          avl_slot.push(
+            dt.toFormat('dd/MM/yyyy') + ' ' + time + ' ( ' + day + ' ) '
+          );
+        }
       }
       dt = dt.plus({ days: 1 });
     }
 
-    this.availableSlots[section + '_' + direction] = weekdays;
+    this.availableSlots[section + '_' + direction] = avl_slot;
   }
 }

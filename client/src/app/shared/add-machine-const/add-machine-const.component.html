@@ -66,7 +66,8 @@
                                     <div class="col-sm-6 col-md-3">
                                         <div class="form-group mt-3 mb-3">
                                             <label>SECTION</label>
-                                            <select class="form-select" formControlName="section" required>
+                                            <select class="form-select" formControlName="section"
+                                                (change)="onSectionSelect(i,$event)" required>
                                                 <option value="" selected disabled>
                                                     SELECT SECTION
                                                 </option>
@@ -83,7 +84,7 @@
                                                 <option value="" selected disabled>
                                                     SELECT STATION
                                                 </option>
-                                                @for(station of stations; track $index){
+                                                @for(station of railDetails[i].stations; track $index){
                                                 <option value="{{ station }}">{{ station }}</option>
                                                 }
                                             </select>
@@ -96,7 +97,7 @@
                                                 <option value="" selected disabled>
                                                     SELECT STATION
                                                 </option>
-                                                @for(station of stations; track $index){
+                                                @for(station of railDetails[i].stations; track $index){
                                                 <option value="{{ station }}">{{ station }}</option>
                                                 }
                                             </select>
@@ -109,9 +110,9 @@
                                                 <option value="" selected disabled>
                                                     SELECT DIRECTION
                                                 </option>
-                                                <option value="BOTH">BOTH</option>
-                                                <option value="UP">UP</option>
-                                                <option value="DN">DN</option>
+                                                @for(direction of railDetails[i].directions; track $index){
+                                                <option value="{{ direction }}">{{ direction }}</option>
+                                                }
                                             </select>
                                         </div>
                                     </div>
@@ -345,8 +346,8 @@
                                                 <input type="checkbox" formControlName="cancelTrainCheckbox" />
                                                 <label> Train Cancellation/Diversion</label>
                                                 @if(machineFormArray.controls[i].get('cancelTrainCheckbox').value){
-                                                <input type="number" class="form-control"
-                                                    placeholder="ENTER Add Remarks" formControlName="cancelTrain" />
+                                                <input type="text" class="form-control" placeholder="ENTER Add Remarks"
+                                                    formControlName="cancelTrain" />
                                                 }
                                             </div>
                                         </div>

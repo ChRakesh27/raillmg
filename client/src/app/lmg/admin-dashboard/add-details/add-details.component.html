@@ -157,7 +157,7 @@
               <div class="col-6 avlslot">
                 <div class="form-group">
                   <label>BOARD</label>
-                  <select class="form-select mt-3 mb-3" (change)="onSelectBoard($event)">
+                  <select class="form-select mt-3 mb-3" (change)="onSelectBoard($event)" required>
                     <option value="" selected disabled>Select Board</option>
                     @for(board of boardList; track $index){
                     <option value="{{board}}">{{board}}</option>
@@ -166,7 +166,7 @@
                 </div>
                 <div class="form-group">
                   <label>SECTION</label>
-                  <select class="form-select mt-3 mb-3" (change)="onSelectSection($event)">
+                  <select class="form-select mt-3 mb-3" (change)="onSelectSection($event)" required>
                     <option value="" selected disabled>Select Board</option>
                     @for(section of sectionList; track $index){
                     <option value="{{section}}">{{section}}</option>

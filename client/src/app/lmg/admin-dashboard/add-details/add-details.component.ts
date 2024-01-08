@@ -171,6 +171,10 @@ export class AddDetailsComponent {
   }
 
   onSubmitAvl() {
+    if (this.board == '' || this.section == '') {
+      this.toastService.showWarning('enter valid Details');
+      return;
+    }
     for (let item of this.directions) {
       if (!item.checked) {
         continue;
@@ -202,12 +206,16 @@ export class AddDetailsComponent {
       };
     }
     const payload = {
-      directions: Object.keys(this.avlPreview),
+      directions: [
+        ...this.sectionSeleted['directions'],
+        ...Object.keys(this.avlPreview),
+      ],
       slots: { ...this.sectionSeleted['slots'], ...this.avlPreview },
     };
+
     if (
-      this.board == '' &&
-      this.section == '' &&
+      this.board == '' ||
+      this.section == '' ||
       Object.keys(this.avlPreview).length == 0
     ) {
       this.toastService.showWarning('enter valid Details');
@@ -259,7 +267,7 @@ export class AddDetailsComponent {
   }
 
   addMPS() {
-    if (this.board == '' && this.section == '' && this.mps == '') {
+    if (this.board == '' || this.section == '' || this.mps == '') {
       this.toastService.showWarning('enter valid Details');
       return;
     }
@@ -277,7 +285,7 @@ export class AddDetailsComponent {
   }
 
   addStation() {
-    if (this.board == '' && this.section == '' && this.station == '') {
+    if (this.board == '' || this.section == '' || this.station == '') {
       this.toastService.showWarning('enter valid Details');
       return;
     }
@@ -294,6 +302,7 @@ export class AddDetailsComponent {
           this.toastService.showSuccess('successfully submitted');
           this.dataSet[this.selectIndex] = res;
           this.stationList.push(this.station);
+          this.sectionSeleted = res;
         }
       });
   }
