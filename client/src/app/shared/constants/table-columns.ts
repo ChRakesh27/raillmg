@@ -107,6 +107,7 @@ export const columns: Handsontable.ColumnSettings[] = [
   { data: 'tpcStaff', title: 'TPC STAFF', width: 100 },
   { data: 'point', title: 'POINT/BPAC/O..', width: 150 },
   { data: 'tower', title: 'TOWER/MAT...', width: 150 },
+  { data: 'cancelTrain', title: 'Train Cancel...', width: 150 },
   {
     data: 'logs',
     title: 'INFORMATION',

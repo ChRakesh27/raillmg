@@ -32,7 +32,7 @@ export class MachineRollComponent implements OnInit {
 
   ngOnInit() {
     Promise.resolve().then(() => {
-      this.service.getAllMachineRoll().subscribe((data) => {
+      this.service.getAllMachineRoll('machineRolls').subscribe((data) => {
         const hot = this.hotRegisterer.getInstance(this.id);
         hot.updateData(data);
       });

@@ -64,7 +64,7 @@ export class EditMachineRollComponent {
           };
 
           this.service
-            .updateMachineRoll(id, payload)
+            .updateMachineRoll('machineRolls', id, payload)
             .subscribe((res: IMachineRoll) => {
               Object.assign(data, res);
               hot.render();
@@ -94,17 +94,19 @@ export class EditMachineRollComponent {
   ngOnInit() {
     this.userData = this.ls.getUser();
     Promise.resolve().then(() => {
-      this.service.getAllMachineRoll().subscribe((data: IMachineRoll[]) => {
-        const hot = this.hotRegisterer.getInstance(this.id);
-        data = data.filter(
-          (item) =>
-            this.userData.department === 'OPERATING' ||
-            item.department === this.userData.department
-        );
+      this.service
+        .getAllMachineRoll('machineRolls')
+        .subscribe((data: IMachineRoll[]) => {
+          const hot = this.hotRegisterer.getInstance(this.id);
+          data = data.filter(
+            (item) =>
+              this.userData.department === 'OPERATING' ||
+              item.department === this.userData.department
+          );
 
-        this.dataSet = data;
-        hot.updateData(data);
-      });
+          this.dataSet = data;
+          hot.updateData(data);
+        });
     });
   }
 }

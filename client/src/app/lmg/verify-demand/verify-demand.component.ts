@@ -161,13 +161,15 @@ export class VerifyDemandComponent {
           updatedAt: new Date().toISOString(),
           logs: [...data.logs, log],
         };
-        this.service.updateMachineRoll(id, payload).subscribe(() => {
-          const column = hot.propToCol(headerKey);
-          const cell = hot.getCell(row, column as number);
-          cell.style.backgroundColor = 'lightblue';
-          cell.className = 'updatedCell';
-          this.toastService.showSuccess('successfully Updated');
-        });
+        this.service
+          .updateMachineRoll('machineRolls', id, payload)
+          .subscribe(() => {
+            const column = hot.propToCol(headerKey);
+            const cell = hot.getCell(row, column as number);
+            cell.style.backgroundColor = 'lightblue';
+            cell.className = 'updatedCell';
+            this.toastService.showSuccess('successfully Updated');
+          });
       });
     },
     cells: (row, col, prop) => {
@@ -204,7 +206,7 @@ export class VerifyDemandComponent {
   ngOnInit() {
     this.userData = this.ls.getUser();
     Promise.resolve().then(() => {
-      this.service.getAllMachineRoll().subscribe((data) => {
+      this.service.getAllMachineRoll('machineRolls').subscribe((data) => {
         const hot1 = this.hotRegisterer.getInstance(this.id_rolling);
         const hot2 = this.hotRegisterer.getInstance(this.id_non_rolling);
         let dt = DateTime.now();

@@ -23,16 +23,16 @@ export class AppService {
     return this.httpClient.post(this.API_HOST + '/users', data);
   }
 
-  getAllMachineRoll(): Observable<any> {
-    return this.httpClient.get(`${this.API_HOST}/machineRolls`);
+  getAllMachineRoll(url): Observable<any> {
+    return this.httpClient.get(`${this.API_HOST}/${url}`);
   }
 
-  setMachineRoll(data): Observable<any> {
-    return this.httpClient.post(this.API_HOST + '/machineRolls', data);
+  setMachineRoll(url, data): Observable<any> {
+    return this.httpClient.post(`${this.API_HOST}/${url}`, data);
   }
 
-  updateMachineRoll(id, data): Observable<any> {
-    return this.httpClient.patch(`${this.API_HOST}/machineRolls/${id}`, data);
+  updateMachineRoll(url, id, data): Observable<any> {
+    return this.httpClient.patch(`${this.API_HOST}/${url}/${id}`, data);
   }
 
   getRailDetails(id): Observable<any> {
@@ -40,7 +40,6 @@ export class AppService {
   }
 
   getAllRailDetails(url): Observable<any> {
-    // return this.httpClient.get(`${this.API_HOST}/railDetails}`);
     return this.httpClient.get(`${this.API_HOST}/${url}`);
   }
 

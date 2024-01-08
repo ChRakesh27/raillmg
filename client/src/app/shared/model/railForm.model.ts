@@ -1,7 +1,9 @@
 export interface IRailForm {
+  _id: string;
+  board: string;
   section: string;
   mps: number;
-  avl_slot: {
+  slots: {
     id: number;
     direction: string;
     days: String[];
@@ -9,6 +11,6 @@ export interface IRailForm {
     end: object;
     checked: boolean;
   }[];
-  machines: string[];
+  directions: string[];
   stations: string[];
 }

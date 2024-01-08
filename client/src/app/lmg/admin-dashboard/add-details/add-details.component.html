@@ -13,10 +13,14 @@
                 <button class="btn btn-primary form-control mt-3" (click)="addBoard()">ADD</button>
               </div>
               <div class="col-6">
-                <div class="">Board</div>
-                @for(board of boardList; track $index){
-                {{board}}
-                }
+                <h3 class="">Already added BOARD</h3>
+                <ol class="fs-5">
+                  @for(board of boardList; track $index){
+                  <li>
+                    {{board}}
+                  </li>
+                  }
+                </ol>
               </div>
             </div>
 
@@ -43,13 +47,16 @@
                 <button class="btn btn-primary form-control mt-3" (click)="addSection()">ADD</button>
               </div>
               <div class="col-6">
-
-                <div class="">section</div>
-                @for(item of dataSet; track $index){
-                @if(item.board===board){
-                {{item.section}}
-                }
-                }
+                <h3 class="">SECTION under: {{board}}</h3>
+                <ol class="fs-5">
+                  @for(item of dataSet; track $index){
+                  @if(item.board===board){
+                  <li>
+                    {{item.section}}
+                  </li>
+                  }
+                  }
+                </ol>
               </div>
             </div>
           </ng-template>
@@ -84,12 +91,16 @@
                 <button class="btn btn-primary form-control mt-3" (click)="addMPS()">ADD</button>
               </div>
               <div class="col-6">
-                <div class="">mps</div>
-                @for(item of dataSet; track $index){
-                @if(item.section===section && item.board===board){
-                {{item.mps}}
-                }
-                }
+                <h3 class="">MPS – Maximum Permission Speed under {{board}} : {{section}}</h3>
+                <ol class="fs-5">
+                  @for(item of dataSet; track $index){
+                  @if(item.section===section && item.board===board){
+                  <li>
+                    {{item.mps}} km/hr
+                  </li>
+                  }
+                  }
+                </ol>
               </div>
             </div>
           </ng-template>
@@ -124,12 +135,16 @@
                 <button class="btn btn-primary form-control mt-3" (click)="addStation()">ADD</button>
               </div>
               <div class="col-6">
-                <div class="">STATION</div>
-                @for(item of dataSet; track $index){
-                @if(item.section === section && item.board===board){
-                {{item.stations}}
-                }
-                }
+                <h3 class="">STATION under Board: {{board}} | {{section}}</h3>
+                <ol class="fs-5">
+                  @for(item of dataSet; track $index){
+                  @if(item.section === section && item.board===board){
+                  <li>
+                    {{item.stations}}
+                  </li>
+                  }
+                  }
+                </ol>
               </div>
             </div>
           </ng-template>
@@ -162,7 +177,7 @@
                   <div class="">DIRECTION</div>
                   @for (item of directions; track $index) {
                   <input type="checkbox" class="btn-check" id='{{$index}}' [(ngModel)]="directions[$index]['checked']">
-                  <label class="btn btn-outline-primary ms-3" for={{$index}}>{{item['direction']}}</label>
+                  <label class="btn btn-outline-primary ms-3" for={{$index}}>{{item['direction'] | uppercase}}</label>
                   }
                 </div>
                 <label>AVAILABLE SLOT</label>
@@ -173,7 +188,7 @@
                     @for (direction of directions; track $index) {
                     @if(direction['checked']){
                     <div class="">
-                      <h3 class="">{{direction['direction']}}</h3>
+                      <h3 class="">{{direction['direction'] | uppercase}}</h3>
                       <div class="">Repeat on</div>
                       <input type="checkbox" class="btn-check" id="Sunday{{selectedAvl}}{{$index}}"
                         [(ngModel)]="direction.days[0]">
@@ -216,22 +231,26 @@
                 <button type="button" class="btn btn-primary form-control" (click)="onSubmitAvl()">ADD</button>
               </div>
               <div class="col-6">
-                <div class="">STATION</div>
-                @for(item of dataSet; track $index){
-                @if(item.section === section && item.board===board){
-                <div class="">
-                  DIRECTIONS:{{item.directions}}
-                </div>
-                @for(ele of item.directions; track $index){
-                <div class="">
-                  DAYS:{{item.slots[ele].days}}
-                </div>
-                <div class="">
-                  TIME:{{item.slots[ele].time}}
-                </div>
-                }
-                }
-                }
+                <h3 class="">AVAILABLE SLOT under {{board}}: {{section}}</h3>
+                <ol class="fs-5">
+                  @for(item of dataSet; track $index){
+                  @if(item.section === section && item.board===board){
+                  <li>
+                    <div class="">
+                      DIRECTIONS:{{item.directions}}
+                    </div>
+                    @for(ele of item.directions; track $index){
+                    <div class="">
+                      DAYS:{{item.slots[ele].days}}
+                    </div>
+                    <div class="">
+                      TIME:{{item.slots[ele].time}}
+                    </div>
+                    }
+                  </li>
+                  }
+                  }
+                </ol>
               </div>
             </div>
           </ng-template>
@@ -248,86 +267,20 @@
                 <button class="btn btn-primary form-control mt-3" (click)="addMachine()">ADD</button>
               </div>
               <div class="col-6">
-                <div class="">MACHINES</div>
-                @for(item of machineList; track $index){
-                {{item.machine}}
-                }
+                <h3 class="">MACHINES</h3>
+                <ol class="fs-5">
+                  @for(item of machineList; track $index){
+                  <li>
+                    {{item.machine}}
+                  </li>
+                  }
+                </ol>
               </div>
             </div>
-
           </ng-template>
         </ng-container>
-
       </div>
-
       <div [ngbNavOutlet]="nav" class="ms-4"></div>
     </div>
   </div>
 </div>
-
-
-<!-- 
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-  aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="staticBackdropLabel">AVAILABLE SLOTS</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body ">
-        <div class="">
-          <div class="">DIRECTION</div>
-          @for (item of directions; track $index) {
-          <input type="checkbox" class="btn-check" id='{{$index}}' [(ngModel)]="directions[$index]['checked']">
-          <label class="btn btn-outline-primary" for={{$index}}>{{item['direction']}}</label>
-          }
-        </div>
-        <hr>
-        @for (direction of directions; track $index) {
-        @if(direction['checked']){
-        <div class="">
-          <h3 class="">{{direction['direction']}}</h3>
-          <div class="">Repeat on</div>
-          <input type="checkbox" class="btn-check" id="Sunday{{selectedAvl}}{{$index}}" [(ngModel)]="direction.days[0]">
-          <label class="btn btn-outline-primary" for="Sunday{{selectedAvl}}{{$index}}">S</label>
-          <input type="checkbox" class="btn-check" id="Monday{{selectedAvl}}{{$index}}" [(ngModel)]="direction.days[1]">
-          <label class="btn btn-outline-primary" for="Monday{{selectedAvl}}{{$index}}">M</label>
-          <input type="checkbox" class="btn-check" id="Tuesday{{selectedAvl}}{{$index}}"
-            [(ngModel)]="direction.days[2]">
-          <label class="btn btn-outline-primary" for="Tuesday{{selectedAvl}}{{$index}}">T</label>
-          <input type="checkbox" class="btn-check" id="Wednesday{{selectedAvl}}{{$index}}"
-            [(ngModel)]="direction.days[3]">
-          <label class="btn btn-outline-primary" for="Wednesday{{selectedAvl}}{{$index}}">W</label>
-          <input type="checkbox" class="btn-check" id="Thursday{{selectedAvl}}{{$index}}"
-            [(ngModel)]="direction.days[4]">
-          <label class="btn btn-outline-primary" for="Thursday{{selectedAvl}}{{$index}}">T</label>
-          <input type="checkbox" class="btn-check" id="Friday{{selectedAvl}}{{$index}}" [(ngModel)]="direction.days[5]">
-          <label class="btn btn-outline-primary" for="Friday{{selectedAvl}}{{$index}}">F</label>
-          <input type="checkbox" class="btn-check" id="Saturday{{selectedAvl}}{{$index}}"
-            [(ngModel)]="direction.days[6]">
-          <label class="btn btn-outline-primary" for="Saturday{{selectedAvl}}{{$index}}">S</label>
-          <div class="mt-3">Timing</div>
-          <div class="row  justify-content-center">
-            <div class="col-6 ">
-              <label>Start:</label>
-              <ngb-timepicker [(ngModel)]="direction['start']" />
-            </div>
-            <div class="col-6">
-              <label>end:</label>
-              <ngb-timepicker [(ngModel)]="direction['end']" />
-            </div>
-          </div>
-          <hr>
-        </div>
-        }
-        }
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="onSubmitAvl()">Submit</button>
-      </div>
-    </div>
-  </div>
-</div> -->
