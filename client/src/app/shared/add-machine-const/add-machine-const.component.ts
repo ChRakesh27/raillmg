@@ -87,8 +87,10 @@ export class AddMachineConstComponent implements OnInit {
   onSectionSelect(index, event) {
     let data = this.dataSet.filter((ele) => ele.section === event.target.value);
     this.railDetails[index] = data[0];
+    console.log('🚀 ~ this.railDetails:', this.railDetails, index);
   }
   onSubmit() {
+    console.log('hello');
     if (this.machineFormArray.value.length === 0 || !this.form.valid) {
       this.toastService.showWarning('Please fill all details');
       return;

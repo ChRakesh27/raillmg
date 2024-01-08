@@ -5,7 +5,7 @@ export const hotSettings: Handsontable.GridSettings = {
   className: 'htCenter htMiddle',
   rowHeaders: true,
   columns: columns,
-  columnHeaderHeight: 40,
+  columnHeaderHeight: 30,
   multiColumnSorting: true,
   manualColumnResize: true,
   filters: true,

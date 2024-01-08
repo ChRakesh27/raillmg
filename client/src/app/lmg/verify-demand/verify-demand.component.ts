@@ -25,20 +25,21 @@ export class VerifyDemandComponent {
   id_rolling = 'hotInstance_rolling';
   id_non_rolling = 'hotInstance_non-rolling';
   constColumns = [
-    { data: 'date', title: 'Date', width: 100 },
-    { data: 'department', title: 'DEPARTMENT' },
+    { data: 'date', title: 'Date', width: 73 },
+    { data: 'department', title: 'DEPARTMENT', width: 110 },
     {
       data: 'board',
       title: 'BOARD',
       type: 'select',
       selectOptions: ['BG1', 'BG2', 'BG3', 'BG4', 'BG5'],
+      width: 73,
     },
-    { data: 'section', title: 'SECTION' },
-    { data: 'avl_start', title: 'SLOT START' },
-    { data: 'avl_end', title: 'SLOT END' },
-    { data: 'avl_duration', title: 'AVL DURATION' },
-    { data: 'dmd_duration', title: 'DMD DURATION' },
-    { data: 'machine', title: 'TYPE OF MACHINE' },
+    { data: 'section', title: 'SECTION', width: 80 },
+    { data: 'avl_start', title: 'SLOT START', width: 100 },
+    { data: 'avl_end', title: 'SLOT END', width: 90 },
+    { data: 'avl_duration', title: 'AVL DUR...', width: 100 },
+    { data: 'dmd_duration', title: 'DMD DUR...', width: 100 },
+    { data: 'machine', title: 'MACHINE TYPE', width: 120 },
   ];
   rollingColumns = [
     { data: '_id', title: '_id' },
@@ -47,6 +48,7 @@ export class VerifyDemandComponent {
       title: 'AVAIL STATUS',
       type: 'checkbox',
       defaultData: true,
+      width: 130,
     },
     ...this.constColumns,
     {
@@ -54,14 +56,15 @@ export class VerifyDemandComponent {
       title: 'GRANT STATUS',
       type: 'select',
       selectOptions: ['Pending', 'Granted', 'Not Granted'],
+      width: 120,
     },
-    { data: 'time_granted', title: 'TIME GRANTED' },
-    { data: 'remarks', title: 'REMARKS' },
+    { data: 'time_granted', title: 'TIME GRANTED', width: 120 },
+    { data: 'remarks', title: 'REMARKS', width: 100 },
     {
       data: 'logs',
       title: 'INFORMATION',
       editor: false,
-      width: 400,
+      width: 300,
       renderer: (
         instance: Handsontable.Core,
         TD: HTMLTableCellElement,
@@ -95,14 +98,15 @@ export class VerifyDemandComponent {
       title: ' APPROVE STATUS',
       type: 'select',
       selectOptions: ['Accept', 'Reject'],
+      width: 130,
     },
     ...this.constColumns,
-    { data: 'remarks', title: 'REMARKS' },
+    { data: 'remarks', title: 'REMARKS', width: 90 },
     {
       data: 'logs',
       title: 'INFORMATION',
       editor: false,
-      width: 400,
+      width: 300,
       renderer: (
         instance: Handsontable.Core,
         TD: HTMLTableCellElement,
