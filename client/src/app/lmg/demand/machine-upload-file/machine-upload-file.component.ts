@@ -60,6 +60,7 @@ export class MachineUploadFileComponent implements OnInit {
   };
 
   xlToMngKeys = {
+    BOARD: 'board',
     SECTION: 'section',
     'KM/LINE': 'lineNo',
     'MACHINE TYPE & NO.': 'machine',
@@ -70,7 +71,6 @@ export class MachineUploadFileComponent implements OnInit {
     RESOURCES: 'resources',
     CREW: 'crew',
     LOCO: 'loco',
-    BOARD: 'board',
     'TYPE OF WORK': 'typeOfWork',
     'WHETHER NI WORK/PNI WORK OR NON-NI WORK': 'ni',
     YARD: 'yard',
@@ -157,6 +157,7 @@ export class MachineUploadFileComponent implements OnInit {
           this.onDelete();
         });
     }
+    console.log('🚀 ~ this.dataSet:', this.dataSet);
   }
 
   onDelete() {

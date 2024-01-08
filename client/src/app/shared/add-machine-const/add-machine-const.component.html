@@ -71,7 +71,7 @@
                                                 <option value="" selected disabled>
                                                     SELECT SECTION
                                                 </option>
-                                                @for(section of sectionList; track $index){
+                                                @for(section of sectionList[i]; track $index){
                                                 <option value="{{ section }}">{{ section }}</option>
                                                 }
                                             </select>

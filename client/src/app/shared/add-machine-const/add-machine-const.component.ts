@@ -37,7 +37,7 @@ export class AddMachineConstComponent implements OnInit {
   boardlist: { _id: ''; board: '' }[];
   sectionList = [];
   value: any;
-  railDetails: IRailForm[] = [];
+  railDetails: any[] = [];
   dataSet = [];
   get machineFormArray(): FormArray {
     return this.form.controls['machineFormArray'] as FormArray;
@@ -81,13 +81,12 @@ export class AddMachineConstComponent implements OnInit {
       .getAllRailDetails('railDetails?board=' + event.target.value)
       .subscribe((data) => {
         this.dataSet = data;
-        this.sectionList = data.map((ele) => ele.section);
+        this.sectionList[index] = data.map((ele) => ele.section);
       });
   }
   onSectionSelect(index, event) {
-    this.railDetails = this.dataSet.filter(
-      (ele) => ele.section === event.target.value
-    );
+    let data = this.dataSet.filter((ele) => ele.section === event.target.value);
+    this.railDetails[index] = data[0];
   }
   onSubmit() {
     if (this.machineFormArray.value.length === 0 || !this.form.valid) {
@@ -140,6 +139,7 @@ export class AddMachineConstComponent implements OnInit {
 
   onAddNewForm() {
     this.form.get('department')?.disable();
+    this.sectionList.push([]);
     this.railDetails.push({
       _id: '',
       board: '',
@@ -209,6 +209,7 @@ export class AddMachineConstComponent implements OnInit {
   onDelete(index: number) {
     this.machineFormArray.removeAt(index);
     this.railDetails.splice(index, 1);
+    this.sectionList.splice(index, 1);
     if (this.machineFormArray.length === 0) {
       this.form.get('department')?.enable();
     }
