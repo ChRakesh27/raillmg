@@ -235,19 +235,21 @@
                 <ol class="fs-5">
                   @for(item of dataSet; track $index){
                   @if(item.section === section && item.board===board){
+
+                  @for(ele of item.directions; track $index){
                   <li>
                     <div class="">
-                      DIRECTIONS:{{item.directions}}
+                      DIRECTIONS:{{item.directions[$index]}}
                     </div>
-                    @for(ele of item.directions; track $index){
                     <div class="">
                       DAYS:{{item.slots[ele].days}}
                     </div>
                     <div class="">
                       TIME:{{item.slots[ele].time}}
                     </div>
-                    }
                   </li>
+                  <hr>
+                  }
                   }
                   }
                 </ol>
