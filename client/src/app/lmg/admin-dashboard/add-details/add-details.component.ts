@@ -177,10 +177,15 @@ export class AddDetailsComponent {
       this.toastService.showWarning('enter valid Details');
       return;
     }
-
     for (let item of this.directions) {
       if (!item.checked) {
         continue;
+      }
+      if (this.sectionSeleted['directions'].includes(item.direction)) {
+        this.toastService.showDanger(
+          'Direction ' + item.direction + ' already Add'
+        );
+        return;
       }
 
       let days = [];
@@ -208,6 +213,7 @@ export class AddDetailsComponent {
           startHur + ':' + startMin + ' to ' + endHur + ':' + endMin + ' hrs',
       };
     }
+
     const payload = {
       directions: [
         ...this.sectionSeleted['directions'],
@@ -276,9 +282,15 @@ export class AddDetailsComponent {
       this.toastService.showWarning('enter valid Details');
       return;
     }
+
     let payload = { mps: 0 };
     if (add) {
       payload.mps = +this.mps;
+    } else {
+      const confirmDelete = confirm('Are you sure to delete :' + this.mps);
+      if (!confirmDelete) {
+        return;
+      }
     }
 
     this.service
@@ -375,6 +387,10 @@ export class AddDetailsComponent {
   }
 
   onDeleteStation(data) {
+    const confirmDelete = confirm('Are you sure to delete : ' + data);
+    if (!confirmDelete) {
+      return;
+    }
     const filterStations = this.sectionSeleted['stations'].filter(
       (ele) => ele !== data
     );
@@ -394,8 +410,12 @@ export class AddDetailsComponent {
         }
       });
   }
+
   onDeleteAvlSlot(data) {
-    console.log('🚀 ~ data:', data, this.dataSet, this.sectionSeleted);
+    const confirmDelete = confirm('Are you sure to delete :' + data);
+    if (!confirmDelete) {
+      return;
+    }
 
     const filterDir = this.sectionSeleted['directions'].filter(
       (ele) => ele !== data
@@ -416,6 +436,7 @@ export class AddDetailsComponent {
         this.sectionSeleted = res;
       });
   }
+
   onTabChange() {
     this.board = '';
     this.section = '';
