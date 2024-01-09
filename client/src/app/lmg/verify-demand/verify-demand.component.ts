@@ -163,7 +163,7 @@ export class VerifyDemandComponent {
           logs: [...data.logs, log],
         };
         this.service
-          .updateMachineRoll('machineRolls', id, payload)
+          .updateRailDetails('machineRolls', id, payload)
           .subscribe(() => {
             const column = hot.propToCol(headerKey);
             const cell = hot.getCell(row, column as number);

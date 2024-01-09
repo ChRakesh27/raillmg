@@ -27,14 +27,6 @@ export class AppService {
     return this.httpClient.get(`${this.API_HOST}/${url}`);
   }
 
-  setMachineRoll(url, data): Observable<any> {
-    return this.httpClient.post(`${this.API_HOST}/${url}`, data);
-  }
-
-  updateMachineRoll(url, id, data): Observable<any> {
-    return this.httpClient.patch(`${this.API_HOST}/${url}/${id}`, data);
-  }
-
   getRailDetails(id): Observable<any> {
     return this.httpClient.get(`${this.API_HOST}/railDetails/${id}`);
   }

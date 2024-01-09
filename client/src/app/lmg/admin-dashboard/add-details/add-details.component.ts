@@ -3,21 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AppService } from '../../../app.service';
 import { ToastService } from '../../../shared/toast/toast.service';
-import {
-  NgbNavModule,
-  NgbTimepickerModule,
-  NgbTypeaheadModule,
-} from '@ng-bootstrap/ng-bootstrap';
-import {
-  OperatorFunction,
-  Observable,
-  debounceTime,
-  distinctUntilChanged,
-  map,
-} from 'rxjs';
+import { NgbNavModule, NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { IRailForm } from '../../../shared/model/railForm.model';
-
-export interface AvlSlot {}
 
 @Component({
   selector: 'app-add-details',
@@ -25,7 +12,6 @@ export interface AvlSlot {}
   imports: [
     CommonModule,
     FormsModule,
-    NgbTypeaheadModule,
     JsonPipe,
     NgbTimepickerModule,
     NgbNavModule,
@@ -33,7 +19,7 @@ export interface AvlSlot {}
   templateUrl: './add-details.component.html',
   styleUrl: './add-details.component.css',
 })
-export class AddDetailsComponent {
+export class AddDetailsComponent implements OnInit {
   active = 'board';
   board = '';
   section = '';
@@ -45,7 +31,6 @@ export class AddDetailsComponent {
   boardList = [];
   sectionList = [];
   machineList = [];
-  stationList = [];
   selectIndex: number;
   dataSet = [];
 
@@ -92,8 +77,6 @@ export class AddDetailsComponent {
     },
   ];
 
-  formatter = (result: string) => result.toUpperCase();
-
   selectedAvl: number;
   railForm: IRailForm[] = [];
   avlPreview = {};
@@ -133,21 +116,6 @@ export class AddDetailsComponent {
     });
   }
 
-  search: OperatorFunction<string, readonly string[]> = (
-    text$: Observable<string>
-  ) =>
-    text$.pipe(
-      debounceTime(200),
-      distinctUntilChanged(),
-      map((term) =>
-        term === ''
-          ? []
-          : this.boardList
-              .filter((v) => v.toLowerCase().indexOf(term.toLowerCase()) > -1)
-              .slice(0, 10)
-      )
-    );
-
   onSelectBoard(e) {
     this.board = e.target.value;
     this.sectionList = [];
@@ -169,7 +137,7 @@ export class AddDetailsComponent {
         this.selectIndex = +index;
       }
     }
-    this.dataSet.forEach(function (item, i) {});
+    console.log('🚀 ~ sectionSeleted:', this.sectionSeleted);
   }
 
   onSubmitAvl() {
@@ -230,13 +198,7 @@ export class AddDetailsComponent {
       return;
     }
 
-    this.service
-      .updateRailDetails('railDetails', this.sectionSeleted['_id'], payload)
-      .subscribe((res) => {
-        this.toastService.showSuccess('successfully submitted');
-        this.dataSet[this.selectIndex] = res;
-        this.sectionSeleted = res;
-      });
+    this.updateAvlSlot(payload);
   }
 
   addBoard() {
@@ -277,13 +239,32 @@ export class AddDetailsComponent {
     });
   }
 
-  addMPS(add = true) {
-    if ((this.board == '' || this.section == '' || this.mps == '') && add) {
+  addMPS(add = true, edit = false) {
+    if (
+      (this.board == '' || this.section == '' || this.mps == '') &&
+      add &&
+      !edit
+    ) {
       this.toastService.showWarning('enter valid Details');
+      return;
+    }
+    if (this.sectionSeleted['mps'] !== 0 && !edit) {
+      this.toastService.showDanger(this.mps + " is couldn't update");
       return;
     }
 
     let payload = { mps: 0 };
+    if (edit) {
+      this.mps = prompt('enter the new MPS', this.sectionSeleted['mps']);
+      if (
+        this.mps === null ||
+        this.mps == '0' ||
+        this.mps === this.sectionSeleted['mps']
+      ) {
+        return;
+      }
+    }
+
     if (add) {
       payload.mps = +this.mps;
     } else {
@@ -311,18 +292,7 @@ export class AddDetailsComponent {
     const payload = {
       stations: [...this.sectionSeleted['stations'], this.station],
     };
-    this.service
-      .updateRailDetails('railDetails', this.sectionSeleted['_id'], payload)
-      .subscribe((res) => {
-        if (res.code == 11000) {
-          this.toastService.showDanger(this.station + ' is already existed');
-        } else {
-          this.toastService.showSuccess('successfully submitted');
-          this.dataSet[this.selectIndex] = res;
-          this.stationList.push(this.station);
-          this.sectionSeleted = res;
-        }
-      });
+    this.updateStation(payload);
   }
 
   addMachine() {
@@ -342,24 +312,27 @@ export class AddDetailsComponent {
     });
   }
 
-  onDeleteBoard(board) {
-    const boardDelete = this.boardDataset.find((ele) => ele.board === board);
-
-    const confirmDelete = confirm('entire data of ' + board + ' is deleted');
+  onDeleteBoard(data) {
+    const confirmDelete = confirm(
+      'entire data of ' + data.board + ' is deleted'
+    );
     if (!confirmDelete) {
       return;
     }
 
     for (let ele of this.dataSet) {
-      if (ele.board == board) {
+      if (ele.board == data.board) {
         this.service
           .deleteRailDetails('railDetails', ele._id)
           .subscribe((res) => {});
       }
     }
 
-    this.service.deleteRailDetails('boards', boardDelete._id).subscribe(() => {
-      this.boardList = this.boardList.filter((ele) => ele != board);
+    this.service.deleteRailDetails('boards', data._id).subscribe(() => {
+      this.boardList = this.boardList.filter((ele) => ele != data.board);
+      this.boardDataset = this.boardDataset.filter(
+        (ele) => ele.board !== data.board
+      );
       this.toastService.showSuccess('successfully deleted');
     });
   }
@@ -397,18 +370,7 @@ export class AddDetailsComponent {
     const payload = {
       stations: filterStations,
     };
-    this.service
-      .updateRailDetails('railDetails', this.sectionSeleted['_id'], payload)
-      .subscribe((res) => {
-        if (res.code == 11000) {
-          this.toastService.showDanger(this.station + ' is already existed');
-        } else {
-          this.toastService.showSuccess('successfully submitted');
-          this.dataSet[this.selectIndex] = res;
-          this.stationList.push(this.station);
-          this.sectionSeleted = res;
-        }
-      });
+    this.updateStation(payload);
   }
 
   onDeleteAvlSlot(data) {
@@ -427,7 +389,10 @@ export class AddDetailsComponent {
       directions: filterDir,
       slots: tempSlot,
     };
-    console.log('🚀 ~ payload:', payload);
+    this.updateAvlSlot(payload);
+  }
+
+  updateAvlSlot(payload) {
     this.service
       .updateRailDetails('railDetails', this.sectionSeleted['_id'], payload)
       .subscribe((res) => {
@@ -437,8 +402,162 @@ export class AddDetailsComponent {
       });
   }
 
+  updateStation(payload) {
+    this.service
+      .updateRailDetails('railDetails', this.sectionSeleted['_id'], payload)
+      .subscribe((res) => {
+        if (res.code == 11000) {
+          this.toastService.showDanger(this.station + ' is already existed');
+        } else {
+          this.toastService.showSuccess('successfully submitted');
+          this.dataSet[this.selectIndex] = res;
+          this.sectionSeleted = res;
+        }
+      });
+  }
+
+  editBoard(data) {
+    const renameBoard = prompt('Rename the board:', data.board);
+    if (renameBoard === null || renameBoard === data.board) {
+      return;
+    }
+
+    for (let ele of this.dataSet) {
+      if (ele.board == data.board) {
+        this.service
+          .updateRailDetails('railDetails', ele._id, { board: renameBoard })
+          .subscribe((res) => {
+            this.dataSet = this.dataSet.map((item) => {
+              if (item._id === res._id) {
+                item.board = res.board;
+              }
+              return item;
+            });
+          });
+      }
+    }
+    console.log('🚀 ~ dataSet:', this.dataSet);
+
+    this.service
+      .updateRailDetails('boards', data._id, { board: renameBoard })
+      .subscribe(() => {
+        this.boardList = this.boardList.map((ele) => {
+          if (ele == data.board) {
+            ele = renameBoard;
+          }
+          return ele;
+        });
+        this.boardDataset = this.boardDataset.map((ele) => {
+          if (ele.board === data.board) {
+            ele.board = renameBoard;
+          }
+          return ele;
+        });
+        console.log('🚀 ~ boardDataset:', this.boardDataset);
+        this.toastService.showSuccess('successfully Updated');
+      });
+  }
+
+  editSection(data, index) {
+    const renameSection = prompt('Rename the section:', data.section);
+    if (renameSection == null || renameSection === data.section) {
+      return;
+    }
+
+    const payload = { section: renameSection };
+    this.service
+      .updateRailDetails('railDetails', data._id, payload)
+      .subscribe((res) => {
+        if (res.code == 11000) {
+          this.toastService.showDanger(renameSection + ' is already existed');
+        } else {
+          this.dataSet[index] = res;
+
+          this.sectionList.splice(
+            this.sectionList.indexOf(data.section),
+            1,
+            renameSection
+          );
+
+          this.toastService.showSuccess('successfully Updated');
+        }
+      });
+  }
+
+  editStation(data, index) {
+    const renameStation = prompt('Rename the Station:', data);
+    if (renameStation === null || renameStation === data) {
+      return;
+    }
+    this.sectionSeleted['stations'].splice(index, 1, renameStation);
+    const payload = { stations: this.sectionSeleted['stations'] };
+
+    this.updateStation(payload);
+  }
+
+  editMachine(data, index) {
+    const renameMachine = prompt('Rename the Machine:', data.machine);
+    if (renameMachine === null || renameMachine === data.machine) {
+      return;
+    }
+
+    const payload = {
+      machine: renameMachine,
+    };
+
+    this.service
+      .updateRailDetails('machines', data._id, payload)
+      .subscribe((res) => {
+        this.machineList[index] = res;
+        this.toastService.showSuccess('successfully Updated');
+      });
+  }
   onTabChange() {
     this.board = '';
     this.section = '';
+    this.sectionList = [];
+    this.directions = [
+      {
+        id: 1,
+        direction: 'up',
+        days: [],
+        start: {},
+        end: {},
+        checked: false,
+      },
+      {
+        id: 2,
+        direction: 'down',
+        days: [],
+        start: {},
+        end: {},
+        checked: false,
+      },
+      {
+        id: 3,
+        direction: 'both',
+        days: [],
+        start: {},
+        end: {},
+        checked: false,
+      },
+      {
+        id: 4,
+        direction: 'north',
+        days: [],
+        start: {},
+        end: {},
+        checked: false,
+      },
+      {
+        id: 5,
+        direction: 'south',
+        days: [],
+        start: {},
+        end: {},
+        checked: false,
+      },
+    ];
+    this.sectionSeleted = {};
   }
 }

@@ -63,7 +63,7 @@ export class EditMachineRollComponent {
           };
 
           this.service
-            .updateMachineRoll('machineRolls', id, payload)
+            .updateRailDetails('machineRolls', id, payload)
             .subscribe((res: IMachineRoll) => {
               Object.assign(data, res);
               hot.render();

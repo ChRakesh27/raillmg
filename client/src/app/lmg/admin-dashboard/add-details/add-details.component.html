@@ -9,16 +9,16 @@
               <div class="col-6 AddDetails">
                 <label>BOARD</label>
                 <input id="typeahead-format" class="form-control mt-3 mb-3" type="text" name="board"
-                  (change)="onSelectBoard($event)" [ngbTypeahead]="search" [resultFormatter]="formatter" />
+                  (change)="onSelectBoard($event)" />
                 <button class="btn btn-primary form-control mt-3" (click)="addBoard()">ADD</button>
               </div>
               <div class="col-6">
                 <h3 class="">Already added BOARD</h3>
                 <ol class="fs-5">
-                  @for(board of boardList; track $index){
+                  @for(item of boardDataset; track $index){
                   <li>
-                    <div class="">{{board}} <button class="btn btn-outline-danger"
-                        (click)="onDeleteBoard(board)">x</button>
+                    <div class="">{{item.board}} <button class="btn btn-success" (click)="editBoard(item)">edit</button>
+                      <button class="btn btn-outline-danger" (click)="onDeleteBoard(item)">x</button>
                     </div>
                   </li>
                   }
@@ -45,7 +45,7 @@
                 </div>
                 <label>SECTION</label>
                 <input id="typeahead-format" type="text" class="form-control mt-3 mb-3" name="section"
-                  (change)="onSelectSection($event)" [ngbTypeahead]="search" [resultFormatter]="formatter" />
+                  (change)="onSelectSection($event)" />
                 <button class="btn btn-primary form-control mt-3" (click)="addSection()">ADD</button>
               </div>
               <div class="col-6">
@@ -55,7 +55,8 @@
                   @if(item.board===board){
                   <li>
                     <div class="">
-                      {{item.section}} <button class="btn btn-outline-danger"
+                      {{item.section}} <button class="btn btn-success" (click)="editSection(item, $index)">edit</button>
+                      <button class="btn btn-outline-danger"
                         (click)="onDeleteSection(item._id, item.section)">x</button>
                     </div>
                   </li>
@@ -91,18 +92,20 @@
                   </select>
                 </div>
                 <label>MPS</label>
-                <input id="typeahead-format" class="form-control mt-3 mb-3" type="number" name="mps" [(ngModel)]="mps"
-                  [ngbTypeahead]="search" [resultFormatter]="formatter" />
+                <input id="typeahead-format" class="form-control mt-3 mb-3" type="number" name="mps"
+                  [(ngModel)]="mps" />
                 <button class="btn btn-primary form-control mt-3" (click)="addMPS()">ADD</button>
               </div>
               <div class="col-6">
                 <h3 class="">MPS – Maximum Permission Speed under {{board}} : {{section}}</h3>
                 <ol class="fs-5">
-
+                  @if(sectionSeleted['mps']){
                   <li>
-                    {{sectionSeleted['mps']}} km/hr <button class="btn btn-outline-danger"
-                      (click)="addMPS(false)">x</button>
+                    {{sectionSeleted['mps']}} km/hr
+                    <button class="btn btn-success" (click)="addMPS(false, true)">edit</button>
+                    <button class="btn btn-outline-danger" (click)="addMPS(false)">x</button>
                   </li>
+                  }
 
                 </ol>
               </div>
@@ -135,7 +138,7 @@
                 </div>
                 <label>STATION</label>
                 <input id="typeahead-format" class="form-control mt-3 mb-3" type="text" name="station"
-                  [(ngModel)]="station" [ngbTypeahead]="search" [resultFormatter]="formatter" />
+                  [(ngModel)]="station" />
                 <button class="btn btn-primary form-control mt-3" (click)="addStation()">ADD</button>
               </div>
               <div class="col-6">
@@ -143,7 +146,9 @@
                 <ol class="fs-5">
                   @for(station of sectionSeleted['stations']; track $index){
                   <li>
-                    {{station}} <button class="btn btn-outline-danger" (click)="onDeleteStation(station)">x</button>
+                    {{station}}
+                    <button class="btn btn-success" (click)="editStation(station,$index)">edit</button>
+                    <button class="btn btn-outline-danger" (click)="onDeleteStation(station)">x</button>
                   </li>
                   }
                 </ol>
@@ -270,7 +275,7 @@
               <div class="col-6 AddDetails">
                 <label>MACHINE</label>
                 <input id="typeahead-format" class="form-control mt-3 mb-3" type="text" name="machine"
-                  [(ngModel)]="machine" [ngbTypeahead]="search" [resultFormatter]="formatter" />
+                  [(ngModel)]="machine" />
                 <button class="btn btn-primary form-control mt-3" (click)="addMachine()">ADD</button>
               </div>
               <div class="col-6">
@@ -278,7 +283,9 @@
                 <ol class="fs-5">
                   @for(item of machineList; track $index){
                   <li>
-                    {{item.machine}} <button class="btn btn-outline-danger" (click)="onDeleteMachine(item)">x</button>
+                    {{item.machine}}
+                    <button class="btn btn-success" (click)="editMachine(item, $index)">edit</button>
+                    <button class="btn btn-outline-danger" (click)="onDeleteMachine(item)">x</button>
                   </li>
                   }
                 </ol>

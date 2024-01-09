@@ -151,7 +151,7 @@ export class MachineUploadFileComponent implements OnInit {
       this.toastService.showWarning('Please upload xlsx file');
     } else {
       this.service
-        .setMachineRoll('machineRolls', this.dataSet)
+        .addRailDetails('machineRolls', this.dataSet)
         .subscribe(() => {
           this.toastService.showSuccess('successfully submitted');
           this.onDelete();
