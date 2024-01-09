@@ -13,13 +13,31 @@
                 <button class="btn btn-primary form-control mt-3" (click)="addBoard()">ADD</button>
               </div>
               <div class="col-6">
-                <h3 class="">Already added BOARD</h3>
+                <div class="row">
+                  <div class="col-8">
+
+                    <h3 class="">Already added BOARD</h3>
+                  </div>
+                  <div class="col-4 d-flex">
+                    <div class="me-3 ms-3">EDIT</div>
+                    <div class="">DELETE</div>
+                  </div>
+                </div>
                 <ol class="fs-5">
                   @for(item of boardDataset; track $index){
                   <li>
-                    <div class="">{{item.board}} <button class="btn btn-success" (click)="editBoard(item)">edit</button>
-                      <button class="btn btn-outline-danger" (click)="onDeleteBoard(item)">x</button>
+                    <div class="row">
+                      <div class="col-8">
+
+                        {{item.board}}
+                      </div>
+                      <div class="col-4">
+
+                        <button class="btn btn-success me-3" (click)="editBoard(item)">edit</button>
+                        <button class="btn btn-outline-danger" (click)="onDeleteBoard(item)">x</button>
+                      </div>
                     </div>
+
                   </li>
                   }
                 </ol>
@@ -49,16 +67,34 @@
                 <button class="btn btn-primary form-control mt-3" (click)="addSection()">ADD</button>
               </div>
               <div class="col-6">
-                <h3 class="">SECTION under: {{board}}</h3>
+                <div class="row">
+                  <div class="col-8">
+
+                    <h3 class="">SECTION under: {{board}}</h3>
+                  </div>
+                  <div class="col-4 d-flex">
+                    <div class="me-3 ms-3">EDIT</div>
+                    <div class="">DELETE</div>
+                  </div>
+                </div>
                 <ol class="fs-5">
                   @for(item of dataSet; track $index){
                   @if(item.board===board){
                   <li>
-                    <div class="">
-                      {{item.section}} <button class="btn btn-success" (click)="editSection(item, $index)">edit</button>
-                      <button class="btn btn-outline-danger"
-                        (click)="onDeleteSection(item._id, item.section)">x</button>
+
+                    <div class="row">
+                      <div class="col-8">
+
+                        {{item.section}}
+                      </div>
+                      <div class="col-4">
+
+                        <button class="btn btn-success me-3" (click)="editSection(item, $index)">edit</button>
+                        <button class="btn btn-outline-danger"
+                          (click)="onDeleteSection(item._id, item.section)">x</button>
+                      </div>
                     </div>
+
                   </li>
                   }
                   }
@@ -97,13 +133,28 @@
                 <button class="btn btn-primary form-control mt-3" (click)="addMPS()">ADD</button>
               </div>
               <div class="col-6">
-                <h3 class="">MPS – Maximum Permission Speed under {{board}} : {{section}}</h3>
+                <div class="row">
+                  <div class="col-8">
+
+                    <h3 class="">MPS – Maximum Permission Speed under {{board}} : {{section}}</h3>
+                  </div>
+                  <div class="col-4 d-flex">
+                    <div class="me-3 ms-3">EDIT</div>
+                    <div class="">DELETE</div>
+                  </div>
+                </div>
                 <ol class="fs-5">
                   @if(sectionSeleted['mps']){
                   <li>
-                    {{sectionSeleted['mps']}} km/hr
-                    <button class="btn btn-success" (click)="addMPS(false, true)">edit</button>
-                    <button class="btn btn-outline-danger" (click)="addMPS(false)">x</button>
+                    <div class="row">
+                      <div class="col-8">
+                        {{sectionSeleted['mps']}} km/hr
+                      </div>
+                      <div class="col-4">
+                        <button class="btn btn-success me-3" (click)="addMPS(false, true)">edit</button>
+                        <button class="btn btn-outline-danger" (click)="addMPS(false)">x</button>
+                      </div>
+                    </div>
                   </li>
                   }
 
@@ -142,13 +193,30 @@
                 <button class="btn btn-primary form-control mt-3" (click)="addStation()">ADD</button>
               </div>
               <div class="col-6">
-                <h3 class="">STATION under Board: {{board}} | {{section}}</h3>
+                <div class="row">
+                  <div class="col-8">
+
+                    <h3 class="">STATION under Board: {{board}} | {{section}}</h3>
+                  </div>
+                  <div class="col-4 d-flex">
+                    <div class="me-3 ms-3">EDIT</div>
+                    <div class="">DELETE</div>
+                  </div>
+                </div>
                 <ol class="fs-5">
                   @for(station of sectionSeleted['stations']; track $index){
                   <li>
-                    {{station}}
-                    <button class="btn btn-success" (click)="editStation(station,$index)">edit</button>
-                    <button class="btn btn-outline-danger" (click)="onDeleteStation(station)">x</button>
+                    <div class="row">
+                      <div class="col-8">
+
+                        {{station}}
+                      </div>
+                      <div class="col-4">
+
+                        <button class="btn btn-success me-3" (click)="editStation(station,$index)">edit</button>
+                        <button class="btn btn-outline-danger" (click)="onDeleteStation(station)">x</button>
+                      </div>
+                    </div>
                   </li>
                   }
                 </ol>
@@ -238,7 +306,15 @@
                 <button type="button" class="btn btn-primary form-control" (click)="onSubmitAvl()">ADD</button>
               </div>
               <div class="col-6">
-                <h3 class="">AVAILABLE SLOT under {{board}}: {{section}}</h3>
+                <div class="row">
+                  <div class="col-9">
+
+                    <h3 class="">AVAILABLE SLOT under {{board}}: {{section}}</h3>
+                  </div>
+                  <div class="col-3">
+                    <div class="">DELETE</div>
+                  </div>
+                </div>
                 <ol class="fs-5">
                   @for(ele of sectionSeleted['directions']; track $index){
                   <li>
@@ -279,13 +355,29 @@
                 <button class="btn btn-primary form-control mt-3" (click)="addMachine()">ADD</button>
               </div>
               <div class="col-6">
-                <h3 class="">MACHINES</h3>
+                <div class="row">
+                  <div class="col-8">
+                    <h3 class="">MACHINES</h3>
+                  </div>
+                  <div class="col-4 d-flex">
+                    <div class="me-3 ms-3">EDIT</div>
+                    <div class="">DELETE</div>
+                  </div>
+                </div>
                 <ol class="fs-5">
                   @for(item of machineList; track $index){
                   <li>
-                    {{item.machine}}
-                    <button class="btn btn-success" (click)="editMachine(item, $index)">edit</button>
-                    <button class="btn btn-outline-danger" (click)="onDeleteMachine(item)">x</button>
+                    <div class="row">
+                      <div class="col-8">
+
+                        {{item.machine}}
+                      </div>
+                      <div class="col-4">
+
+                        <button class="btn btn-success me-3" (click)="editMachine(item, $index)">edit</button>
+                        <button class="btn btn-outline-danger" (click)="onDeleteMachine(item)">x</button>
+                      </div>
+                    </div>
                   </li>
                   }
                 </ol>

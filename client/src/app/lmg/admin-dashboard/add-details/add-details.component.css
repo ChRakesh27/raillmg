@@ -12,3 +12,7 @@
 .avlslot {
   border-right: 2px solid;
 }
+
+li {
+  margin-top: 10px;
+}
