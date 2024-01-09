@@ -3,7 +3,7 @@
     <div class="">
       <div ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-pills">
         <ng-container ngbNavItem="board">
-          <button ngbNavLink>BOARD</button>
+          <button ngbNavLink (click)="onTabChange()">BOARD</button>
           <ng-template ngbNavContent>
             <div class="row ">
               <div class="col-6 AddDetails">
@@ -17,7 +17,9 @@
                 <ol class="fs-5">
                   @for(board of boardList; track $index){
                   <li>
-                    {{board}}
+                    <div class="">{{board}} <button class="btn btn-outline-danger"
+                        (click)="onDeleteBoard(board)">x</button>
+                    </div>
                   </li>
                   }
                 </ol>
@@ -28,7 +30,7 @@
         </ng-container>
 
         <ng-container ngbNavItem="section">
-          <button ngbNavLink>SECTION</button>
+          <button ngbNavLink (click)="onTabChange()">SECTION</button>
           <ng-template ngbNavContent>
             <div class="row ">
               <div class="col-6 AddDetails">
@@ -52,7 +54,10 @@
                   @for(item of dataSet; track $index){
                   @if(item.board===board){
                   <li>
-                    {{item.section}}
+                    <div class="">
+                      {{item.section}} <button class="btn btn-outline-danger"
+                        (click)="onDeleteSection(item._id, item.section)">x</button>
+                    </div>
                   </li>
                   }
                   }
@@ -63,7 +68,7 @@
         </ng-container>
 
         <ng-container ngbNavItem="mps">
-          <button ngbNavLink>MPS</button>
+          <button ngbNavLink (click)="onTabChange()">MPS</button>
           <ng-template ngbNavContent>
             <div class="row ">
               <div class="col-6 AddDetails">
@@ -93,13 +98,12 @@
               <div class="col-6">
                 <h3 class="">MPS – Maximum Permission Speed under {{board}} : {{section}}</h3>
                 <ol class="fs-5">
-                  @for(item of dataSet; track $index){
-                  @if(item.section===section && item.board===board){
+
                   <li>
-                    {{item.mps}} km/hr
+                    {{sectionSeleted['mps']}} km/hr <button class="btn btn-outline-danger"
+                      (click)="addMPS(false)">x</button>
                   </li>
-                  }
-                  }
+
                 </ol>
               </div>
             </div>
@@ -107,7 +111,7 @@
         </ng-container>
 
         <ng-container ngbNavItem="station">
-          <button ngbNavLink>STATION</button>
+          <button ngbNavLink (click)="onTabChange()">STATION</button>
           <ng-template ngbNavContent>
             <div class="row ">
               <div class="col-6 AddDetails">
@@ -137,12 +141,10 @@
               <div class="col-6">
                 <h3 class="">STATION under Board: {{board}} | {{section}}</h3>
                 <ol class="fs-5">
-                  @for(item of dataSet; track $index){
-                  @if(item.section === section && item.board===board){
+                  @for(station of sectionSeleted['stations']; track $index){
                   <li>
-                    {{item.stations}}
+                    {{station}} <button class="btn btn-outline-danger" (click)="onDeleteStation(station)">x</button>
                   </li>
-                  }
                   }
                 </ol>
               </div>
@@ -151,7 +153,7 @@
         </ng-container>
 
         <ng-container ngbNavItem="slot">
-          <button ngbNavLink>SLOT</button>
+          <button ngbNavLink (click)="onTabChange()">SLOT</button>
           <ng-template ngbNavContent>
             <div class="row ">
               <div class="col-6 avlslot">
@@ -233,24 +235,27 @@
               <div class="col-6">
                 <h3 class="">AVAILABLE SLOT under {{board}}: {{section}}</h3>
                 <ol class="fs-5">
-                  @for(item of dataSet; track $index){
-                  @if(item.section === section && item.board===board){
-
-                  @for(ele of item.directions; track $index){
+                  @for(ele of sectionSeleted['directions']; track $index){
                   <li>
-                    <div class="">
-                      DIRECTIONS:{{item.directions[$index]}}
-                    </div>
-                    <div class="">
-                      DAYS:{{item.slots[ele].days}}
-                    </div>
-                    <div class="">
-                      TIME:{{item.slots[ele].time}}
+                    <div class="row">
+                      <div class="col-9">
+                        <div class="">
+                          DIRECTIONS:{{sectionSeleted['directions'][$index]}}
+                        </div>
+                        <div class="">
+                          DAYS:{{sectionSeleted['slots'][ele].days}}
+                        </div>
+                        <div class="">
+                          TIME:{{sectionSeleted['slots'][ele].time}}
+                        </div>
+                      </div>
+                      <div class="col-3">
+                        <button class="btn btn-outline-danger"
+                          (click)="onDeleteAvlSlot(sectionSeleted['directions'][$index])">x</button>
+                      </div>
                     </div>
                   </li>
                   <hr>
-                  }
-                  }
                   }
                 </ol>
               </div>
@@ -259,7 +264,7 @@
         </ng-container>
 
         <ng-container ngbNavItem="machine">
-          <button ngbNavLink>MACHINE</button>
+          <button ngbNavLink (click)="onTabChange()">MACHINE</button>
           <ng-template ngbNavContent>
             <div class="row">
               <div class="col-6 AddDetails">
@@ -273,7 +278,7 @@
                 <ol class="fs-5">
                   @for(item of machineList; track $index){
                   <li>
-                    {{item.machine}}
+                    {{item.machine}} <button class="btn btn-outline-danger" (click)="onDeleteMachine(item)">x</button>
                   </li>
                   }
                 </ol>

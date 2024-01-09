@@ -106,6 +106,7 @@ export class AddDetailsComponent {
     'friday',
     'saturday',
   ];
+  boardDataset = [];
   constructor(
     private service: AppService,
     private toastService: ToastService
@@ -114,6 +115,7 @@ export class AddDetailsComponent {
   ngOnInit() {
     Promise.resolve().then(() => {
       this.service.getAllRailDetails('boards').subscribe((data) => {
+        this.boardDataset = data;
         for (let item of data) {
           this.boardList.push(item.board);
         }
@@ -175,6 +177,7 @@ export class AddDetailsComponent {
       this.toastService.showWarning('enter valid Details');
       return;
     }
+
     for (let item of this.directions) {
       if (!item.checked) {
         continue;
@@ -212,7 +215,6 @@ export class AddDetailsComponent {
       ],
       slots: { ...this.sectionSeleted['slots'], ...this.avlPreview },
     };
-
     if (
       this.board == '' ||
       this.section == '' ||
@@ -221,11 +223,13 @@ export class AddDetailsComponent {
       this.toastService.showWarning('enter valid Details');
       return;
     }
+
     this.service
       .updateRailDetails('railDetails', this.sectionSeleted['_id'], payload)
       .subscribe((res) => {
         this.toastService.showSuccess('successfully submitted');
         this.dataSet[this.selectIndex] = res;
+        this.sectionSeleted = res;
       });
   }
 
@@ -246,6 +250,7 @@ export class AddDetailsComponent {
       this.toastService.showSuccess('successfully submitted');
       this.boardList.push(this.board);
       this.board = '';
+      this.boardDataset.push(res);
     });
   }
 
@@ -266,20 +271,21 @@ export class AddDetailsComponent {
     });
   }
 
-  addMPS() {
-    if (this.board == '' || this.section == '' || this.mps == '') {
+  addMPS(add = true) {
+    if ((this.board == '' || this.section == '' || this.mps == '') && add) {
       this.toastService.showWarning('enter valid Details');
       return;
     }
-    const payload = { mps: this.mps };
-    if (this.dataSet[this.selectIndex].mps !== 0) {
-      this.toastService.showDanger(this.mps + ' should not editable');
-      return;
+    let payload = { mps: 0 };
+    if (add) {
+      payload.mps = +this.mps;
     }
+
     this.service
       .updateRailDetails('railDetails', this.sectionSeleted['_id'], payload)
       .subscribe((res) => {
         this.dataSet[this.selectIndex] = res;
+        this.sectionSeleted = res;
         this.toastService.showSuccess('successfully submitted');
       });
   }
@@ -322,5 +328,96 @@ export class AddDetailsComponent {
       this.machineList.push(res);
       this.machine = '';
     });
+  }
+
+  onDeleteBoard(board) {
+    const boardDelete = this.boardDataset.find((ele) => ele.board === board);
+
+    const confirmDelete = confirm('entire data of ' + board + ' is deleted');
+    if (!confirmDelete) {
+      return;
+    }
+
+    for (let ele of this.dataSet) {
+      if (ele.board == board) {
+        this.service
+          .deleteRailDetails('railDetails', ele._id)
+          .subscribe((res) => {});
+      }
+    }
+
+    this.service.deleteRailDetails('boards', boardDelete._id).subscribe(() => {
+      this.boardList = this.boardList.filter((ele) => ele != board);
+      this.toastService.showSuccess('successfully deleted');
+    });
+  }
+
+  onDeleteSection(id, section) {
+    const confirmDelete = confirm('entire data of ' + section + ' is deleted');
+    if (!confirmDelete) {
+      return;
+    }
+    this.service.deleteRailDetails('railDetails', id).subscribe((res) => {
+      this.dataSet = this.dataSet.filter((ele) => ele._id != id);
+      this.toastService.showSuccess('successfully deleted');
+    });
+  }
+
+  onDeleteMachine(data) {
+    const confirmDelete = confirm('Are you sure to delete :' + data.machine);
+    if (!confirmDelete) {
+      return;
+    }
+    this.service.deleteRailDetails('machines', data._id).subscribe((res) => {
+      this.machineList = this.machineList.filter((ele) => ele._id != data._id);
+      this.toastService.showSuccess('successfully deleted');
+    });
+  }
+
+  onDeleteStation(data) {
+    const filterStations = this.sectionSeleted['stations'].filter(
+      (ele) => ele !== data
+    );
+    const payload = {
+      stations: filterStations,
+    };
+    this.service
+      .updateRailDetails('railDetails', this.sectionSeleted['_id'], payload)
+      .subscribe((res) => {
+        if (res.code == 11000) {
+          this.toastService.showDanger(this.station + ' is already existed');
+        } else {
+          this.toastService.showSuccess('successfully submitted');
+          this.dataSet[this.selectIndex] = res;
+          this.stationList.push(this.station);
+          this.sectionSeleted = res;
+        }
+      });
+  }
+  onDeleteAvlSlot(data) {
+    console.log('🚀 ~ data:', data, this.dataSet, this.sectionSeleted);
+
+    const filterDir = this.sectionSeleted['directions'].filter(
+      (ele) => ele !== data
+    );
+    const tempSlot = { ...this.sectionSeleted['slots'] };
+    delete tempSlot[data];
+
+    const payload = {
+      directions: filterDir,
+      slots: tempSlot,
+    };
+    console.log('🚀 ~ payload:', payload);
+    this.service
+      .updateRailDetails('railDetails', this.sectionSeleted['_id'], payload)
+      .subscribe((res) => {
+        this.toastService.showSuccess('successfully submitted');
+        this.dataSet[this.selectIndex] = res;
+        this.sectionSeleted = res;
+      });
+  }
+  onTabChange() {
+    this.board = '';
+    this.section = '';
   }
 }

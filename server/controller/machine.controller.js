@@ -32,7 +32,7 @@ router.patch('/:id', async (req, res) => {
     }
 })
 
-router.delete('/;id', async (req, res) => {
+router.delete('/:id', async (req, res) => {
     try {
         const id = req.params.id
         const data = req.body;
