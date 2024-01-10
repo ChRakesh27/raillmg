@@ -5,6 +5,7 @@ import { AppService } from '../../../app.service';
 import { ToastService } from '../../../shared/toast/toast.service';
 import { NgbNavModule, NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { IRailForm } from '../../../shared/model/railForm.model';
+import e from 'express';
 
 @Component({
   selector: 'app-add-details',
@@ -20,14 +21,15 @@ import { IRailForm } from '../../../shared/model/railForm.model';
   styleUrl: './add-details.component.css',
 })
 export class AddDetailsComponent implements OnInit {
-  active = 'slot';
+  active = 'mps';
   board = '';
   section = '';
   mps = '';
   station = '';
   machine = '';
   slot = '';
-  sectionSeleted: any = {};
+  sectionSelected: any = {};
+  stationSelected: any = {};
   boardList = [];
   sectionList = [];
   machineList = [];
@@ -134,18 +136,23 @@ export class AddDetailsComponent implements OnInit {
         this.dataSet[index].board === this.board &&
         this.dataSet[index].section === this.section
       ) {
-        this.sectionSeleted = this.dataSet[index];
+        this.sectionSelected = this.dataSet[index];
         this.selectIndex = +index;
       }
     }
-    if (this.active == 'mps' || this.active == 'station')
+    if (this.active == 'mps' || this.active == 'station') {
       this.service
         .getAllRailDetails(
-          'stations?stations=' + this.sectionSeleted['stations']
+          'stations?stations=' + this.sectionSelected['stations']
         )
         .subscribe((res) => {
           this.stationList = res;
         });
+    }
+  }
+
+  onSelectStation(e) {
+    this.stationSelected = JSON.parse(e.target.value);
   }
 
   onSubmitAvl() {
@@ -173,25 +180,25 @@ export class AddDetailsComponent implements OnInit {
         if (!item.days[day]) {
           continue;
         }
-        console.log(this.sectionSeleted);
+        console.log(this.sectionSelected);
 
-        if (!this.sectionSeleted['slots']) {
-          this.sectionSeleted.slots = {};
+        if (!this.sectionSelected['slots']) {
+          this.sectionSelected.slots = {};
         }
-        if (!this.sectionSeleted.slots[item.direction]) {
-          this.sectionSeleted.slots[item.direction] = {};
+        if (!this.sectionSelected.slots[item.direction]) {
+          this.sectionSelected.slots[item.direction] = {};
         }
 
-        if (!this.sectionSeleted['slots'][item.direction][day]) {
-          this.sectionSeleted['slots'][item.direction][day] = [];
+        if (!this.sectionSelected['slots'][item.direction][day]) {
+          this.sectionSelected['slots'][item.direction][day] = [];
         }
-        this.sectionSeleted['slots'][item.direction][day].push(
+        this.sectionSelected['slots'][item.direction][day].push(
           `${startHur}:${startMin} to ${endHur}:${endMin} hrs ${this.weekdays[day]}`
         );
       }
 
       this.avlPreview[item.direction] =
-        this.sectionSeleted['slots'][item.direction];
+        this.sectionSelected['slots'][item.direction];
     }
 
     if (
@@ -207,17 +214,17 @@ export class AddDetailsComponent implements OnInit {
       Object.keys(this.avlPreview)
     );
     console.log(
-      "🚀 ~ this.sectionSeleted['directions']:",
-      this.sectionSeleted['directions']
+      "🚀 ~ this.sectionSelected['directions']:",
+      this.sectionSelected['directions']
     );
 
     const dirSet = new Set([
-      ...this.sectionSeleted['directions'],
+      ...this.sectionSelected['directions'],
       ...Object.keys(this.avlPreview),
     ]);
     const payload = {
       directions: [...dirSet],
-      slots: { ...this.sectionSeleted['slots'], ...this.avlPreview },
+      slots: { ...this.sectionSelected['slots'], ...this.avlPreview },
     };
     console.log('🚀 ~ payload:', payload);
 
@@ -271,24 +278,24 @@ export class AddDetailsComponent implements OnInit {
       this.toastService.showWarning('enter valid Details');
       return;
     }
-    if (this.sectionSeleted['mps'] !== 0 && !edit) {
+    if (this.stationSelected.mps !== 0 && !edit) {
       this.toastService.showDanger(this.mps + " is couldn't update");
       return;
     }
 
     let payload = { mps: 0 };
     if (edit) {
-      this.mps = prompt('enter the new MPS', this.sectionSeleted['mps']);
+      this.mps = prompt('enter the new MPS', this.stationSelected.mps);
       if (
         this.mps === null ||
         this.mps == '0' ||
-        this.mps === this.sectionSeleted['mps']
+        this.mps === this.stationSelected.mps
       ) {
         return;
       }
     }
 
-    if (add) {
+    if (add || edit) {
       payload.mps = +this.mps;
     } else {
       const confirmDelete = confirm('Are you sure to delete :' + this.mps);
@@ -298,10 +305,9 @@ export class AddDetailsComponent implements OnInit {
     }
 
     this.service
-      .updateRailDetails('railDetails', this.sectionSeleted['_id'], payload)
+      .updateRailDetails('stations', this.stationSelected['_id'], payload)
       .subscribe((res) => {
-        this.dataSet[this.selectIndex] = res;
-        this.sectionSeleted = res;
+        this.stationSelected = res;
         this.toastService.showSuccess('successfully submitted');
       });
   }
@@ -313,7 +319,7 @@ export class AddDetailsComponent implements OnInit {
     }
 
     const payload = {
-      stations: [...this.sectionSeleted['stations'], this.station],
+      stations: [...this.sectionSelected['stations'], this.station],
     };
 
     const payload2 = {
@@ -326,8 +332,8 @@ export class AddDetailsComponent implements OnInit {
         this.toastService.showDanger(this.station + ' is already existed');
         return;
       } else {
+        this.stationList.push(res);
         this.updateStation(payload);
-        this.toastService.showSuccess('successfully submitted');
       }
     });
   }
@@ -401,12 +407,15 @@ export class AddDetailsComponent implements OnInit {
     if (!confirmDelete) {
       return;
     }
-    const filterStations = this.sectionSeleted['stations'].filter(
+    const filterStations = this.sectionSelected['stations'].filter(
       (ele) => ele !== data
     );
     const payload = {
       stations: filterStations,
     };
+    const deleteData = this.stationList.find((item) => item.station == data);
+
+    this.service.deleteRailDetails('stations', deleteData._id).subscribe();
 
     this.updateStation(payload);
   }
@@ -417,10 +426,10 @@ export class AddDetailsComponent implements OnInit {
       return;
     }
 
-    const filterDir = this.sectionSeleted['directions'].filter(
+    const filterDir = this.sectionSelected['directions'].filter(
       (ele) => ele !== data
     );
-    const tempSlot = { ...this.sectionSeleted['slots'] };
+    const tempSlot = { ...this.sectionSelected['slots'] };
     delete tempSlot[data];
 
     const payload = {
@@ -432,24 +441,24 @@ export class AddDetailsComponent implements OnInit {
 
   updateAvlSlot(payload) {
     this.service
-      .updateRailDetails('railDetails', this.sectionSeleted['_id'], payload)
+      .updateRailDetails('railDetails', this.sectionSelected['_id'], payload)
       .subscribe((res) => {
         this.toastService.showSuccess('successfully submitted');
         this.dataSet[this.selectIndex] = res;
-        this.sectionSeleted = res;
+        this.sectionSelected = res;
       });
   }
 
   updateStation(payload) {
     this.service
-      .updateRailDetails('railDetails', this.sectionSeleted['_id'], payload)
+      .updateRailDetails('railDetails', this.sectionSelected['_id'], payload)
       .subscribe((res) => {
         if (res.code == 11000) {
           this.toastService.showDanger(this.station + ' is already existed');
         } else {
           this.toastService.showSuccess('successfully submitted');
           this.dataSet[this.selectIndex] = res;
-          this.sectionSeleted = res;
+          this.sectionSelected = res;
         }
       });
   }
@@ -527,10 +536,31 @@ export class AddDetailsComponent implements OnInit {
     if (renameStation === null || renameStation === data) {
       return;
     }
-    this.sectionSeleted['stations'].splice(index, 1, renameStation);
-    const payload = { stations: this.sectionSeleted['stations'] };
 
-    this.updateStation(payload);
+    let stationsEdit = [...this.sectionSelected['stations']];
+    stationsEdit.splice(index, 1);
+    const payload = {
+      stations: [...stationsEdit, renameStation],
+    };
+    const payload2 = { station: renameStation };
+    const editData = this.stationList.find((item) => item.station == data);
+    this.service
+      .updateRailDetails('stations', editData._id, payload2)
+      .subscribe((res) => {
+        if (res.code == 11000) {
+          this.toastService.showDanger(renameStation + ' is already existed');
+          return;
+        } else {
+          this.stationList = this.stationList.map((ele) => {
+            if (ele.station == data) {
+              ele.station = renameStation;
+            }
+            return ele;
+          });
+          this.sectionSelected['stations'][index] = renameStation;
+          this.updateStation(payload);
+        }
+      });
   }
 
   editMachine(data, index) {
@@ -596,6 +626,6 @@ export class AddDetailsComponent implements OnInit {
         checked: false,
       },
     ];
-    this.sectionSeleted = {};
+    this.sectionSelected = {};
   }
 }
