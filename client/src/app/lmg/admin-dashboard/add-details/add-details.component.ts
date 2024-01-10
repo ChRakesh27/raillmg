@@ -21,7 +21,7 @@ import e from 'express';
   styleUrl: './add-details.component.css',
 })
 export class AddDetailsComponent implements OnInit {
-  active = 'mps';
+  active = 'board';
   board = '';
   section = '';
   mps = '';
