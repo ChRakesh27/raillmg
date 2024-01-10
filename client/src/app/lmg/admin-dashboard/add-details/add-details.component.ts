@@ -20,14 +20,14 @@ import { IRailForm } from '../../../shared/model/railForm.model';
   styleUrl: './add-details.component.css',
 })
 export class AddDetailsComponent implements OnInit {
-  active = 'board';
+  active = 'slot';
   board = '';
   section = '';
   mps = '';
   station = '';
   machine = '';
   slot = '';
-  sectionSeleted = {};
+  sectionSeleted: any = {};
   boardList = [];
   sectionList = [];
   machineList = [];
@@ -77,17 +77,18 @@ export class AddDetailsComponent implements OnInit {
     },
   ];
 
+  stationList = [];
   selectedAvl: number;
   railForm: IRailForm[] = [];
   avlPreview = {};
   weekdays = [
-    'sunday',
-    'monday',
-    'tuesday',
-    'wednesday',
-    'thursday',
-    'friday',
-    'saturday',
+    'SUNDAY',
+    'MONDAY',
+    'TUESDAY',
+    'WEDNESDAY',
+    'THURSDAY',
+    'FRIDAY',
+    'SATURDAY',
   ];
   boardDataset = [];
   constructor(
@@ -137,7 +138,14 @@ export class AddDetailsComponent implements OnInit {
         this.selectIndex = +index;
       }
     }
-    console.log('🚀 ~ sectionSeleted:', this.sectionSeleted);
+    if (this.active == 'mps' || this.active == 'station')
+      this.service
+        .getAllRailDetails(
+          'stations?stations=' + this.sectionSeleted['stations']
+        )
+        .subscribe((res) => {
+          this.stationList = res;
+        });
   }
 
   onSubmitAvl() {
@@ -148,20 +156,6 @@ export class AddDetailsComponent implements OnInit {
     for (let item of this.directions) {
       if (!item.checked) {
         continue;
-      }
-      if (this.sectionSeleted['directions'].includes(item.direction)) {
-        this.toastService.showDanger(
-          'Direction ' + item.direction + ' already Add'
-        );
-        return;
-      }
-
-      let days = [];
-      for (let day in item.days) {
-        if (item.days[day] === null) {
-          continue;
-        }
-        days.push(this.weekdays[day]);
       }
 
       const startHur =
@@ -175,20 +169,31 @@ export class AddDetailsComponent implements OnInit {
       const endMin =
         item.end['minute'] < 10 ? '0' + item.end['minute'] : item.end['minute'];
 
-      this.avlPreview[item.direction] = {
-        days,
-        time:
-          startHur + ':' + startMin + ' to ' + endHur + ':' + endMin + ' hrs',
-      };
+      for (let day in item.days) {
+        if (!item.days[day]) {
+          continue;
+        }
+        console.log(this.sectionSeleted);
+
+        if (!this.sectionSeleted['slots']) {
+          this.sectionSeleted.slots = {};
+        }
+        if (!this.sectionSeleted.slots[item.direction]) {
+          this.sectionSeleted.slots[item.direction] = {};
+        }
+
+        if (!this.sectionSeleted['slots'][item.direction][day]) {
+          this.sectionSeleted['slots'][item.direction][day] = [];
+        }
+        this.sectionSeleted['slots'][item.direction][day].push(
+          `${startHur}:${startMin} to ${endHur}:${endMin} hrs ${this.weekdays[day]}`
+        );
+      }
+
+      this.avlPreview[item.direction] =
+        this.sectionSeleted['slots'][item.direction];
     }
 
-    const payload = {
-      directions: [
-        ...this.sectionSeleted['directions'],
-        ...Object.keys(this.avlPreview),
-      ],
-      slots: { ...this.sectionSeleted['slots'], ...this.avlPreview },
-    };
     if (
       this.board == '' ||
       this.section == '' ||
@@ -197,6 +202,24 @@ export class AddDetailsComponent implements OnInit {
       this.toastService.showWarning('enter valid Details');
       return;
     }
+    console.log(
+      '🚀 ~ Object.keys(this.avlPreview):',
+      Object.keys(this.avlPreview)
+    );
+    console.log(
+      "🚀 ~ this.sectionSeleted['directions']:",
+      this.sectionSeleted['directions']
+    );
+
+    const dirSet = new Set([
+      ...this.sectionSeleted['directions'],
+      ...Object.keys(this.avlPreview),
+    ]);
+    const payload = {
+      directions: [...dirSet],
+      slots: { ...this.sectionSeleted['slots'], ...this.avlPreview },
+    };
+    console.log('🚀 ~ payload:', payload);
 
     this.updateAvlSlot(payload);
   }
@@ -292,7 +315,21 @@ export class AddDetailsComponent implements OnInit {
     const payload = {
       stations: [...this.sectionSeleted['stations'], this.station],
     };
-    this.updateStation(payload);
+
+    const payload2 = {
+      station: this.station,
+      mps: 0,
+    };
+
+    this.service.addRailDetails('stations', payload2).subscribe((res) => {
+      if (res.code == 11000) {
+        this.toastService.showDanger(this.station + ' is already existed');
+        return;
+      } else {
+        this.updateStation(payload);
+        this.toastService.showSuccess('successfully submitted');
+      }
+    });
   }
 
   addMachine() {
@@ -370,6 +407,7 @@ export class AddDetailsComponent implements OnInit {
     const payload = {
       stations: filterStations,
     };
+
     this.updateStation(payload);
   }
 

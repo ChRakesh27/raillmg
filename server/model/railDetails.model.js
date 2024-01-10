@@ -7,16 +7,11 @@ const railDetailsSchema = new Schema({
     board: { type: String },
     section: { type: String, unique: true },
     directions: { type: Array },
-    slots: { type: Object },
-    stations: { type: Array },
-    mps: { type: Number, default: 0 }
+    slots: { type: Object, default: {} },
+    stations: { type: Array }
 }, {
     versionKey: false
 })
-
-
-
-
 
 
 const railDetails = mongoose.model("railDetails", railDetailsSchema);

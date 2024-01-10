@@ -8,6 +8,7 @@ import * as XLSX from 'xlsx';
 import { ToastService } from '../../../shared/toast/toast.service';
 import { hotSettings } from '../../../shared/constants/hotSettings';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 registerAllModules();
 @Component({
@@ -15,7 +16,7 @@ registerAllModules();
   standalone: true,
   templateUrl: './machine-roll.component.html',
   styleUrl: './machine-roll.component.css',
-  imports: [HotTableModule],
+  imports: [HotTableModule, CommonModule],
 })
 export class MachineRollComponent implements OnInit {
   private hotRegisterer = new HotTableRegisterer();
@@ -64,4 +65,10 @@ export class MachineRollComponent implements OnInit {
   }
 
   onPdfDownload() {}
+
+  startDate(e) {
+    console.log(e.target.value);
+    const stateDate = new Date(e.target.value);
+    console.log('🚀 ~ stateDate:', stateDate);
+  }
 }

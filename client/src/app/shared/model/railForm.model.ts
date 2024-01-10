@@ -5,5 +5,5 @@ export interface IRailForm {
   mps: number;
   slots: {};
   directions: string[];
-  stations: string[];
+  stations: object;
 }

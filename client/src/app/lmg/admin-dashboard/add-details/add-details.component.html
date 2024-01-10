@@ -94,70 +94,9 @@
                           (click)="onDeleteSection(item._id, item.section)">x</button>
                       </div>
                     </div>
-
                   </li>
                   }
                   }
-                </ol>
-              </div>
-            </div>
-          </ng-template>
-        </ng-container>
-
-        <ng-container ngbNavItem="mps">
-          <button ngbNavLink (click)="onTabChange()">MPS</button>
-          <ng-template ngbNavContent>
-            <div class="row ">
-              <div class="col-6 AddDetails">
-                <div class="form-group">
-                  <label>BOARD</label>
-                  <select class="form-select mt-3 mb-3" (change)="onSelectBoard($event)">
-                    <option value="" selected disabled>Select Board</option>
-                    @for(board of boardList; track $index){
-                    <option value="{{board}}">{{board}}</option>
-                    }
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label>SECTION</label>
-                  <select class="form-select mt-3 mb-3" (change)="onSelectSection($event)">
-                    <option value="" selected disabled>Select Board</option>
-                    @for(section of sectionList; track $index){
-                    <option value="{{section}}">{{section}}</option>
-                    }
-                  </select>
-                </div>
-                <label>MPS</label>
-                <input id="typeahead-format" class="form-control mt-3 mb-3" type="number" name="mps"
-                  [(ngModel)]="mps" />
-                <button class="btn btn-primary form-control mt-3" (click)="addMPS()">ADD</button>
-              </div>
-              <div class="col-6">
-                <div class="row">
-                  <div class="col-8">
-
-                    <h3 class="">MPS – Maximum Permission Speed under {{board}} : {{section}}</h3>
-                  </div>
-                  <div class="col-4 d-flex">
-                    <div class="me-3 ms-3">EDIT</div>
-                    <div class="">DELETE</div>
-                  </div>
-                </div>
-                <ol class="fs-5">
-                  @if(sectionSeleted['mps']){
-                  <li>
-                    <div class="row">
-                      <div class="col-8">
-                        {{sectionSeleted['mps']}} km/hr
-                      </div>
-                      <div class="col-4">
-                        <button class="btn btn-success me-3" (click)="addMPS(false, true)">edit</button>
-                        <button class="btn btn-outline-danger" (click)="addMPS(false)">x</button>
-                      </div>
-                    </div>
-                  </li>
-                  }
-
                 </ol>
               </div>
             </div>
@@ -316,19 +255,25 @@
                   </div>
                 </div>
                 <ol class="fs-5">
-                  @for(ele of sectionSeleted['directions']; track $index){
+                  @for(ele of sectionSeleted['slots']|keyvalue; track $index){
                   <li>
                     <div class="row">
                       <div class="col-9">
                         <div class="">
-                          DIRECTIONS:{{sectionSeleted['directions'][$index]}}
+                          DIRECTIONS:{{ele.key}}
+
                         </div>
+                        <!-- <div class="">
+                          DAYS:{{sectionSeleted['slots'][ele] | json}}
+                        </div> -->
+
+                        @for(slot of ele.value| keyvalue; track $index){
+
                         <div class="">
-                          DAYS:{{sectionSeleted['slots'][ele].days}}
+                          {{slot.value}}
                         </div>
-                        <div class="">
-                          TIME:{{sectionSeleted['slots'][ele].time}}
-                        </div>
+                        }
+
                       </div>
                       <div class="col-3">
                         <button class="btn btn-outline-danger"
@@ -343,6 +288,67 @@
             </div>
           </ng-template>
         </ng-container>
+
+        <ng-container ngbNavItem="mps">
+          <button ngbNavLink (click)="onTabChange()">MPS</button>
+          <ng-template ngbNavContent>
+            <div class="row ">
+              <div class="col-6 AddDetails">
+                <div class="form-group">
+                  <label>BOARD</label>
+                  <select class="form-select mt-3 mb-3" (change)="onSelectBoard($event)">
+                    <option value="" selected disabled>Select Board</option>
+                    @for(board of boardList; track $index){
+                    <option value="{{board}}">{{board}}</option>
+                    }
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>SECTION</label>
+                  <select class="form-select mt-3 mb-3" (change)="onSelectSection($event)">
+                    <option value="" selected disabled>Select Board</option>
+                    @for(section of sectionList; track $index){
+                    <option value="{{section}}">{{section}}</option>
+                    }
+                  </select>
+                </div>
+                <label>MPS</label>
+                <input id="typeahead-format" class="form-control mt-3 mb-3" type="number" name="mps"
+                  [(ngModel)]="mps" />
+                <button class="btn btn-primary form-control mt-3" (click)="addMPS()">ADD</button>
+              </div>
+              <div class="col-6">
+                <div class="row">
+                  <div class="col-8">
+
+                    <h3 class="">MPS – Maximum Permission Speed under {{board}} : {{section}}</h3>
+                  </div>
+                  <div class="col-4 d-flex">
+                    <div class="me-3 ms-3">EDIT</div>
+                    <div class="">DELETE</div>
+                  </div>
+                </div>
+                <ol class="fs-5">
+                  @if(sectionSeleted['mps']){
+                  <li>
+                    <div class="row">
+                      <div class="col-8">
+                        {{sectionSeleted['mps']}} km/hr
+                      </div>
+                      <div class="col-4">
+                        <button class="btn btn-success me-3" (click)="addMPS(false, true)">edit</button>
+                        <button class="btn btn-outline-danger" (click)="addMPS(false)">x</button>
+                      </div>
+                    </div>
+                  </li>
+                  }
+
+                </ol>
+              </div>
+            </div>
+          </ng-template>
+        </ng-container>
+
 
         <ng-container ngbNavItem="machine">
           <button ngbNavLink (click)="onTabChange()">MACHINE</button>

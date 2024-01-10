@@ -110,7 +110,7 @@ export const columns: Handsontable.ColumnSettings[] = [
   { data: 'cancelTrain', title: 'Train Cancel...', width: 110 },
   {
     data: 'logs',
-    title: 'INFORMATION',
+    title: 'EDIT HISTORY',
     editor: false,
     width: 300,
     renderer: LogInfoRender,

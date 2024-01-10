@@ -11,7 +11,6 @@ router.get('/', async (req, res) => {
         } else {
             docs = await railDetails.find();
         }
-        console.log("🚀 ~ docs:", docs)
         res.send(docs)
     } catch (error) {
         res.send(error)

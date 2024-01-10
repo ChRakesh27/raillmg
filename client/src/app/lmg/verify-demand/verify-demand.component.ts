@@ -62,7 +62,7 @@ export class VerifyDemandComponent {
     { data: 'remarks', title: 'REMARKS', width: 100 },
     {
       data: 'logs',
-      title: 'INFORMATION',
+      title: 'EDIT HISTORY',
       editor: false,
       width: 300,
       renderer: (
@@ -104,7 +104,7 @@ export class VerifyDemandComponent {
     { data: 'remarks', title: 'REMARKS', width: 90 },
     {
       data: 'logs',
-      title: 'INFORMATION',
+      title: 'EDIT HISTORY',
       editor: false,
       width: 300,
       renderer: (
