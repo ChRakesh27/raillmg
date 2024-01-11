@@ -209,14 +209,6 @@ export class AddDetailsComponent implements OnInit {
       this.toastService.showWarning('enter valid Details');
       return;
     }
-    console.log(
-      '🚀 ~ Object.keys(this.avlPreview):',
-      Object.keys(this.avlPreview)
-    );
-    console.log(
-      "🚀 ~ this.sectionSelected['directions']:",
-      this.sectionSelected['directions']
-    );
 
     const dirSet = new Set([
       ...this.sectionSelected['directions'],
@@ -229,6 +221,48 @@ export class AddDetailsComponent implements OnInit {
     console.log('🚀 ~ payload:', payload);
 
     this.updateAvlSlot(payload);
+    this.directions = [
+      {
+        id: 1,
+        direction: 'up',
+        days: [],
+        start: {},
+        end: {},
+        checked: false,
+      },
+      {
+        id: 2,
+        direction: 'down',
+        days: [],
+        start: {},
+        end: {},
+        checked: false,
+      },
+      {
+        id: 3,
+        direction: 'both',
+        days: [],
+        start: {},
+        end: {},
+        checked: false,
+      },
+      {
+        id: 4,
+        direction: 'north',
+        days: [],
+        start: {},
+        end: {},
+        checked: false,
+      },
+      {
+        id: 5,
+        direction: 'south',
+        days: [],
+        start: {},
+        end: {},
+        checked: false,
+      },
+    ];
   }
 
   addBoard() {
