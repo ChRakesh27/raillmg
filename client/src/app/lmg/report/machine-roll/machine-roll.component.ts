@@ -9,6 +9,7 @@ import { ToastService } from '../../../shared/toast/toast.service';
 import { hotSettings } from '../../../shared/constants/hotSettings';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { DateTime } from 'luxon';
 
 registerAllModules();
 @Component({
@@ -21,6 +22,9 @@ registerAllModules();
 export class MachineRollComponent implements OnInit {
   private hotRegisterer = new HotTableRegisterer();
   id = 'hotInstance';
+  dataset: any = [];
+  startDate: any;
+  endDate: any;
   hotSettings: Handsontable.GridSettings = {
     editor: false,
     readOnly: true,
@@ -39,6 +43,7 @@ export class MachineRollComponent implements OnInit {
     Promise.resolve().then(() => {
       this.service.getAllMachineRoll(url).subscribe((data) => {
         const hot = this.hotRegisterer.getInstance(this.id);
+        this.dataset = data;
         hot.updateData(data);
       });
     });
@@ -66,9 +71,41 @@ export class MachineRollComponent implements OnInit {
 
   onPdfDownload() {}
 
-  startDate(e) {
-    console.log(e.target.value);
-    const stateDate = new Date(e.target.value);
-    console.log('🚀 ~ stateDate:', stateDate);
+  selectStartDate(e) {
+    this.startDate = DateTime.fromISO(e.target.value);
+  }
+  selectEndDate(e) {
+    this.endDate = DateTime.fromISO(e.target.value);
+  }
+
+  filterDataWithDate() {
+    if (!this.startDate && !this.endDate) {
+      return;
+    }
+
+    const hot = this.hotRegisterer.getInstance(this.id);
+
+    const data = this.dataset.filter((item) => {
+      const parsedDate = DateTime.fromFormat(item.date, 'dd/MM/yyyy');
+
+      if (this.startDate <= parsedDate && this.endDate >= parsedDate) {
+        return true;
+      } else if (!!this.startDate && this.startDate <= parsedDate) {
+        return true;
+      } else if (!!this.endDate && this.endDate >= parsedDate) {
+        return true;
+      }
+
+      return false;
+    });
+    console.log('🚀 ~ this.dataset:', data);
+
+    hot.updateData(data);
+  }
+
+  ResetDates() {
+    const hot = this.hotRegisterer.getInstance(this.id);
+
+    hot.updateData(this.dataset);
   }
 }

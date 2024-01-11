@@ -69,6 +69,7 @@ export class AddMachineConstComponent implements OnInit {
         this.machineType = data;
       });
     });
+
     Promise.resolve().then(() => {
       this.service.getAllRailDetails('boards').subscribe((data) => {
         this.boardlist = data;
@@ -84,11 +85,14 @@ export class AddMachineConstComponent implements OnInit {
         this.sectionList[index] = data.map((ele) => ele.section);
       });
   }
+
   onSectionSelect(index, event) {
     let data = this.dataSet.filter((ele) => ele.section === event.target.value);
     this.railDetails[index] = data[0];
+
     console.log('🚀 ~ this.railDetails:', this.railDetails, index);
   }
+
   onSubmit() {
     console.log('hello');
     if (this.machineFormArray.value.length === 0 || !this.form.valid) {
@@ -189,10 +193,8 @@ export class AddMachineConstComponent implements OnInit {
     const selectCtrl = machineForm.controls['section'] as FormControl;
 
     selectCtrl.valueChanges.subscribe((change) => {
-      this.prepareAvailableSlots(
-        change,
-        machineForm.controls['direction'].value
-      );
+      this.prepareAvailableSlots(change, '');
+      machineForm.controls['direction'].setValue('');
     });
 
     const directionCtrl = machineForm.controls['direction'] as FormControl;
@@ -226,39 +228,46 @@ export class AddMachineConstComponent implements OnInit {
   }
 
   prepareAvailableSlots(section, direction) {
-    console.log('🚀 ~ section, direction:', section, direction);
-    if (!section || !direction) {
+    if (!section || !direction || direction == '') {
       return;
     }
+
     if (this.availableSlots[section + '_' + direction]) {
       return;
     }
-    const railData = this.railDetails.find((ele) => ele.section === section);
-    const { days, time } = railData.slots[direction];
-    if (!time) return;
-    let dt = DateTime.now();
-    const weekdays = {
-      sunday: 0,
-      monday: 1,
-      tuesday: 2,
-      wednesday: 3,
-      thursday: 4,
-      friday: 5,
-      saturday: 6,
-    };
 
-    const avl_slot = [];
-    for (let i = 0; i < 365; i++) {
-      for (let day of days) {
-        if (dt.weekday === weekdays[day]) {
-          avl_slot.push(
-            dt.toFormat('dd/MM/yyyy') + ' ' + time + ' ( ' + day + ' ) '
-          );
+    let railData = {};
+
+    for (let item of this.railDetails) {
+      console.log('🚀 ~ item:', item);
+      if (item.section == section) {
+        railData = item;
+        break;
+      }
+    }
+
+    if (Object.keys(railData).length == 0) {
+      this.toastService.showWarning('SLOTS are not Available');
+      return;
+    }
+    const slotsList = railData['slots'][direction];
+
+    let dt = DateTime.now();
+
+    let avl_slot = [];
+    for (let i = 0; i < 7; i++) {
+      for (let slotDay in slotsList) {
+        if (+dt.weekday == +slotDay || (+dt.weekday == 7 && +slotDay == 0)) {
+          for (let slot of slotsList[slotDay]) {
+            avl_slot.push(dt.toFormat('dd/MM/yyyy') + ' ' + slot);
+          }
         }
       }
       dt = dt.plus({ days: 1 });
     }
 
     this.availableSlots[section + '_' + direction] = avl_slot;
+
+    railData = {};
   }
 }

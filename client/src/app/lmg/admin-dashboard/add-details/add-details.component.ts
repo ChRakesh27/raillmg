@@ -166,12 +166,11 @@ export class AddDetailsComponent implements OnInit {
       this.toastService.showWarning('enter valid Details');
       return;
     }
+
     for (let item of this.directions) {
       if (!item.checked) {
-        console.log('🚀 ~ item:  false', item);
         continue;
       }
-      console.log('🚀 ~ item:', item);
 
       const startHur =
         item.start['hour'] < 10 ? '0' + item.start['hour'] : item.start['hour'];
