@@ -55,6 +55,7 @@
                 <div class="form-group">
                   <label>BOARD</label>
                   <select class="form-select mt-3 mb-3" (change)="onSelectBoard($event)">
+                    <option value="" selected disabled>SELECT BOARD</option>
                     @for(board of boardList; track $index){
                     <option value="{{board}}">{{board}}</option>
                     }
@@ -110,6 +111,7 @@
                 <div class="form-group">
                   <label>BOARD</label>
                   <select class="form-select mt-3 mb-3" (change)="onSelectBoard($event)">
+                    <option value="" selected disabled>SELECT BOARD</option>
                     @for(board of boardList; track $index){
                     <option value="{{board}}">{{board}}</option>
                     }
@@ -169,6 +171,7 @@
                 <div class="form-group">
                   <label>BOARD</label>
                   <select class="form-select mt-3 mb-3" (change)="onSelectBoard($event)" required>
+                    <option value="" selected disabled>SELECT BOARD</option>
                     @for(board of boardList; track $index){
                     <option value="{{board}}">{{board}}</option>
                     }
@@ -294,6 +297,7 @@
                 <div class="form-group">
                   <label>BOARD</label>
                   <select class="form-select mt-3 mb-3" (change)="onSelectBoard($event)">
+                    <option value="" selected disabled>SELECT BOARD</option>
                     @for(board of boardList; track $index){
                     <option value="{{board}}">{{board}}</option>
                     }
@@ -311,6 +315,7 @@
                   <label>STATION</label>
 
                   <select class="form-select mt-3 mb-3" (change)="onSelectStation($event)">
+                    <option value="" selected disabled>SELECT STATION</option>
                     @for(item of stationList; track $index){
                     <option value="{{item |json}}">{{item.station}}</option>
                     }
