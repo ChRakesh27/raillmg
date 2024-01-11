@@ -122,15 +122,21 @@ export class AddDetailsComponent implements OnInit {
   onSelectBoard(e) {
     this.board = e.target.value;
     this.sectionList = [];
+
     for (let item of this.dataSet) {
       if (item.board === this.board) {
         this.sectionList.push(item.section);
       }
     }
+    this.onSelectSection(this.sectionList[0]);
   }
 
   onSelectSection(e) {
-    this.section = e.target.value;
+    if (e.target != undefined) {
+      this.section = e.target.value;
+    } else {
+      this.section = e;
+    }
     for (let index in this.dataSet) {
       if (
         this.dataSet[index].board === this.board &&
@@ -162,8 +168,10 @@ export class AddDetailsComponent implements OnInit {
     }
     for (let item of this.directions) {
       if (!item.checked) {
+        console.log('🚀 ~ item:  false', item);
         continue;
       }
+      console.log('🚀 ~ item:', item);
 
       const startHur =
         item.start['hour'] < 10 ? '0' + item.start['hour'] : item.start['hour'];
@@ -180,7 +188,6 @@ export class AddDetailsComponent implements OnInit {
         if (!item.days[day]) {
           continue;
         }
-        console.log(this.sectionSelected);
 
         if (!this.sectionSelected['slots']) {
           this.sectionSelected.slots = {};
@@ -218,51 +225,10 @@ export class AddDetailsComponent implements OnInit {
       directions: [...dirSet],
       slots: { ...this.sectionSelected['slots'], ...this.avlPreview },
     };
-    console.log('🚀 ~ payload:', payload);
 
     this.updateAvlSlot(payload);
-    this.directions = [
-      {
-        id: 1,
-        direction: 'up',
-        days: [],
-        start: {},
-        end: {},
-        checked: false,
-      },
-      {
-        id: 2,
-        direction: 'down',
-        days: [],
-        start: {},
-        end: {},
-        checked: false,
-      },
-      {
-        id: 3,
-        direction: 'both',
-        days: [],
-        start: {},
-        end: {},
-        checked: false,
-      },
-      {
-        id: 4,
-        direction: 'north',
-        days: [],
-        start: {},
-        end: {},
-        checked: false,
-      },
-      {
-        id: 5,
-        direction: 'south',
-        days: [],
-        start: {},
-        end: {},
-        checked: false,
-      },
-    ];
+
+    this.avlPreview = [];
   }
 
   addBoard() {
