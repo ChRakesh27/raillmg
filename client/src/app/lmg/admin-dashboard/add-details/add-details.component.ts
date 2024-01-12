@@ -5,7 +5,6 @@ import { AppService } from '../../../app.service';
 import { ToastService } from '../../../shared/toast/toast.service';
 import { NgbNavModule, NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { IRailForm } from '../../../shared/model/railForm.model';
-import e from 'express';
 
 @Component({
   selector: 'app-add-details',

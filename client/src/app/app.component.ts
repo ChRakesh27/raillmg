@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { SpinnerComponent } from './shared/spinner/spinner.component';
 import { ToastComponent } from './shared/toast/toast.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
+import { ReportComponent } from './lmg/report/report.component';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -16,6 +17,7 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
     SpinnerComponent,
     ToastComponent,
     NavbarComponent,
+    ReportComponent,
   ],
 })
 export class AppComponent implements OnInit {

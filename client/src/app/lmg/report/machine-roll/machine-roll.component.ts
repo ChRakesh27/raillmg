@@ -25,6 +25,7 @@ export class MachineRollComponent implements OnInit {
   dataset: any = [];
   startDate: any;
   endDate: any;
+  title: any;
   hotSettings: Handsontable.GridSettings = {
     editor: false,
     readOnly: true,
@@ -34,18 +35,32 @@ export class MachineRollComponent implements OnInit {
   constructor(
     private service: AppService,
     private toastService: ToastService,
-    private route: Router
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
-    const domain = this.route.url.split('/');
-    const url = domain[domain.length - 1];
-    Promise.resolve().then(() => {
-      this.service.getAllMachineRoll(url).subscribe((data) => {
-        const hot = this.hotRegisterer.getInstance(this.id);
-        this.dataset = data;
-        hot.updateData(data);
-      });
+    this.route.params.subscribe((url) => {
+      this.title = url.id;
+      let domain = [];
+      if (this.title == 'all-rolling') {
+        domain = ['machineRolls', 'maintenanceRolls'];
+        this.dataset = [];
+      } else if (this.title === 'all-non-rolling') {
+        domain = ['maintenanceNonRolls', 'machineNonRolls'];
+        this.dataset = [];
+      } else {
+        domain = [this.title];
+        this.dataset = [];
+      }
+      for (let ele of domain) {
+        Promise.resolve().then(() => {
+          this.service.getAllMachineRoll(ele).subscribe((data) => {
+            const hot = this.hotRegisterer.getInstance(this.id);
+            this.dataset.push(...data);
+            hot.updateData(this.dataset);
+          });
+        });
+      }
     });
   }
 

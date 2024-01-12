@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 import { HomePageComponent } from './lmg/home-page/home-page.component';
-import { MachineRollComponent } from './lmg/report/machine-roll/machine-roll.component';
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { AddMachineRollComponent } from './lmg/demand/add-machine-roll/add-machine-roll.component';
@@ -14,6 +13,8 @@ import { EditMachineRollComponent } from './lmg/edit/machine-roll/edit-machine-r
 import { VerifyDemandComponent } from './lmg/verify-demand/verify-demand.component';
 import { AddDetailsComponent } from './lmg/admin-dashboard/add-details/add-details.component';
 import { EditDetailsComponent } from './lmg/admin-dashboard/edit-details/edit-details.component';
+import { MachineRollComponent } from './lmg/report/machine-roll/machine-roll.component';
+import { ReportComponent } from './lmg/report/report.component';
 
 export const routes: Routes = [
   {
@@ -56,23 +57,36 @@ export const routes: Routes = [
       },
       {
         path: 'report',
+        component: ReportComponent,
         children: [
           {
-            path: 'machineRolls',
+            path: ':id',
             component: MachineRollComponent,
           },
-          {
-            path: 'machineNonRolls',
-            component: MachineRollComponent,
-          },
-          {
-            path: 'maintenanceRolls',
-            component: MachineRollComponent,
-          },
-          {
-            path: 'maintenanceNonRolls',
-            component: MachineRollComponent,
-          },
+          // {
+          //   path: 'machineRolls',
+          //   component: MachineRollComponent,
+          // },
+          // {
+          //   path: 'machineNonRolls',
+          //   component: MachineRollComponent,
+          // },
+          // {
+          //   path: 'maintenanceRolls',
+          //   component: MachineRollComponent,
+          // },
+          // {
+          //   path: 'maintenanceNonRolls',
+          //   component: MachineRollComponent,
+          // },
+          // {
+          //   path: 'all-rolling',
+          //   component: MachineRollComponent,
+          // },
+          // {
+          //   path: 'all-non-rolling',
+          //   component: MachineRollComponent,
+          // },
         ],
       },
       {

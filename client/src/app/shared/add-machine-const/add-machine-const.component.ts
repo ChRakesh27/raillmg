@@ -202,6 +202,7 @@ export class AddMachineConstComponent implements OnInit {
       this.prepareAvailableSlots(machineForm.controls['section'].value, change);
     });
   }
+
   addCaution(index) {
     this.cautions[index].push({ length: '', speed: 0 });
   }
@@ -255,7 +256,7 @@ export class AddMachineConstComponent implements OnInit {
     let dt = DateTime.now();
 
     let avl_slot = [];
-    for (let i = 0; i < 7; i++) {
+    for (let i = 0; i < 365; i++) {
       for (let slotDay in slotsList) {
         if (+dt.weekday == +slotDay || (+dt.weekday == 7 && +slotDay == 0)) {
           for (let slot of slotsList[slotDay]) {

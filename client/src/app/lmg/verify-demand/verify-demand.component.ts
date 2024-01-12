@@ -18,7 +18,8 @@ import { ILog, IMachineRoll } from '../../shared/model/machineRoll.model';
 })
 export class VerifyDemandComponent {
   userData: IUser;
-
+  startDate: any;
+  endDate: any;
   dataSet = [];
 
   private hotRegisterer = new HotTableRegisterer();
@@ -241,5 +242,37 @@ export class VerifyDemandComponent {
         });
       });
     });
+  }
+
+  selectStartDate(e) {
+    this.startDate = DateTime.fromISO(e.target.value);
+  }
+  selectEndDate(e) {
+    this.endDate = DateTime.fromISO(e.target.value);
+  }
+
+  filterDataWithDate() {
+    // if (!this.startDate && !this.endDate) {
+    //   return;
+    // }
+    // const hot = this.hotRegisterer.getInstance(this.id);
+    // const data = this.dataset.filter((item) => {
+    //   const parsedDate = DateTime.fromFormat(item.date, 'dd/MM/yyyy');
+    //   if (this.startDate <= parsedDate && this.endDate >= parsedDate) {
+    //     return true;
+    //   } else if (!!this.startDate && this.startDate <= parsedDate) {
+    //     return true;
+    //   } else if (!!this.endDate && this.endDate >= parsedDate) {
+    //     return true;
+    //   }
+    //   return false;
+    // });
+    // console.log('🚀 ~ this.dataset:', data);
+    // hot.updateData(data);
+  }
+
+  ResetDates() {
+    // const hot = this.hotRegisterer.getInstance(this.id);
+    // hot.updateData(this.dataset);
   }
 }
