@@ -79,7 +79,7 @@
                                     </div>
                                     <div class="col-sm-6 col-md-3">
                                         <div class="form-group mt-3 mb-3">
-                                            <label>STATION FROM</label>
+                                            <label>YARD / STATION FROM</label>
                                             <select class="form-select" formControlName="stationFrom">
                                                 <option value="" selected disabled>
                                                     SELECT STATION
@@ -92,7 +92,7 @@
                                     </div>
                                     <div class="col-sm-6 col-md-3">
                                         <div class="form-group mt-3 mb-3">
-                                            <label>STATION TO</label>
+                                            <label>YARD / STATION TO</label>
                                             <select class="form-select" formControlName="stationTo">
                                                 <option value="" selected disabled>
                                                     SELECT STATION
@@ -118,6 +118,33 @@
                                     </div>
                                     <div class="col-sm-6 col-md-3">
                                         <div class="form-group mt-3 mb-3">
+                                            <label>AVAILABLE SLOT</label>
+                                            <select class="form-select" formControlName="availableSlot" required>
+                                                <option value="" selected disabled>
+                                                    SELECT AVAILABLE SLOT
+                                                </option>
+                                                <option value="Avl_slot_other">
+                                                    Others
+                                                </option>
+
+                                                @for(date of availableSlots[
+                                                machineFormArray.controls[i].get("section").value+'_'+
+                                                machineFormArray.controls[i].get("direction").value];
+                                                track $index){
+                                                <option value="{{ date }}">{{ date }}</option>
+                                                }
+                                            </select>
+
+                                            @if(machineFormArray.controls[i].get("availableSlot").value ===
+                                            'Avl_slot_other'){
+                                            <input type="text" class="form-control" placeholder="ENTER AVAILABLE SLOT"
+                                                formControlName="avlSlotOther" />
+                                            <div class="slotFormat">*DD/MM/YYYY HH:MM to HH:MM DAY</div>
+                                            }
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3">
+                                        <div class="form-group mt-3 mb-3">
                                             <label>SERIES</label>
                                             <input type="text" class="form-control" placeholder="ENTER SERIES"
                                                 formControlName="series" />
@@ -127,21 +154,21 @@
                                         <div class="form-group mt-3 mb-3">
                                             <label>WHETHER NI WORK/PNI WORK OR NON-NI WORK</label>
                                             <select class="form-select" formControlName="ni">
-                                                <option value="" selected disabled>
-                                                    SELECT NI/NON-NI WORK
+                                                <option value="NON NI" selected>
+                                                    NON NI
                                                 </option>
-                                                <option value="Yes">Yes</option>
-                                                <option value="No">no</option>
+                                                <option value="PNI">PNI</option>
+                                                <option value="NI">NI</option>
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-sm-6 col-md-3">
+                                    <!-- <div class="col-sm-6 col-md-3">
                                         <div class="form-group mt-3 mb-3">
-                                            <label>YARD</label>
+                                            <label>REMARKS</label>
                                             <input type="text" class="form-control" placeholder="ENTER YARD"
                                                 formControlName="yard" />
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <div class="col-sm-6 col-md-3">
                                         <div class="form-group mt-3 mb-3">
                                             <label>MACHINE TYPE</label>
@@ -162,22 +189,7 @@
                                                 formControlName="typeOfWork" />
                                         </div>
                                     </div>
-                                    <div class="col-sm-6 col-md-3">
-                                        <div class="form-group mt-3 mb-3">
-                                            <label>AVAILABLE SLOT</label>
-                                            <select class="form-select" formControlName="availableSlot" required>
-                                                <option value="" selected disabled>
-                                                    SELECT AVAILABLE SLOT
-                                                </option>
-                                                @for(date of availableSlots[
-                                                machineFormArray.controls[i].get("section").value+'_'+
-                                                machineFormArray.controls[i].get("direction").value];
-                                                track $index){
-                                                <option value="{{ date }}">{{ date }}</option>
-                                                }
-                                            </select>
-                                        </div>
-                                    </div>
+
                                     <div class="col-sm-6 col-md-3">
                                         <div class="form-group mt-3 mb-3">
                                             <label>QUANTUM</label>
@@ -191,6 +203,13 @@
                                             <input type="text" class="form-control"
                                                 placeholder="ENTER DEPUTED SUPERVISOR"
                                                 formControlName="deputedSupervisor" />
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3">
+                                        <div class="form-group mt-3 mb-3">
+                                            <label>KILOMETER</label>
+                                            <input type="number" class="form-control" placeholder="ENTER KM"
+                                                formControlName="km" />
                                         </div>
                                     </div>
                                     <div class="col-sm-6 col-md-3">
@@ -253,13 +272,13 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-sm-6 col-md-3">
+                                    <!-- <div class="col-sm-6 col-md-3">
                                         <div class="form-group mt-3 mb-3">
                                             <label>REMARKS IF ANY</label>
                                             <input type="text" class="form-control" placeholder="ENTER REMARKS IF ANY"
                                                 formControlName="remarks" />
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <div class="col-sm-6 col-md-3">
                                         <div class="form-group mt-3 mb-3">
                                             <label>S&T STAFF</label>
@@ -283,15 +302,45 @@
                                         </div>
                                     </div>
                                     }
+                                    <div class="col-sm-6 col-md-3">
+                                        <div class="form-group mt-3 mb-3">
+                                            <label>REMARKS IF ANY</label>
+                                            <input type="text" class="form-control" placeholder="ENTER REMARKS IF ANY"
+                                                formControlName="remarks" />
+                                        </div>
+                                    </div>
                                     <div class="row">
+                                        <div class="col-sm-6 col-md-3">
+                                            <div class="form-group mt-3 mb-3">
+                                                <input type="checkbox" formControlName="integratedCheckbox" />
+                                                <label>Integrated Block</label>
+                                                @if(machineFormArray.controls[i].get('integratedCheckbox').value){
+                                                <select class="form-select" formControlName="integrated"
+                                                    placement="end">
+                                                    <option value="" selected disabled>
+                                                        SELECT
+                                                    </option>
+                                                    <option value="CONSTRUCTION">CONSTRUCTION</option>
+                                                    <option value="ENGINEERING">ENGINEERING</option>
+                                                    <option value="S&T">S&T</option>
+                                                    <option value="ELECTRIC">ELECTRIC</option>
+                                                    <option value="RE">RE</option>
+                                                    <option value="RVNL">RVNL</option>
+                                                    <option value="SIGNAL">SIGNAL</option>
+                                                    <option value="Telecom">Telecom</option>
+                                                    <option value="TRD">TRD</option>
+                                                </select>
+                                                }
+                                            </div>
+                                        </div>
                                         <div class="col-sm-6 col-md-3">
                                             <div class="form-group mt-3 mb-3">
                                                 <input type="checkbox" formControlName="locoCheckbox" />
                                                 <label>LOCO REQUIRED</label>
                                                 @if(machineFormArray.controls[i].get('locoCheckbox').value){
                                                 <input type="number" class="form-control"
-                                                    placeholder="ENTER NUMBER OF LOCO REQUIRED"
-                                                    formControlName="loco" />
+                                                    placeholder="ENTER NUMBER OF LOCO REQUIRED" formControlName="loco"
+                                                    required />
                                                 }
                                             </div>
                                         </div>
@@ -301,8 +350,8 @@
                                                 <label>CREW REQUIRED</label>
                                                 @if(machineFormArray.controls[i].get('crewCheckbox').value){
                                                 <input type="number" class="form-control"
-                                                    placeholder="ENTER NUMBER OF CREW REQUIRED"
-                                                    formControlName="crew" />
+                                                    placeholder="ENTER NUMBER OF CREW REQUIRED" formControlName="crew"
+                                                    required />
                                                 }
                                             </div>
                                         </div>
@@ -325,12 +374,12 @@
                                                     <div class="col-5">
                                                         <input type="text" class="form-control"
                                                             placeholder="ENTER LENGTH OF CAUTION" name="length"
-                                                            (change)="cautionLength($event,i,$index)" />
+                                                            (change)="cautionLength($event,i,$index)" required />
                                                     </div>
                                                     <div class="col-5">
                                                         <input type="number" class="form-control"
                                                             placeholder="ENTER SPEED OF CAUTION" name="speed"
-                                                            (change)="cautionSpeed($event,i,$index)" />
+                                                            (change)="cautionSpeed($event,i,$index)" required />
                                                     </div>
                                                     <div class="col-2">
                                                         <button type="button" class="btn btn-outline-danger"
@@ -347,7 +396,7 @@
                                                 <label> Train Cancellation/Diversion</label>
                                                 @if(machineFormArray.controls[i].get('cancelTrainCheckbox').value){
                                                 <input type="text" class="form-control" placeholder="ENTER Add Remarks"
-                                                    formControlName="cancelTrain" />
+                                                    formControlName="cancelTrain" required />
                                                 }
                                             </div>
                                         </div>

@@ -102,7 +102,12 @@ export class AddMachineConstComponent implements OnInit {
 
     let payload = [];
     payload = this.machineFormArray.value.map((item, index) => {
-      let splitSlot = item.availableSlot.split(' ');
+      let splitSlot = [];
+      if (item.availableSlot === 'Avl_slot_other') {
+        splitSlot = item.avlSlotOther.split(' ');
+      } else {
+        splitSlot = item.availableSlot.split(' ');
+      }
 
       if (!item.crewCheckbox || item.crew == null) {
         item.crew = 0;
@@ -133,6 +138,7 @@ export class AddMachineConstComponent implements OnInit {
         logs: [],
       };
     });
+    console.log('🚀 ~ payload:', payload);
 
     this.service.addRailDetails(this.domain, payload).subscribe((res) => {
       for (let index = this.machineFormArray.length - 1; index >= 0; index--) {
@@ -167,9 +173,11 @@ export class AddMachineConstComponent implements OnInit {
       typeOfWork: [null],
       dmd_duration: [null],
       availableSlot: [''],
+      avlSlotOther: [''],
       quantum: [null],
       deputedSupervisor: [null],
       resources: [null],
+      km: [null],
       ni: [''],
       yard: [null],
       remarks: [null],
@@ -186,6 +194,8 @@ export class AddMachineConstComponent implements OnInit {
       locoCheckbox: [false],
       cancelTrain: [null],
       cancelTrainCheckbox: [false],
+      integratedCheckbox: [false],
+      integrated: [''],
     });
     this.cautions.push([{ length: '', speed: 0 }]);
     this.machineFormArray.push(machineForm);

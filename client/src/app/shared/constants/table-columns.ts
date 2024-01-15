@@ -31,6 +31,32 @@ const LogInfoRender = (
 export const columns: Handsontable.ColumnSettings[] = [
   { data: '_id', title: 'id' },
   {
+    data: 'Avl_status',
+    title: 'AVAIL STATUS',
+    type: 'checkbox',
+    defaultData: true,
+    width: 130,
+  },
+  {
+    data: 'Dmd_remarks',
+    title: 'DEMAND REMARKS',
+    width: 130,
+  },
+  {
+    data: 'status',
+    title: ' APPROVE STATUS',
+    type: 'select',
+    selectOptions: ['Accept', 'Reject'],
+    width: 130,
+  },
+  {
+    data: 'APL_remarks',
+    title: 'APPROVAL REMARKS',
+    type: 'select',
+    selectOptions: ['Accept', 'Reject'],
+    width: 130,
+  },
+  {
     data: 'date',
     title: 'DATE',
     type: 'date',
@@ -108,6 +134,17 @@ export const columns: Handsontable.ColumnSettings[] = [
   { data: 'point', title: 'POINT/BPAC/O..', width: 130 },
   { data: 'tower', title: 'TOWER/MAT...', width: 110 },
   { data: 'cancelTrain', title: 'Train Cancel...', width: 110 },
+  {
+    data: 'grant_status',
+    title: 'GRANT STATUS',
+    type: 'select',
+    selectOptions: ['Pending', 'Granted', 'Not Granted'],
+    width: 120,
+  },
+  { data: 'time_granted', title: 'TIME GRANTED', width: 120 },
+  { data: '', title: 'SLOTS', width: 120 },
+  { data: '', title: 'OUTPUT', width: 120 },
+  { data: '', title: 'OPTG Remarks', width: 120 },
   {
     data: 'logs',
     title: 'EDIT HISTORY',

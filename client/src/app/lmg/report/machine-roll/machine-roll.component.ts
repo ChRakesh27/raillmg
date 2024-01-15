@@ -105,9 +105,17 @@ export class MachineRollComponent implements OnInit {
 
       if (this.startDate <= parsedDate && this.endDate >= parsedDate) {
         return true;
-      } else if (!!this.startDate && this.startDate <= parsedDate) {
+      } else if (
+        this.startDate !== undefined &&
+        this.startDate <= parsedDate &&
+        this.endDate == undefined
+      ) {
         return true;
-      } else if (!!this.endDate && this.endDate >= parsedDate) {
+      } else if (
+        this.endDate !== undefined &&
+        this.endDate >= parsedDate &&
+        this.startDate == undefined
+      ) {
         return true;
       }
 
