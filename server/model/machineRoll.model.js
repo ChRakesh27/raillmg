@@ -35,7 +35,6 @@ const machineRollSchema = new Schema({
     board: { type: String },
     typeOfWork: { type: String },
     ni: { type: String },
-    yard: { type: String },
     remarks: { type: String },
     approval: { type: String },
     s_tStaff: { type: String },
@@ -46,13 +45,19 @@ const machineRollSchema = new Schema({
     time_granted: { type: String },
     status: { type: String },
     Avl_status: { type: Boolean, default: true },
-    logs: { type: [LogSchema], default: [] },
     createdBy: { type: String },
     createdAt: { type: Date },
     updatedBy: { type: String },
     updatedAt: { type: Date },
     caution: { type: Array },
     cancelTrain: { type: String },
+    integrated: { type: String },
+    km: { type: Number },
+    Apl_remarks: { type: String },
+    Dmd_remarks: { type: String },
+    slots: { type: String },
+    output: { type: String },
+    logs: { type: [LogSchema], default: [] },
 }, {
     versionKey: false
 })
@@ -61,3 +66,4 @@ const machineRollSchema = new Schema({
 
 const machineRoll = mongoose.model("machineRoll", machineRollSchema);
 module.exports = machineRoll
+// yard: { type: String },
