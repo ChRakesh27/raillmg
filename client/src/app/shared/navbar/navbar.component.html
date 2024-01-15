@@ -113,20 +113,11 @@
           </ul>
         </li>
         @if(userData['department']==='OPERATING'){
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle active" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <li class="nav-item ">
+          <a class="nav-link  active" role="button" [routerLink]="['dashboard']">
             Dashboard
           </a>
-          <ul class="dropdown-menu">
-            <li>
-              <a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
-                [routerLink]="['dashboard', 'add-details']">Add details</a>
-            </li>
-            <li>
-              <a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
-                [routerLink]="['dashboard', 'edit-details']">Edit details</a>
-            </li>
-          </ul>
+
         </li>
         }
       </ul>

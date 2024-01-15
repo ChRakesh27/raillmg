@@ -1,10 +1,10 @@
 import { CommonModule, JsonPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AppService } from '../../../app.service';
-import { ToastService } from '../../../shared/toast/toast.service';
+import { AppService } from '../../app.service';
+import { ToastService } from '../../shared/toast/toast.service';
 import { NgbNavModule, NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
-import { IRailForm } from '../../../shared/model/railForm.model';
+import { IRailForm } from '../../shared/model/railForm.model';
 
 @Component({
   selector: 'app-add-details',
