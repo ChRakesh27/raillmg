@@ -178,7 +178,7 @@ export class AddMachineConstComponent implements OnInit {
       deputedSupervisor: [null],
       resources: [null],
       km: [null],
-      ni: [''],
+      ni: ['NON NI'],
       yard: [null],
       remarks: [null],
       approval: [''],

@@ -49,10 +49,8 @@ export class VerifyDemandTableComponent implements OnInit {
       width: 130,
     },
     {
-      data: 'APL_remarks',
+      data: 'Apl_remarks',
       title: 'APPROVAL REMARKS',
-      type: 'select',
-      selectOptions: ['Accept', 'Reject'],
       width: 153,
     },
 
@@ -81,9 +79,9 @@ export class VerifyDemandTableComponent implements OnInit {
       width: 120,
     },
     { data: 'time_granted', title: 'TIME GRANTED', width: 120 },
-    { data: '', title: 'SLOTS', width: 120 },
-    { data: '', title: 'OUTPUT', width: 120 },
-    { data: '', title: 'OPTG Remarks', width: 120 },
+    { data: 'slots', title: 'SLOTS', width: 120 },
+    { data: 'output', title: 'OUTPUT', width: 120 },
+    { data: 'OPTG_remarks', title: 'OPTG Remarks', width: 120 },
     { data: 'rollfrom', title: 'ROLL FROM', width: 100 },
     {
       data: 'logs',
@@ -166,7 +164,12 @@ export class VerifyDemandTableComponent implements OnInit {
           prop === 'time_granted' ||
           prop === 'remarks' ||
           prop === 'status' ||
-          prop === 'Avl_status') &&
+          prop === 'Avl_status' ||
+          prop === 'OPTG_remarks' ||
+          prop === 'output' ||
+          prop === 'slots' ||
+          prop === 'Apl_remarks' ||
+          prop === 'Dmd_remarks') &&
         this.userData.department === 'OPERATING'
       ) {
         cp['readOnly'] = false;
