@@ -146,7 +146,7 @@ export const columns: Handsontable.ColumnSettings[] = [
   { data: 'time_granted', title: 'TIME GRANTED', width: 120 },
   { data: 'slot', title: 'SLOTS', width: 120 },
   { data: 'output', title: 'OUTPUT', width: 120 },
-  { data: 'OPTG_remarks', title: 'OPTG Remarks', width: 120 },
+  { data: 'OPTG_remarks', title: 'OPTG REMARKS', width: 120 },
   {
     data: 'logs',
     title: 'EDIT HISTORY',

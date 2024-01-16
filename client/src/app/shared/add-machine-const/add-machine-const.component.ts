@@ -105,10 +105,10 @@ export class AddMachineConstComponent implements OnInit {
       let splitSlot = [];
       if (item.availableSlot === 'Avl_slot_other') {
         const regexPattern = new RegExp(
-          '\\b([0-3][0-9]/[0-1][1-2]/\\d{4}) ([0-2][0-9]:[0-2][0-9]) to ([0-2][0-9]:[0-2][0-9]) (\\b(?:MONDAY|TUESDAY|WEDNESDAY|THURSDAY|FRIDAY|SATURDAY|SUNDAY)\\b)\\b'
+          '\\b([0-3][0-9]/[0-1][1-2]/\\d{4}) ([0-2][0-9]:[0-2][0-9]) to ([0-2][0-9]:[0-2][0-9]) (\\b(?:MONDAY|TUESDAY|WEDNESDAY|THURSDAY|FRIDAY|SATURDAY|SUNDAY|monday|tuesday|wednesday|thursday|friday|saturday|sunday)\\b)\\b'
         );
         if (!regexPattern.test(item.avlSlotOther)) {
-          this.toastService.showDanger('Available slot are incorrect');
+          this.toastService.showDanger('AVAILABLE SLOT ARE INCORRECT FORMAT');
           return;
         }
 
