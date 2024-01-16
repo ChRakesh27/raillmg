@@ -57,6 +57,7 @@ const maintenanceRollSchema = new Schema({
     Dmd_remarks: { type: String },
     slots: { type: String },
     output: { type: String },
+    OPTG_remarks: { type: String },
     logs: { type: [LogSchema], default: [] },
 }, {
     versionKey: false
