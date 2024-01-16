@@ -118,6 +118,7 @@ export const columns: Handsontable.ColumnSettings[] = [
     width: 90,
   },
   { data: 'series', title: 'SERIES', width: 80 },
+  { data: 'km', title: 'KILOMETER', width: 80 },
   { data: 'ni', title: ' NI/Non-NI Work', width: 130 },
   { data: 'yard', title: 'Yard', width: 70 },
   { data: 'lineNo', title: 'KM/LINE', width: 90 },
@@ -133,7 +134,8 @@ export const columns: Handsontable.ColumnSettings[] = [
   { data: 'tpcStaff', title: 'TPC STAFF', width: 90 },
   { data: 'point', title: 'POINT/BPAC/O..', width: 130 },
   { data: 'tower', title: 'TOWER/MAT...', width: 110 },
-  { data: 'cancelTrain', title: 'Train Cancel...', width: 110 },
+  { data: 'cancelTrain', title: 'TRAIN CANCEL...', width: 110 },
+  { data: 'integrated', title: 'INTEGRATED', width: 110 },
   {
     data: 'grant_status',
     title: 'GRANT STATUS',
