@@ -174,7 +174,7 @@ export class VerifyDemandTableComponent implements OnInit {
       ) {
         cp['readOnly'] = false;
       } else if (
-        prop === 'Avl_status' &&
+        (prop === 'Avl_status' || prop === 'Dmd_remarks') &&
         this.userData.department === this.dataSet[row]?.department
       ) {
         cp['readOnly'] = false;

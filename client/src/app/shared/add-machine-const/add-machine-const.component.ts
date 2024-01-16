@@ -101,14 +101,21 @@ export class AddMachineConstComponent implements OnInit {
     }
 
     let payload = [];
-    payload = this.machineFormArray.value.map((item, index) => {
+    for (let [index, item] of this.machineFormArray.value.entries()) {
       let splitSlot = [];
       if (item.availableSlot === 'Avl_slot_other') {
+        const regexPattern = new RegExp(
+          '\\b([0-3][0-9]/[0-1][1-2]/\\d{4}) ([0-2][0-9]:[0-2][0-9]) to ([0-2][0-9]:[0-2][0-9]) (\\b(?:MONDAY|TUESDAY|WEDNESDAY|THURSDAY|FRIDAY|SATURDAY|SUNDAY)\\b)\\b'
+        );
+        if (!regexPattern.test(item.avlSlotOther)) {
+          this.toastService.showDanger('Available slot are incorrect');
+          return;
+        }
+
         splitSlot = item.avlSlotOther.split(' ');
       } else {
         splitSlot = item.availableSlot.split(' ');
       }
-
       if (!item.crewCheckbox || item.crew == null) {
         item.crew = 0;
       }
@@ -124,7 +131,7 @@ export class AddMachineConstComponent implements OnInit {
         startTime,
         'minutes'
       ).minutes;
-      return {
+      payload.push({
         ...item,
         avl_start: splitSlot[1],
         avl_end: splitSlot[3],
@@ -136,9 +143,55 @@ export class AddMachineConstComponent implements OnInit {
         updatedAt: new Date().toISOString(),
         updatedBy: this.userData.username,
         logs: [],
-      };
-    });
-    console.log('🚀 ~ payload:', payload);
+      });
+    }
+
+    // payload = this.machineFormArray.value.map((item, index) => {
+    //   let splitSlot = [];
+    //   if (item.availableSlot === 'Avl_slot_other') {
+    //     const regexPattern = new RegExp(
+    //       '\\b([0-3][0-9]/[0-1][1-2]/\\d{4}) ([0-2][0-9]:[0-2][0-9]) to ([0-2][0-9]:[0-2][0-9]) (\\b(?:MONDAY|TUESDAY|WEDNESDAY|THURSDAY|FRIDAY|SATURDAY|SUNDAY)\\b)\\b'
+    //     );
+    //     if (!regexPattern.test(item.avlSlotOther)) {
+    //       this.toastService.showDanger('Available slot are incorrect');
+    //       return;
+    //     }
+
+    //     splitSlot = item.avlSlotOther.split(' ');
+    //   } else {
+    //     splitSlot = item.availableSlot.split(' ');
+    //   }
+
+    //   if (!item.crewCheckbox || item.crew == null) {
+    //     item.crew = 0;
+    //   }
+    //   if (!item.locoCheckbox || item.loco == null) {
+    //     item.loco = 0;
+    //   }
+    //   item.caution = this.cautions[index];
+
+    //   const dt = DateTime.now();
+    //   const startTime = DateTime.fromFormat(splitSlot[1], 'HH:mm');
+    //   const endTime = DateTime.fromFormat(splitSlot[3], 'HH:mm');
+    //   const timeDifferenceInMinutes = endTime.diff(
+    //     startTime,
+    //     'minutes'
+    //   ).minutes;
+    //   return {
+    //     ...item,
+    //     avl_start: splitSlot[1],
+    //     avl_end: splitSlot[3],
+    //     date: splitSlot[0],
+    //     department: this.department.value,
+    //     avl_duration: timeDifferenceInMinutes,
+    //     createdAt: new Date().toISOString(),
+    //     createdBy: this.userData.username,
+    //     updatedAt: new Date().toISOString(),
+    //     updatedBy: this.userData.username,
+    //     logs: [],
+    //   };
+    // });
+    // console.log('🚀 ~ payload:', payload);
 
     this.service.addRailDetails(this.domain, payload).subscribe((res) => {
       for (let index = this.machineFormArray.length - 1; index >= 0; index--) {
