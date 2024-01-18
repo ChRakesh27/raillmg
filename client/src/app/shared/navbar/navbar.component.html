@@ -36,9 +36,6 @@
               <a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown">maintenance(Upload
                 File)</a>
             </li>
-            <li>
-              <a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown">Edit</a>
-            </li>
           </ul>
         </li>
         <li>
@@ -103,13 +100,23 @@
           <ul class="dropdown-menu">
             <li>
               <a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
-                [routerLink]="['edit', 'machine-roll']">Machine Roll</a>
+                [routerLink]="['edit', 'machineRolls']">Machine Roll</a>
             </li>
             <li>
-              <a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown">Maintenance
+              <a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                [routerLink]="['edit', 'machineNonRolls']">Machine Non
                 Roll</a>
             </li>
-
+            <li>
+              <a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                [routerLink]="['edit', 'maintenanceRolls']">Maintenance
+                Roll</a>
+            </li>
+            <li>
+              <a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                [routerLink]="['edit', 'maintenanceNonRolls']">Maintenance Non
+                Roll</a>
+            </li>
           </ul>
         </li>
         @if(userData['department']==='OPERATING'){

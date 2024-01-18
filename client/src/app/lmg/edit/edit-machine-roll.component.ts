@@ -1,18 +1,20 @@
 import { Component } from '@angular/core';
 import { HotTableModule, HotTableRegisterer } from '@handsontable/angular';
 import Handsontable from 'handsontable';
-import { hotSettings } from '../../../shared/constants/hotSettings';
-import { AppService } from '../../../app.service';
-import { localStorageService } from '../../../shared/service/local-storage.service';
-import { ToastService } from '../../../shared/toast/toast.service';
-import { IUser } from '../../../shared/model/user.model';
+import { hotSettings } from '../../shared/constants/hotSettings';
+import { AppService } from '../../app.service';
+import { localStorageService } from '../../shared/service/local-storage.service';
+import { ToastService } from '../../shared/toast/toast.service';
+import { IUser } from '../../shared/model/user.model';
 import { DateTime } from 'luxon';
-import { IMachineRoll } from '../../../shared/model/machineRoll.model';
+import { IMachineRoll } from '../../shared/model/machineRoll.model';
+import { ActivatedRoute } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-machine-roll',
   standalone: true,
-  imports: [HotTableModule],
+  imports: [HotTableModule, CommonModule],
   templateUrl: './edit-machine-roll.component.html',
   styleUrl: './edit-machine-roll.component.css',
 })
@@ -21,8 +23,10 @@ export class EditMachineRollComponent {
   private hotRegisterer = new HotTableRegisterer();
   id = 'hotInstance';
   dataSet: IMachineRoll[] = [];
+  domain: string;
   hotSettings: Handsontable.GridSettings = {
     ...hotSettings,
+    height: '80vh',
     afterChange: (changes) => {
       changes?.forEach(
         ([row, prop, oldValue, newValue]: Handsontable.CellChange) => {
@@ -63,7 +67,7 @@ export class EditMachineRollComponent {
           };
 
           this.service
-            .updateRailDetails('machineRolls', id, payload)
+            .updateRailDetails(this.domain, id, payload)
             .subscribe((res: IMachineRoll) => {
               Object.assign(data, res);
               hot.render();
@@ -87,25 +91,29 @@ export class EditMachineRollComponent {
   constructor(
     private service: AppService,
     private ls: localStorageService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
     this.userData = this.ls.getUser();
-    Promise.resolve().then(() => {
-      this.service
-        .getAllMachineRoll('machineRolls')
-        .subscribe((data: IMachineRoll[]) => {
-          const hot = this.hotRegisterer.getInstance(this.id);
-          data = data.filter(
-            (item) =>
-              this.userData.department === 'OPERATING' ||
-              item.department === this.userData.department
-          );
+    this.route.params.subscribe((url) => {
+      this.domain = url['domain'];
+      Promise.resolve().then(() => {
+        this.service
+          .getAllMachineRoll(this.domain)
+          .subscribe((data: IMachineRoll[]) => {
+            const hot = this.hotRegisterer.getInstance(this.id);
+            data = data.filter(
+              (item) =>
+                this.userData.department === 'OPERATING' ||
+                item.department === this.userData.department
+            );
 
-          this.dataSet = data;
-          hot.updateData(data);
-        });
+            this.dataSet = data;
+            hot.updateData(data);
+          });
+      });
     });
   }
 }

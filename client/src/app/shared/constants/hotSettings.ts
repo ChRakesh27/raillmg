@@ -13,7 +13,7 @@ export const hotSettings: Handsontable.GridSettings = {
   rowHeights: 30,
   comments: true,
   width: '100%',
-  height: '70vh',
+  height: '100%',
   viewportColumnRenderingOffset: 40,
   viewportRowRenderingOffset: 'auto',
   dropdownMenu: ['filter_by_value', 'filter_operators', 'filter_action_bar'],

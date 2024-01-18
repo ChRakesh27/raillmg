@@ -9,7 +9,7 @@ import { MachineNonRollComponent } from './lmg/demand/machine-non-roll/machine-n
 import { MaintenanceRollComponent } from './lmg/demand/maintenance-roll/maintenance-roll.component';
 import { MaintenanceNonRollComponent } from './lmg/demand/maintenance-non-roll/maintenance-non-roll.component';
 import { MachineUploadFileComponent } from './lmg/demand/machine-upload-file/machine-upload-file.component';
-import { EditMachineRollComponent } from './lmg/edit/machine-roll/edit-machine-roll.component';
+import { EditMachineRollComponent } from './lmg/edit/edit-machine-roll.component';
 import { VerifyDemandComponent } from './lmg/verify-demand/verify-demand.component';
 import { AddDetailsComponent } from './lmg/admin-dashboard/add-details.component';
 import { MachineRollComponent } from './lmg/report/machine-roll/machine-roll.component';
@@ -89,13 +89,8 @@ export const routes: Routes = [
         ],
       },
       {
-        path: 'edit',
-        children: [
-          {
-            path: 'machine-roll',
-            component: EditMachineRollComponent,
-          },
-        ],
+        path: 'edit/:domain',
+        component: EditMachineRollComponent,
       },
       {
         path: 'dashboard',
