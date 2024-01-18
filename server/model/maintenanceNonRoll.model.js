@@ -52,7 +52,7 @@ const maintenanceNonRollSchema = new Schema({
     caution: { type: Array },
     cancelTrain: { type: String },
     integrated: { type: String },
-    km: { type: Number },
+    km: { type: String },
     Apl_remarks: { type: String },
     Dmd_remarks: { type: String },
     slots: { type: String },
