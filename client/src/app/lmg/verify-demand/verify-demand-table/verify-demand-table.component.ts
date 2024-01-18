@@ -116,7 +116,7 @@ export class VerifyDemandTableComponent implements OnInit {
 
   hotSettings: Handsontable.GridSettings = {
     ...hotSettings,
-    height: '32.8vh',
+    height: '32vh',
     columns: this.columns,
     afterChange: (changes) => {
       changes?.forEach(([row, prop, oldValue, newValue]) => {
