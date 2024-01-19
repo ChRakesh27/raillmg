@@ -24,9 +24,7 @@ export class LoginComponent implements OnInit {
     private ls: localStorageService,
     private toastService: ToastService,
     private router: Router
-  ) {
-
-  }
+  ) {}
 
   ngOnInit(): void {
     this.userForm = new FormGroup({
@@ -45,8 +43,9 @@ export class LoginComponent implements OnInit {
             this.router.navigate(['/lmg']);
           },
           error: (err) => {
+            this.service.isLoading$.next(false);
             this.toastService.showDanger('failed to login');
-          }
+          },
         });
     }
   }
