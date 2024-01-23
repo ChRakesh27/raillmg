@@ -40,7 +40,7 @@ const CautionRender = (
   let text = [];
   if (!value?.length) return;
   for (let ele of value) {
-    text.push(`LENGTH ${ele.length}  |  SPEED ${ele.speed}.`);
+    text.push(`LENGTH : ${ele.length}  |  SPEED : ${ele.speed}.`);
   }
   TD.innerHTML = text.join(' | ');
   // cellProperties.comment = {
@@ -61,7 +61,7 @@ const IntegratedRender = (
   let text = [];
   if (!value?.length) return;
   for (let ele of value) {
-    text.push(`BLOCK ${ele.block}  |  DURATION ${ele.duration}.`);
+    text.push(`BLOCK : ${ele.block}  |  DURATION : ${ele.duration}.`);
   }
   TD.innerHTML = text.join(' | ');
   // cellProperties.comment = {
@@ -173,10 +173,10 @@ export const columns: Handsontable.ColumnSettings[] = [
   { data: 'remarks', title: ' REMARKS', width: 90 },
   // { data: 'approval', title: 'APPROVAL', width: 90 },
   { data: 's_tStaff', title: 'S&T STAFF', width: 90 },
-  // { data: 'tpcStaff', title: 'TPC STAFF', width: 90 },
+  { data: 'tpcStaff', title: 'TPC STAFF', width: 90 },
   // { data: 'point', title: 'POINT/BPAC/O..', width: 130 },
-  { data: 'tower', title: 'TOWER/MAT...', width: 110 },
-  { data: 'cancelTrain', title: 'TRAIN CANCEL...', width: 130 },
+  // { data: 'tower', title: 'TOWER/MAT...', width: 110 },
+  // { data: 'cancelTrain', title: 'TRAIN CANCEL...', width: 130 },
   {
     data: 'integrated',
     title: 'INTEGRATED',
