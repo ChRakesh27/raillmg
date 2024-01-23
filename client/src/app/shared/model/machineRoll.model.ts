@@ -36,7 +36,7 @@ export interface IMachineRoll {
   time_granted: string;
   caution: [];
   cancelTrain: string;
-  integrated: string;
+  integrated: any[];
   km: string;
   Apl_remarks: string;
   Dmd_remarks: string;

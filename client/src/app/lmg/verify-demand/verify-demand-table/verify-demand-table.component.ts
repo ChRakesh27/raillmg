@@ -258,7 +258,6 @@ export class VerifyDemandTableComponent implements OnInit {
       }
       return false;
     });
-    console.log('🚀 ~ this.dataset:', data);
     hot.updateData(data);
   }
 

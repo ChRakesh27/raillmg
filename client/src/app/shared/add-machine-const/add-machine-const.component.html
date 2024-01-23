@@ -57,7 +57,7 @@
                                             <select class="form-select" formControlName="board"
                                                 (change)="onBoardSelect(i,$event)" required>
                                                 <option value="" selected disabled>Select Board</option>
-                                                @for(item of boardlist; track $index){
+                                                @for(item of boardList; track $index){
                                                 <option value="{{ item.board }}">{{ item.board }}</option>
                                                 }
                                             </select>
@@ -239,7 +239,7 @@
                                                 required />
                                         </div>
                                     </div>
-                                    <!-- @if(department.value ==="ELECTRIC"){
+                                    @if(department.value ==="ELECTRIC"){
                                     <div class="col-sm-6 col-md-3">
                                         <div class="form-group mt-3 mb-3">
                                             <label>TOWER WAGON/MATERIAL TRAIN</label>
@@ -248,9 +248,9 @@
                                                 formControlName="tower" />
                                         </div>
                                     </div>
-                                    }  -->
-                                    <!-- @if(department.value ==="ENGINEERING"||department.value
-                                    ==="S&T"){ -->
+                                    }
+                                    @if(department.value ==="ENGINEERING"||department.value
+                                    ==="S&T"){
                                     <div class="col-sm-6 col-md-3">
                                         <div class="form-group mt-3 mb-3">
                                             <label>TPC STAFF </label>
@@ -263,8 +263,8 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <!-- } @if(department.value ==="ENGINEERING"||department.value
-                                    ==="ELECTRIC"){ -->
+                                    } @if(department.value ==="ENGINEERING"||department.value
+                                    ==="ELECTRIC"){
                                     <div class="col-sm-6 col-md-3">
                                         <div class="form-group mt-3 mb-3">
                                             <label>LINE NO.</label>
@@ -287,8 +287,8 @@
                                     </div>
 
 
-                                    <!-- }  -->
-                                    <!-- @if(department.value ==="S&T"){
+                                    }
+                                    @if(department.value ==="S&T"){
                                     <div class="col-sm-6 col-md-3">
                                         <div class="form-group mt-3 mb-3">
                                             <label>POINT/BPAC/OTHERS</label>
@@ -296,7 +296,7 @@
                                                 placeholder="ENTER POINT/BPAC/OTHERS" formControlName="point" />
                                         </div>
                                     </div>
-                                    } -->
+                                    }
                                     <div class="col-sm-6 col-md-3">
                                         <div class="form-group mt-3 mb-3">
                                             <label>REMARKS IF ANY</label>
@@ -310,6 +310,34 @@
                                                 <input type="checkbox" formControlName="integratedCheckbox" />
                                                 <label>Integrated Block</label>
                                                 @if(machineFormArray.controls[i].get('integratedCheckbox').value){
+                                                <div class="row text-center">
+                                                    <div class="col-5">BLOCK</div>
+                                                    <div class="col-5">DURATION</div>
+                                                    <div class="col-2">
+                                                        <button type="button" class="btn btn-outline-primary"
+                                                            (click)="addIntegrated(i)">+</button>
+                                                    </div>
+                                                </div>
+                                                <div class="row text-center"
+                                                    *ngFor="let integrated of integrates[i]; let $index = index"
+                                                    [attr.data-index]="i">
+                                                    <div class="col-5">
+                                                        <input type="text" class="form-control"
+                                                            placeholder="ENTER BLOCK OF INTEGRATED" name="block"
+                                                            (change)="integratedBlock($event,i,$index)" required />
+                                                    </div>
+                                                    <div class="col-5">
+                                                        <input type="number" class="form-control"
+                                                            placeholder="ENTER DURATION OF INTEGRATED" name="duration"
+                                                            (change)="integratedDuration($event,i,$index)" required />
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <button type="button" class="btn btn-outline-danger"
+                                                            (click)="deleteIntegrated(i,$index)">x</button>
+                                                    </div>
+                                                </div>
+                                                }
+                                                <!-- @if(machineFormArray.controls[i].get('integratedCheckbox').value){
                                                 <select class="form-select" formControlName="integrated"
                                                     placement="end">
                                                     <option value="" selected disabled>
@@ -325,7 +353,7 @@
                                                     <option value="Telecom">Telecom</option>
                                                     <option value="TRD">TRD</option>
                                                 </select>
-                                                }
+                                                } -->
                                             </div>
                                         </div>
                                         <div class="col-sm-6 col-md-3">
@@ -385,7 +413,7 @@
 
                                             </div>
                                         </div>
-                                        <div class="col-sm-6 col-md-3">
+                                        <!-- <div class="col-sm-6 col-md-3">
                                             <div class="form-group mt-3 mb-3">
                                                 <input type="checkbox" formControlName="cancelTrainCheckbox" />
                                                 <label> Train Cancellation/Diversion</label>
@@ -394,7 +422,7 @@
                                                     formControlName="cancelTrain" required />
                                                 }
                                             </div>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
                             </div>

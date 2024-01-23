@@ -27,6 +27,48 @@ const LogInfoRender = (
     readOnly: true,
   };
 };
+const CautionRender = (
+  instance: Handsontable.Core,
+  TD: HTMLTableCellElement,
+  row: number,
+  col: number,
+  prop: string | number,
+  value: any[],
+  cellProperties: Handsontable.CellProperties
+) => {
+  TD.className = row % 2 == 0 ? 'evenCell' : 'oddCell';
+  let text = [];
+  if (!value?.length) return;
+  for (let ele of value) {
+    text.push(`LENGTH ${ele.length}  |  SPEED ${ele.speed}.`);
+  }
+  TD.innerHTML = text.join(' | ');
+  // cellProperties.comment = {
+  //   value: text.join('\n'),
+  //   readOnly: true,
+  // };
+};
+const IntegratedRender = (
+  instance: Handsontable.Core,
+  TD: HTMLTableCellElement,
+  row: number,
+  col: number,
+  prop: string | number,
+  value: any[],
+  cellProperties: Handsontable.CellProperties
+) => {
+  TD.className = row % 2 == 0 ? 'evenCell' : 'oddCell';
+  let text = [];
+  if (!value?.length) return;
+  for (let ele of value) {
+    text.push(`BLOCK ${ele.block}  |  DURATION ${ele.duration}.`);
+  }
+  TD.innerHTML = text.join(' | ');
+  // cellProperties.comment = {
+  //   value: text.join('\n'),
+  //   readOnly: true,
+  // };
+};
 
 export const columns: Handsontable.ColumnSettings[] = [
   { data: '_id', title: 'id' },
@@ -131,17 +173,28 @@ export const columns: Handsontable.ColumnSettings[] = [
   { data: 'remarks', title: ' REMARKS', width: 90 },
   // { data: 'approval', title: 'APPROVAL', width: 90 },
   { data: 's_tStaff', title: 'S&T STAFF', width: 90 },
-  { data: 'tpcStaff', title: 'TPC STAFF', width: 90 },
+  // { data: 'tpcStaff', title: 'TPC STAFF', width: 90 },
   // { data: 'point', title: 'POINT/BPAC/O..', width: 130 },
-  // { data: 'tower', title: 'TOWER/MAT...', width: 110 },
+  { data: 'tower', title: 'TOWER/MAT...', width: 110 },
   { data: 'cancelTrain', title: 'TRAIN CANCEL...', width: 130 },
-  { data: 'integrated', title: 'INTEGRATED', width: 110 },
+  {
+    data: 'integrated',
+    title: 'INTEGRATED',
+    width: 160,
+    renderer: IntegratedRender,
+  },
   {
     data: 'grant_status',
     title: 'GRANT STATUS',
     type: 'select',
     selectOptions: ['Pending', 'Granted', 'Not Granted'],
     width: 120,
+  },
+  {
+    data: 'caution',
+    title: 'CAUTION',
+    width: 160,
+    renderer: CautionRender,
   },
   { data: 'time_granted', title: 'TIME GRANTED', width: 120 },
   { data: 'slot', title: 'SLOTS', width: 70 },

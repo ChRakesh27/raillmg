@@ -32,9 +32,10 @@ export class AddMachineConstComponent implements OnInit {
   userData: Partial<IUser> = {};
   availableSlots = {};
   cautions = [];
+  integrates = [];
   stations = [];
   machineType: { _id: ''; machine: '' }[];
-  boardlist: { _id: ''; board: '' }[];
+  boardList: { _id: ''; board: '' }[];
   sectionList = [];
   value: any;
   railDetails: any[] = [];
@@ -72,7 +73,7 @@ export class AddMachineConstComponent implements OnInit {
 
     Promise.resolve().then(() => {
       this.service.getAllRailDetails('boards').subscribe((data) => {
-        this.boardlist = data;
+        this.boardList = data;
       });
     });
   }
@@ -123,6 +124,7 @@ export class AddMachineConstComponent implements OnInit {
         item.loco = 0;
       }
       item.caution = this.cautions[index];
+      item.integrated = this.integrates[index];
 
       const dt = DateTime.now();
       const startTime = DateTime.fromFormat(splitSlot[1], 'HH:mm');
@@ -237,20 +239,21 @@ export class AddMachineConstComponent implements OnInit {
       approval: [''],
       s_tStaff: [''],
       tpcStaff: [''],
-      point: [null],
-      tower: [null],
+      // point: [null],
+      // tower: [null],
       crew: [null],
       crewCheckbox: [false],
       loco: [null],
       cautionCheckbox: [false],
       caution: [{ length: '', speed: 0 }],
       locoCheckbox: [false],
-      cancelTrain: [null],
+      // cancelTrain: [null],
       cancelTrainCheckbox: [false],
       integratedCheckbox: [false],
-      integrated: [''],
+      integrated: [{ block: '', duration: 0 }],
     });
     this.cautions.push([{ length: '', speed: 0 }]);
+    this.integrates.push([{ block: '', duration: 0 }]);
     this.machineFormArray.push(machineForm);
 
     const selectCtrl = machineForm.controls['section'] as FormControl;
@@ -270,8 +273,16 @@ export class AddMachineConstComponent implements OnInit {
     this.cautions[index].push({ length: '', speed: 0 });
   }
 
+  addIntegrated(index) {
+    this.integrates[index].push({ block: '', duration: 0 });
+  }
+
   deleteCaution(i, index) {
     this.cautions[i] = this.cautions[i].filter((ele, ind) => index != ind);
+  }
+
+  deleteIntegrated(i, index) {
+    this.integrates[i] = this.integrates[i].filter((ele, ind) => index != ind);
   }
 
   onDelete(index: number) {
@@ -291,6 +302,14 @@ export class AddMachineConstComponent implements OnInit {
     this.cautions[index1][index2]['speed'] = $event.target.value;
   }
 
+  integratedBlock($event, index1, index2) {
+    this.integrates[index1][index2]['block'] = $event.target.value;
+  }
+
+  integratedDuration($event, index1, index2) {
+    this.integrates[index1][index2]['duration'] = $event.target.value;
+  }
+
   prepareAvailableSlots(section, direction) {
     if (!section || !direction || direction == '') {
       return;
@@ -303,7 +322,6 @@ export class AddMachineConstComponent implements OnInit {
     let railData = {};
 
     for (let item of this.railDetails) {
-      console.log('🚀 ~ item:', item);
       if (item.section == section) {
         railData = item;
         break;
