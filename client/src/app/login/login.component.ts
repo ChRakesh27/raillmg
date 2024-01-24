@@ -28,25 +28,56 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.userForm = new FormGroup({
-      username: new FormControl(null, Validators.required),
-      password: new FormControl(null, Validators.required),
+      username: new FormControl(null),
+      password: new FormControl(null),
+      newPassword: new FormControl(null),
+      conformPassword: new FormControl(null),
     });
   }
   onLogin() {
-    if (this.userForm.valid) {
-      this.service.isLoading$.next(true);
-      this.service
-        .loginUser(this.userForm.value.username, this.userForm.value.password)
-        .subscribe({
-          next: (data) => {
-            this.ls.setUser(data);
-            this.router.navigate(['/lmg']);
-          },
-          error: (err) => {
-            this.service.isLoading$.next(false);
-            this.toastService.showDanger('failed to login');
-          },
-        });
+    this.service.isLoading$.next(true);
+    this.service
+      .loginUser(this.userForm.value.username, this.userForm.value.password)
+      .subscribe({
+        next: (data) => {
+          this.ls.setUser(data);
+          this.router.navigate(['/lmg']);
+        },
+        error: (err) => {
+          this.service.isLoading$.next(false);
+          this.toastService.showDanger('failed to login');
+        },
+      });
+  }
+  resetPassword() {
+    if (!this.userForm.valid) {
+      this.toastService.showWarning('fill all details');
+      return;
     }
+    if (
+      this.userForm.value.conformPassword !== this.userForm.value.newPassword
+    ) {
+      this.toastService.showDanger('CONFORM PASSWORD INCORRECT');
+      return;
+    }
+
+    this.service.isLoading$.next(true);
+    this.service
+      .loginUser(this.userForm.value.username, this.userForm.value.password)
+      .subscribe({
+        next: (data) => {
+          const payload = {
+            password: this.userForm.value.newPassword,
+          };
+          this.service.updateUser(data._id, payload).subscribe((res) => {
+            this.toastService.showSuccess('successfully RESET');
+            this.userForm.reset();
+          });
+        },
+        error: (err) => {
+          this.service.isLoading$.next(false);
+          this.toastService.showDanger('no user found');
+        },
+      });
   }
 }

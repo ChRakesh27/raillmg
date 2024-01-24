@@ -38,6 +38,17 @@ router.post("/", async (req, res) => {
         res.send(err)
     }
 })
+router.patch("/:id", async (req, res) => {
+    try {
+        const data = req.body;
+        const id = req.params.id;
+        const docs = await users.findByIdAndUpdate(id, data, { new: true })
+        delete docs.password
+        res.send(docs)
+    } catch (err) {
+        res.send(err)
+    }
+})
 
 
 module.exports = router;

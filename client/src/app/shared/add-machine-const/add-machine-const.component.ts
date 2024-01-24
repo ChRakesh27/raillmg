@@ -106,8 +106,9 @@ export class AddMachineConstComponent implements OnInit {
       let splitSlot = [];
       if (item.availableSlot === 'Avl_slot_other') {
         const regexPattern = new RegExp(
-          '\\b([0-3][0-9]/[0-1][1-2]/\\d{4}) ([0-2][0-9]:[0-2][0-9]) to ([0-2][0-9]:[0-2][0-9]) (\\b(?:MONDAY|TUESDAY|WEDNESDAY|THURSDAY|FRIDAY|SATURDAY|SUNDAY|monday|tuesday|wednesday|thursday|friday|saturday|sunday)\\b)\\b'
+          '\\b([0-3][0-9]/[0-1][1-2]/\\d{4}) ([0-2][0-9]:[0-2][0-9]) to ([0-2][0-9]:[0-2][0-9]) (\\b(?:MONDAY|TUESDAY|WEDNESDAY|THURSDAY|FRIDAY|SATURDAY|SUNDAY)\\b)\\b'
         );
+        console.log('🚀 ~ item.avlSlotOther:', item.avlSlotOther);
         if (!regexPattern.test(item.avlSlotOther)) {
           this.toastService.showDanger('AVAILABLE SLOT ARE INCORRECT FORMAT');
           return;
@@ -193,8 +194,8 @@ export class AddMachineConstComponent implements OnInit {
     //     logs: [],
     //   };
     // });
-    // console.log('🚀 ~ payload:', payload);
-
+    console.log('🚀 ~ payload:', payload);
+    return;
     this.service.addRailDetails(this.domain, payload).subscribe((res) => {
       for (let index = this.machineFormArray.length - 1; index >= 0; index--) {
         this.machineFormArray.removeAt(index);
@@ -250,10 +251,10 @@ export class AddMachineConstComponent implements OnInit {
       // cancelTrain: [null],
       cancelTrainCheckbox: [false],
       integratedCheckbox: [false],
-      integrated: [{ block: '', duration: 0 }],
+      integrated: [{ block: '', section: '', duration: 0 }],
     });
     this.cautions.push([{ length: '', speed: 0 }]);
-    this.integrates.push([{ block: '', duration: 0 }]);
+    this.integrates.push([{ block: '', section: '', duration: 0 }]);
     this.machineFormArray.push(machineForm);
 
     const selectCtrl = machineForm.controls['section'] as FormControl;
@@ -274,7 +275,7 @@ export class AddMachineConstComponent implements OnInit {
   }
 
   addIntegrated(index) {
-    this.integrates[index].push({ block: '', duration: 0 });
+    this.integrates[index].push({ block: '', section: '', duration: 0 });
   }
 
   deleteCaution(i, index) {
@@ -304,6 +305,9 @@ export class AddMachineConstComponent implements OnInit {
 
   integratedBlock($event, index1, index2) {
     this.integrates[index1][index2]['block'] = $event.target.value;
+  }
+  integratedSection($event, index1, index2) {
+    this.integrates[index1][index2]['section'] = $event.target.value;
   }
 
   integratedDuration($event, index1, index2) {

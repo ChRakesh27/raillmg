@@ -19,6 +19,10 @@ export class AppService {
     );
   }
 
+  updateUser(id, data): Observable<any> {
+    return this.httpClient.patch<any>(`${this.API_HOST}/users/${id}`, data);
+  }
+
   register(data): Observable<any> {
     return this.httpClient.post(this.API_HOST + '/users', data);
   }

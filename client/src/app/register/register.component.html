@@ -9,39 +9,25 @@
             <form [formGroup]="registerForm">
               <div class="form-group mt-3 mb-3">
                 <label for="usename">User Name</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="username"
-                  placeholder="Enter User Name"
-                  formControlName="username"
-                />
+                <input type="text" class="form-control" id="username" placeholder="Enter User Name"
+                  formControlName="username" />
               </div>
 
               <div class="form-group mt-3 mb-3">
                 <label for="password">Password</label>
-                <input
-                  type="password"
-                  class="form-control"
-                  id="password"
-                  placeholder="Password"
-                  formControlName="password"
-                />
+                <input type="password" class="form-control" id="password" placeholder="Password"
+                  formControlName="password" />
               </div>
               <div class="form-group mt-3 mb-3">
                 <label for="usename">Email</label>
-                <input
-                  type="email"
-                  class="form-control"
-                  id="username"
-                  placeholder="Enter Email"
-                  formControlName="email"
-                />
+                <input type="email" class="form-control" id="username" placeholder="Enter Email"
+                  formControlName="email" />
               </div>
               <div class="form-group mt-3 mb-3">
                 <label for="designation">Designation</label>
-
-                <select
+                <input type="text" class="form-control" id="designation" placeholder="Enter DESIGNATION"
+                  formControlName="designation" />
+                <!-- <select
                   class="form-select"
                   aria-label="Default select example"
                   formControlName="designation"
@@ -76,7 +62,7 @@
                   <option value="TI/JPE">TI/JPE</option>
                   <option value="TI/NMX">TI/NMX</option>
                   <option value="TI/FKM">TI/FKM</option>
-                </select>
+                </select> -->
               </div>
 
               <div class="form-group mt-3 mb-3">
@@ -96,7 +82,7 @@
                 </select>
               </div>
 
-              <div class="form-group mt-3 mb-3">
+              <!-- <div class="form-group mt-3 mb-3">
                 <label>Mobile Number</label>
                 <input
                   type="number"
@@ -105,13 +91,9 @@
                   placeholder="Mobile Number"
                   formControlName="mobile"
                 />
-              </div>
+              </div> -->
 
-              <button
-                type="submit"
-                class="btn btn-primary w-100 btn-lg mt-2"
-                (click)="onRegister()"
-              >
+              <button type="submit" class="btn btn-primary w-100 btn-lg mt-2" (click)="onRegister()">
                 Register
               </button>
             </form>

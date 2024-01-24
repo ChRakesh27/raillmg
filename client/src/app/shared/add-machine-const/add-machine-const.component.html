@@ -123,7 +123,8 @@
                                                 <option value="" selected disabled>
                                                     SELECT AVAILABLE SLOT
                                                 </option>
-                                                <option value="Avl_slot_other">
+                                                <option value="Avl_slot_other"
+                                                    *ngIf="domain==='machineNonRolls' || domain ==='maintenancesNonRolls'">
                                                     Others
                                                 </option>
 
@@ -139,7 +140,8 @@
                                             'Avl_slot_other'){
                                             <input type="text" class="form-control" placeholder="ENTER AVAILABLE SLOT"
                                                 formControlName="avlSlotOther" />
-                                            <div class="slotFormat">*DD/MM/YYYY HH:MM to HH:MM DAY</div>
+                                            <div class="slotFormat">*DD/MM/YYYY HH:MM to HH:MM DAY(Capital Letters)
+                                            </div>
                                             }
                                         </div>
                                     </div>
@@ -299,20 +301,21 @@
                                     } -->
                                     <div class="col-sm-6 col-md-3">
                                         <div class="form-group mt-3 mb-3">
-                                            <label>REMARKS IF ANY</label>
-                                            <input type="text" class="form-control" placeholder="ENTER REMARKS IF ANY"
-                                                formControlName="remarks" />
+                                            <label>REPERCUSSION/REMARKS</label>
+                                            <input type="text" class="form-control"
+                                                placeholder="ENTER REPERCUSSION/Remarks" formControlName="remarks" />
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-sm-6 col-md-3">
+                                        <div class="col-sm-6 col-md-4">
                                             <div class="form-group mt-3 mb-3">
                                                 <input type="checkbox" formControlName="integratedCheckbox" />
                                                 <label>Integrated Block</label>
                                                 @if(machineFormArray.controls[i].get('integratedCheckbox').value){
                                                 <div class="row text-center">
-                                                    <div class="col-5">BLOCK</div>
-                                                    <div class="col-5">DURATION</div>
+                                                    <div class="col-4">BLOCK</div>
+                                                    <div class="col-3">STATION</div>
+                                                    <div class="col-3">DURATION</div>
                                                     <div class="col-2">
                                                         <button type="button" class="btn btn-outline-primary"
                                                             (click)="addIntegrated(i)">+</button>
@@ -321,17 +324,22 @@
                                                 <div class="row text-center"
                                                     *ngFor="let integrated of integrates[i]; let $index = index"
                                                     [attr.data-index]="i">
-                                                    <div class="col-5">
+                                                    <div class="col-4 p-0 pe-1">
                                                         <input type="text" class="form-control"
                                                             placeholder="ENTER BLOCK OF INTEGRATED" name="block"
                                                             (change)="integratedBlock($event,i,$index)" required />
                                                     </div>
-                                                    <div class="col-5">
+                                                    <div class="col-3 p-0 pe-1">
+                                                        <input type="text" class="form-control"
+                                                            placeholder="ENTER SECTION OF INTEGRATED" name="section"
+                                                            (change)="integratedSection($event,i,$index)" required />
+                                                    </div>
+                                                    <div class="col-3 p-0 pe-1">
                                                         <input type="number" class="form-control"
                                                             placeholder="ENTER DURATION OF INTEGRATED" name="duration"
                                                             (change)="integratedDuration($event,i,$index)" required />
                                                     </div>
-                                                    <div class="col-2">
+                                                    <div class="col-2 p-0">
                                                         <button type="button" class="btn btn-outline-danger"
                                                             (click)="deleteIntegrated(i,$index)">x</button>
                                                     </div>
@@ -356,7 +364,7 @@
                                                 } -->
                                             </div>
                                         </div>
-                                        <div class="col-sm-6 col-md-3">
+                                        <div class="col-sm-6 col-md-2">
                                             <div class="form-group mt-3 mb-3">
                                                 <input type="checkbox" formControlName="locoCheckbox" />
                                                 <label>LOCO REQUIRED</label>
