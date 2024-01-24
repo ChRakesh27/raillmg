@@ -121,8 +121,9 @@ export class VerifyDemandTableComponent implements OnInit {
     afterChange: (changes) => {
       changes?.forEach(([row, prop, oldValue, newValue]) => {
         const headerKey = prop as string;
-        console.log('🚀 ~ headerKey:', headerKey);
-
+        if (headerKey === 'status' && newValue === '') {
+          return;
+        }
         const hot = this.hotRegisterer.getInstance(this.id);
         let id = hot.getDataAtRow(row)[0];
         const url = hot.getDataAtRow(row)[21];
@@ -204,6 +205,12 @@ export class VerifyDemandTableComponent implements OnInit {
     Promise.resolve().then(() => {
       for (let url of fetchUrl) {
         this.service.getAllMachineRoll(url).subscribe((data) => {
+          data = data.map((ele) => {
+            if (ele.status == undefined || ele.status == '') {
+              ele.status = 'SELECT STATUS';
+            }
+            return ele;
+          });
           this.setDataToRoll(data, url);
         });
       }
