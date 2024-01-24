@@ -6,8 +6,8 @@ import { Observable, Subject } from 'rxjs';
   providedIn: 'root',
 })
 export class AppService {
-  // API_HOST = 'https://raillmg-server.onrender.com/api';
-  API_HOST = 'http://localhost:3000/api';
+  API_HOST = 'https://raillmg-server.onrender.com/api';
+  // API_HOST = 'http://localhost:3000/api';
 
   isLoading$ = new Subject<boolean>();
 
