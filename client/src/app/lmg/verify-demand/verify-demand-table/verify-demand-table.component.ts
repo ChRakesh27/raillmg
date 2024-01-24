@@ -45,7 +45,7 @@ export class VerifyDemandTableComponent implements OnInit {
       data: 'status',
       title: ' APPROVE STATUS',
       type: 'select',
-      selectOptions: ['Accept', 'Reject'],
+      selectOptions: ['Accept', 'Reject', 'CHOOSE STATUS'],
       width: 130,
     },
     {
@@ -54,7 +54,7 @@ export class VerifyDemandTableComponent implements OnInit {
       width: 153,
     },
 
-    { data: 'date', title: 'Date', width: 73 },
+    { data: 'date', title: 'DATE', width: 73 },
     { data: 'department', title: 'DEPARTMENT', width: 110 },
     {
       data: 'board',
@@ -121,9 +121,9 @@ export class VerifyDemandTableComponent implements OnInit {
     afterChange: (changes) => {
       changes?.forEach(([row, prop, oldValue, newValue]) => {
         const headerKey = prop as string;
-        if (headerKey === 'status' && newValue === '') {
-          return;
-        }
+        // if (headerKey === 'status' && newValue === 'CHOOSE STATUS') {
+        //   return;
+        // }
         const hot = this.hotRegisterer.getInstance(this.id);
         let id = hot.getDataAtRow(row)[0];
         const url = hot.getDataAtRow(row)[21];
@@ -207,7 +207,7 @@ export class VerifyDemandTableComponent implements OnInit {
         this.service.getAllMachineRoll(url).subscribe((data) => {
           data = data.map((ele) => {
             if (ele.status == undefined || ele.status == '') {
-              ele.status = 'SELECT STATUS';
+              ele.status = 'CHOOSE STATUS';
             }
             return ele;
           });
