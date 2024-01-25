@@ -56,6 +56,17 @@ export class MachineRollComponent implements OnInit {
         Promise.resolve().then(() => {
           this.service.getAllMachineRoll(ele).subscribe((data) => {
             const hot = this.hotRegisterer.getInstance(this.id);
+            // data = data.map((item) => {
+            //   let cSpeed = '';
+            //   let cLength = '';
+            //   for (let ele of item.caution) {
+            //     cLength += `${ele.length}  \n`;
+            //     cSpeed += `${ele.speed}  \n`;
+            //   }
+            //   item.cautionLength = cLength;
+            //   item.cautionSpeed = cSpeed;
+            //   return item;
+            // });
             this.dataset.push(...data);
             hot.updateData(this.dataset);
           });

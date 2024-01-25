@@ -9,6 +9,7 @@ import { IUser } from '../../../shared/model/user.model';
 import { localStorageService } from '../../../shared/service/local-storage.service';
 import { ToastService } from '../../../shared/toast/toast.service';
 import { CommonModule } from '@angular/common';
+import { CautionRender } from '../../../shared/constants/table-columns';
 
 @Component({
   selector: 'app-verify-demand-table',
@@ -72,6 +73,14 @@ export class VerifyDemandTableComponent implements OnInit {
     { data: 'quantum', title: 'QUANTUM', width: 120 },
     { data: 'typeOfWork', title: 'TYPE OF WORK', width: 120 },
     {
+      data: 'caution',
+      title: 'CAUTION',
+      width: 160,
+      renderer: CautionRender,
+      editor: false,
+      readOnly: true,
+    },
+    {
       data: 'grant_status',
       title: 'GRANT STATUS',
       type: 'select',
@@ -121,9 +130,9 @@ export class VerifyDemandTableComponent implements OnInit {
     afterChange: (changes) => {
       changes?.forEach(([row, prop, oldValue, newValue]) => {
         const headerKey = prop as string;
-        // if (headerKey === 'status' && newValue === 'CHOOSE STATUS') {
-        //   return;
-        // }
+        if (headerKey === 'status' && newValue === 'CHOOSE STATUS') {
+          newValue = '';
+        }
         const hot = this.hotRegisterer.getInstance(this.id);
         let id = hot.getDataAtRow(row)[0];
         const url = hot.getDataAtRow(row)[21];

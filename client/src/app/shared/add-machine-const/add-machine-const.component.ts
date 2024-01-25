@@ -108,7 +108,6 @@ export class AddMachineConstComponent implements OnInit {
         const regexPattern = new RegExp(
           '\\b([0-3][0-9]/[0-1][1-2]/\\d{4}) ([0-2][0-9]:[0-2][0-9]) to ([0-2][0-9]:[0-2][0-9]) (\\b(?:MONDAY|TUESDAY|WEDNESDAY|THURSDAY|FRIDAY|SATURDAY|SUNDAY)\\b)\\b'
         );
-        console.log('🚀 ~ item.avlSlotOther:', item.avlSlotOther);
         if (!regexPattern.test(item.avlSlotOther)) {
           this.toastService.showDanger('AVAILABLE SLOT ARE INCORRECT FORMAT');
           return;
@@ -194,8 +193,7 @@ export class AddMachineConstComponent implements OnInit {
     //     logs: [],
     //   };
     // });
-    console.log('🚀 ~ payload:', payload);
-    return;
+
     this.service.addRailDetails(this.domain, payload).subscribe((res) => {
       for (let index = this.machineFormArray.length - 1; index >= 0; index--) {
         this.machineFormArray.removeAt(index);

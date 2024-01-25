@@ -49,3 +49,16 @@
 .handsontable thead th.ht__highlight {
   background-color: blue;
 }
+
+/* .handsontable thead th:nth-child(4) {
+  background-color: rgb(223, 67, 67) !important;
+}
+.handsontable thead th:nth-child(8) {
+  background-color: rgb(223, 67, 67) !important;
+}
+.handsontable thead th:nth-child(9) {
+  background-color: rgb(223, 67, 67) !important;
+} 
+ .handsontable thead th:nth-child(14) {
+  background-color: rgb(223, 67, 67) !important;
+}  */

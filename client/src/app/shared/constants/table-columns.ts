@@ -27,7 +27,7 @@ const LogInfoRender = (
     readOnly: true,
   };
 };
-const CautionRender = (
+export const CautionRender = (
   instance: Handsontable.Core,
   TD: HTMLTableCellElement,
   row: number,
@@ -94,8 +94,6 @@ export const columns: Handsontable.ColumnSettings[] = [
   {
     data: 'APL_remarks',
     title: 'APPROVAL REMARKS',
-    type: 'select',
-    selectOptions: ['Accept', 'Reject'],
     width: 130,
   },
   {
@@ -134,29 +132,29 @@ export const columns: Handsontable.ColumnSettings[] = [
   {
     data: 'machine',
     title: 'Machine Type',
-    type: 'select',
-    selectOptions: machineType,
+    type: 'text',
+    // selectOptions: machineType,
     width: 110,
   },
   {
     data: 'stationTo',
     title: 'STATION TO',
-    type: 'select',
-    selectOptions: stationList,
+    type: 'text',
+    // selectOptions: stationList,
     width: 100,
   },
   {
     data: 'stationFrom',
     title: 'STATION FROM',
-    type: 'select',
-    selectOptions: stationList,
+    type: 'text',
+    // selectOptions: stationList,
     width: 120,
   },
   {
     data: 'direction',
     title: 'DIRECTION',
-    type: 'select',
-    selectOptions: ['UP', 'DN', 'BOTH'],
+    type: 'text',
+    // selectOptions: ['UP', 'DN', 'BOTH'],
     width: 90,
   },
   { data: 'series', title: 'SERIES', width: 80 },
@@ -182,6 +180,8 @@ export const columns: Handsontable.ColumnSettings[] = [
     title: 'INTEGRATED',
     width: 160,
     renderer: IntegratedRender,
+    editor: false,
+    readOnly: true,
   },
   {
     data: 'grant_status',
@@ -195,7 +195,24 @@ export const columns: Handsontable.ColumnSettings[] = [
     title: 'CAUTION',
     width: 160,
     renderer: CautionRender,
+    editor: false,
+    readOnly: true,
   },
+  // {
+  //   data: 'cautionText',
+  //   title: 'CAUTION',
+  //   width: 160,
+  // },
+  // {
+  //   data: 'cautionLength',
+  //   title: 'CAUTION LENGTH',
+  //   width: 160,
+  // },
+  // {
+  //   data: 'cautionSpeed',
+  //   title: 'CAUTION SPEED',
+  //   width: 160,
+  // },
   { data: 'time_granted', title: 'TIME GRANTED', width: 120 },
   { data: 'slot', title: 'SLOTS', width: 70 },
   { data: 'output', title: 'OUTPUT', width: 100 },
