@@ -5,6 +5,8 @@ const router = express.Router()
 
 router.get('/', async (req, res) => {
     try {
+        // res.send(await users.find())
+        // return
         const login = req.query
         const docs = await users.findOne(login);
         if (docs == null) {
