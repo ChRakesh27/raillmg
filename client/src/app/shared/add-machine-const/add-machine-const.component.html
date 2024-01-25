@@ -2,7 +2,7 @@
     <form [formGroup]="form" ngNativeValidate (submit)="onSubmit()">
         <div class="row text-center">
             <div class="col">
-                <h3>DEMAND FOR ({{domain | uppercase}}) BLOCK</h3>
+                <h3>DEMAND FOR {{domainData[domain]}} BLOCK</h3>
             </div>
         </div>
         <div class="row align-items-center">

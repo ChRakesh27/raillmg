@@ -27,7 +27,12 @@ import { ToastService } from '../toast/toast.service';
 })
 export class AddMachineConstComponent implements OnInit {
   @Input() domain;
-
+  domainData = {
+    machineRolls: 'MACHINE ROLLS',
+    maintenanceRolls: 'MAINTENANCE ROLLS',
+    machineNonRolls: 'MACHINE NON ROLLS',
+    maintenanceNonRolls: 'MAINTENANCE NON ROLLS',
+  };
   form!: FormGroup;
   userData: Partial<IUser> = {};
   availableSlots = {};
