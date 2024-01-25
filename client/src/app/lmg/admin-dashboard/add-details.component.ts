@@ -5,6 +5,8 @@ import { AppService } from '../../app.service';
 import { ToastService } from '../../shared/toast/toast.service';
 import { NgbNavModule, NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { IRailForm } from '../../shared/model/railForm.model';
+import { ActivatedRoute, Router } from '@angular/router';
+import { localStorageService } from '../../shared/service/local-storage.service';
 
 @Component({
   selector: 'app-add-details',
@@ -94,8 +96,13 @@ export class AddDetailsComponent implements OnInit {
   boardDataset = [];
   constructor(
     private service: AppService,
-    private toastService: ToastService
-  ) {}
+    private toastService: ToastService,
+    private router: Router,
+    private ls: localStorageService
+  ) {
+    let user = this.ls.getUser();
+    if (user.department !== 'OPERATING') this.router.navigate(['/lmg']);
+  }
 
   ngOnInit() {
     Promise.resolve().then(() => {

@@ -14,6 +14,7 @@ import { VerifyDemandComponent } from './lmg/verify-demand/verify-demand.compone
 import { AddDetailsComponent } from './lmg/admin-dashboard/add-details.component';
 import { MachineRollComponent } from './lmg/report/machine-roll/machine-roll.component';
 import { ReportComponent } from './lmg/report/report.component';
+import { UserDetailsComponent } from './lmg/user-details/user-details.component';
 
 export const routes: Routes = [
   {
@@ -95,6 +96,10 @@ export const routes: Routes = [
       {
         path: 'dashboard',
         component: AddDetailsComponent,
+      },
+      {
+        path: 'users-details',
+        component: UserDetailsComponent,
       },
     ],
   },

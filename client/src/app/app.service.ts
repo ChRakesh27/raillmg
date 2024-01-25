@@ -18,6 +18,13 @@ export class AppService {
       `${this.API_HOST}/users?username=${username}&password=${password}`
     );
   }
+  getAllUser(): Observable<any> {
+    return this.httpClient.get<any>(`${this.API_HOST}/users/allUsers`);
+  }
+
+  deleteUser(id): Observable<any> {
+    return this.httpClient.delete<any>(`${this.API_HOST}/users/${id}`);
+  }
 
   updateUser(id, data): Observable<any> {
     return this.httpClient.patch<any>(`${this.API_HOST}/users/${id}`, data);
