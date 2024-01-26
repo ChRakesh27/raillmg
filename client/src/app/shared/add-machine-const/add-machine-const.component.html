@@ -7,6 +7,7 @@
         </div>
         <div class="row align-items-center">
             <div class="col-auto me-auto">
+                @if(userData.department==='OPERATING'){
                 <div class="form-group mt-3 mb-3" ngbPopover="Delete/Close all added form for enable"
                     triggers="mouseenter:mouseleave" popoverTitle="DEPARTMENT">
                     <label>DEPARTMENT</label>
@@ -22,6 +23,22 @@
                         <option value="TRD">TRD</option>
                     </select>
                 </div>
+                }@else {
+                <div class="form-group mt-3 mb-3">
+                    <label>DEPARTMENT</label>
+                    <select class="form-select" formControlName="department" placement="end">
+                        <option value="CONSTRUCTION">CONSTRUCTION</option>
+                        <option value="ENGINEERING">ENGINEERING</option>
+                        <option value="S&T">S&T</option>
+                        <option value="ELECTRIC">ELECTRIC</option>
+                        <option value="RE">RE</option>
+                        <option value="RVNL">RVNL</option>
+                        <option value="SIGNAL">SIGNAL</option>
+                        <option value="Telecom">Telecom</option>
+                        <option value="TRD">TRD</option>
+                    </select>
+                </div>
+                }
             </div>
 
             <div class="col-auto">

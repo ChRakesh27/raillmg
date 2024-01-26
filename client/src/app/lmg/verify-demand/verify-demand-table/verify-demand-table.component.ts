@@ -106,7 +106,7 @@ export class VerifyDemandTableComponent implements OnInit {
         value: ILog[],
         cellProperties: Handsontable.CellProperties
       ) => {
-        TD.className = (row % 2 == 0 ? 'evenCell' : 'oddCell') + ' wraptext';
+        // TD.className = (row % 2 == 0 ? 'evenCell' : 'oddCell') + ' wraptext';
         let text = [];
         if (!value?.length) return;
         for (let log of value) {
@@ -135,7 +135,7 @@ export class VerifyDemandTableComponent implements OnInit {
         }
         const hot = this.hotRegisterer.getInstance(this.id);
         let id = hot.getDataAtRow(row)[0];
-        const url = hot.getDataAtRow(row)[21];
+        const url = hot.getDataAtRow(row)[22];
         if (oldValue == newValue || (newValue == '' && oldValue == undefined)) {
           return;
         }

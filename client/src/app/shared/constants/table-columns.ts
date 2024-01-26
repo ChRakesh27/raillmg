@@ -13,7 +13,7 @@ const LogInfoRender = (
   value: ILog[],
   cellProperties: Handsontable.CellProperties
 ) => {
-  TD.className = (row % 2 == 0 ? 'evenCell' : 'oddCell') + ' wraptext';
+  // TD.className = (row % 2 == 0 ? 'evenCell' : 'oddCell') + ' wraptext';
   let text = [];
   if (!value?.length) return;
   for (let log of value) {
@@ -36,7 +36,7 @@ export const CautionRender = (
   value: any[],
   cellProperties: Handsontable.CellProperties
 ) => {
-  TD.className = row % 2 == 0 ? 'evenCell' : 'oddCell';
+  // TD.className = row % 2 == 0 ? 'evenCell' : 'oddCell';
   let text = [];
   if (!value?.length) return;
   for (let ele of value) {
@@ -57,7 +57,7 @@ const IntegratedRender = (
   value: any[],
   cellProperties: Handsontable.CellProperties
 ) => {
-  TD.className = row % 2 == 0 ? 'evenCell' : 'oddCell';
+  // TD.className = row % 2 == 0 ? 'evenCell' : 'oddCell';
   let text = [];
   if (!value?.length) return;
   for (let ele of value) {
@@ -114,15 +114,15 @@ export const columns: Handsontable.ColumnSettings[] = [
   {
     data: 'board',
     title: 'BOARD',
-    type: 'select',
-    selectOptions: ['BG1', 'BG2', 'BG3', 'BG4', 'BG5'],
+    type: 'text',
+    // selectOptions: ['BG1', 'BG2', 'BG3', 'BG4', 'BG5'],
     width: 70,
   },
   {
     data: 'section',
     title: 'SECTION',
-    type: 'select',
-    selectOptions: sectionList,
+    type: 'text',
+    // selectOptions: sectionList,
     width: 80,
   },
   { data: 'avl_start', title: ' SLOT START', width: 100 },

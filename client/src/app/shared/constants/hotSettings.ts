@@ -21,9 +21,9 @@ export const hotSettings: Handsontable.GridSettings = {
     columns: [0],
     indicators: false,
   },
-  cells: function (row, col) {
-    return {
-      className: row % 2 == 0 ? 'evenCell' : 'oddCell',
-    };
-  },
+  // cells: function (row, col) {
+  //   return {
+  //     // className: row % 2 == 0 ? 'evenCell' : 'oddCell',
+  //   };
+  // },
 };

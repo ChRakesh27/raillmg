@@ -1,9 +1,24 @@
 @import "handsontable/dist/handsontable.min.css";
-
+tr td:nth-of-type(even) {
+  background: transparent;
+  color: #000 !important;
+}
+tr td:nth-of-type(odd) {
+  background: transparent;
+  color: #000 !important;
+}
 .user-footer {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+tr:nth-child(even) {
+  background: #fff !important;
+}
+
+tr:nth-child(odd) {
+  background: rgba(208, 208, 208, 0.752) !important;
 }
 
 .handsontable table thead th {
@@ -50,6 +65,10 @@
   background-color: blue;
 }
 
+.htUIMultipleSelect .ht_master .wtHolder {
+  text-align: left !important;
+  /* overflow-y: scroll; */
+}
 /* .handsontable thead th:nth-child(4) {
   background-color: rgb(223, 67, 67) !important;
 }

@@ -64,7 +64,13 @@ export class AddMachineConstComponent implements OnInit {
     this.userData = this.ls.getUser();
     this.form = this.fb.group({
       department: this.fb.control(
-        { value: 'CONSTRUCTION', disabled: false },
+        {
+          value:
+            this.userData.department === 'OPERATING'
+              ? 'CONSTRUCTION'
+              : this.userData.department,
+          disabled: this.userData.department !== 'OPERATING',
+        },
         Validators.required
       ),
       machineFormArray: this.fb.array([]),
@@ -203,7 +209,9 @@ export class AddMachineConstComponent implements OnInit {
       for (let index = this.machineFormArray.length - 1; index >= 0; index--) {
         this.machineFormArray.removeAt(index);
       }
-      this.form.get('department')?.enable();
+      if (this.userData.department === 'OPERATING') {
+        this.form.get('department')?.enable();
+      }
       this.toastService.showSuccess('successfully submitted');
     });
   }
@@ -293,7 +301,10 @@ export class AddMachineConstComponent implements OnInit {
     this.machineFormArray.removeAt(index);
     this.railDetails.splice(index, 1);
     this.sectionList.splice(index, 1);
-    if (this.machineFormArray.length === 0) {
+    if (
+      this.machineFormArray.length === 0 &&
+      this.userData.department === 'OPERATING'
+    ) {
       this.form.get('department')?.enable();
     }
   }
