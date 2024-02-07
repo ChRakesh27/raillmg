@@ -99,6 +99,7 @@ export class EditMachineRollComponent {
     this.userData = this.ls.getUser();
     this.route.params.subscribe((url) => {
       this.domain = url['domain'];
+
       Promise.resolve().then(() => {
         this.service
           .getAllMachineRoll(this.domain)

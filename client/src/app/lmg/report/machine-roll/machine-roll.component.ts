@@ -10,6 +10,8 @@ import { hotSettings } from '../../../shared/constants/hotSettings';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { DateTime } from 'luxon';
+import autoTable from 'jspdf-autotable';
+import jsPDF from 'jspdf';
 
 registerAllModules();
 @Component({
@@ -103,7 +105,28 @@ export class MachineRollComponent implements OnInit {
     this.toastService.showSuccess('Downloaded Excel file');
   }
 
-  onPdfDownload() {}
+  onPdfDownload() {
+    const hot = this.hotRegisterer.getInstance(this.id);
+    const exportPlugin = hot.getPlugin('exportFile');
+    const exportedString = exportPlugin.exportAsString('csv', {
+      bom: false,
+      columnHeaders: true,
+      exportHiddenColumns: true,
+      exportHiddenRows: true,
+      rowDelimiter: '\r\n',
+    });
+    const workbook = XLSX.utils.book_new();
+    const jsonData = Papa.parse(exportedString);
+    console.log('🚀 ~ jsonData:', jsonData.data[1]);
+
+    const doc = new jsPDF('p', 'pc', [300, 500]);
+    // autoTable(doc, { html: '#table-wrapper' });
+    autoTable(doc, {
+      head: [jsonData.data.shift()],
+      body: jsonData.data,
+    });
+    doc.save('raillmg.pdf');
+  }
 
   selectStartDate(e) {
     this.startDate = DateTime.fromISO(e.target.value);
@@ -140,7 +163,6 @@ export class MachineRollComponent implements OnInit {
 
       return false;
     });
-    console.log('🚀 ~ this.dataset:', data);
 
     hot.updateData(data);
   }

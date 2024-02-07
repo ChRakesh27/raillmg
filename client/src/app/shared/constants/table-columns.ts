@@ -40,7 +40,9 @@ export const CautionRender = (
   let text = [];
   if (!value?.length) return;
   for (let ele of value) {
-    text.push(`LENGTH : ${ele.length}  |  SPEED : ${ele.speed}.`);
+    text.push(
+      `LENGTH : ${ele.length}| TDC : ${ele.tdc}  |  SPEED : ${ele.speed}.`
+    );
   }
   TD.innerHTML = text.join(' | ');
   // cellProperties.comment = {

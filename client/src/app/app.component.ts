@@ -6,6 +6,7 @@ import { SpinnerComponent } from './shared/spinner/spinner.component';
 import { ToastComponent } from './shared/toast/toast.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 import { ReportComponent } from './lmg/report/report.component';
+import { AddMachineConstComponent } from './shared/add-machine-const/add-machine-const.component';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -18,6 +19,7 @@ import { ReportComponent } from './lmg/report/report.component';
     ToastComponent,
     NavbarComponent,
     ReportComponent,
+    AddMachineConstComponent,
   ],
 })
 export class AppComponent implements OnInit {

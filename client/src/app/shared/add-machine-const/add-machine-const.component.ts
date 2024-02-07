@@ -106,7 +106,6 @@ export class AddMachineConstComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log('hello');
     if (this.machineFormArray.value.length === 0 || !this.form.valid) {
       this.toastService.showWarning('Please fill all details');
       return;
@@ -158,52 +157,6 @@ export class AddMachineConstComponent implements OnInit {
         logs: [],
       });
     }
-
-    // payload = this.machineFormArray.value.map((item, index) => {
-    //   let splitSlot = [];
-    //   if (item.availableSlot === 'Avl_slot_other') {
-    //     const regexPattern = new RegExp(
-    //       '\\b([0-3][0-9]/[0-1][1-2]/\\d{4}) ([0-2][0-9]:[0-2][0-9]) to ([0-2][0-9]:[0-2][0-9]) (\\b(?:MONDAY|TUESDAY|WEDNESDAY|THURSDAY|FRIDAY|SATURDAY|SUNDAY)\\b)\\b'
-    //     );
-    //     if (!regexPattern.test(item.avlSlotOther)) {
-    //       this.toastService.showDanger('Available slot are incorrect');
-    //       return;
-    //     }
-
-    //     splitSlot = item.avlSlotOther.split(' ');
-    //   } else {
-    //     splitSlot = item.availableSlot.split(' ');
-    //   }
-
-    //   if (!item.crewCheckbox || item.crew == null) {
-    //     item.crew = 0;
-    //   }
-    //   if (!item.locoCheckbox || item.loco == null) {
-    //     item.loco = 0;
-    //   }
-    //   item.caution = this.cautions[index];
-
-    //   const dt = DateTime.now();
-    //   const startTime = DateTime.fromFormat(splitSlot[1], 'HH:mm');
-    //   const endTime = DateTime.fromFormat(splitSlot[3], 'HH:mm');
-    //   const timeDifferenceInMinutes = endTime.diff(
-    //     startTime,
-    //     'minutes'
-    //   ).minutes;
-    //   return {
-    //     ...item,
-    //     avl_start: splitSlot[1],
-    //     avl_end: splitSlot[3],
-    //     date: splitSlot[0],
-    //     department: this.department.value,
-    //     avl_duration: timeDifferenceInMinutes,
-    //     createdAt: new Date().toISOString(),
-    //     createdBy: this.userData.username,
-    //     updatedAt: new Date().toISOString(),
-    //     updatedBy: this.userData.username,
-    //     logs: [],
-    //   };
-    // });
 
     this.service.addRailDetails(this.domain, payload).subscribe((res) => {
       for (let index = this.machineFormArray.length - 1; index >= 0; index--) {
@@ -257,14 +210,14 @@ export class AddMachineConstComponent implements OnInit {
       crewCheckbox: [false],
       loco: [null],
       cautionCheckbox: [false],
-      caution: [{ length: '', speed: 0 }],
+      caution: [{ length: '', tdc: '', speed: 0 }],
       locoCheckbox: [false],
       // cancelTrain: [null],
       cancelTrainCheckbox: [false],
       integratedCheckbox: [false],
       integrated: [{ block: '', section: '', duration: 0 }],
     });
-    this.cautions.push([{ length: '', speed: 0 }]);
+    this.cautions.push([{ length: '', tdc: '', speed: 0 }]);
     this.integrates.push([{ block: '', section: '', duration: 0 }]);
     this.machineFormArray.push(machineForm);
 
@@ -282,7 +235,7 @@ export class AddMachineConstComponent implements OnInit {
   }
 
   addCaution(index) {
-    this.cautions[index].push({ length: '', speed: 0 });
+    this.cautions[index].push({ length: '', tdc: '', speed: 0 });
   }
 
   addIntegrated(index) {
@@ -315,6 +268,14 @@ export class AddMachineConstComponent implements OnInit {
 
   cautionSpeed($event, index1, index2) {
     this.cautions[index1][index2]['speed'] = $event.target.value;
+  }
+
+  cautionTDC($event, index1, index2) {
+    var parts = $event.target.value.split('-');
+    var year = parts[0];
+    var month = parts[1];
+    var day = parts[2];
+    this.cautions[index1][index2]['tdc'] = day + '/' + month + '/' + year;
   }
 
   integratedBlock($event, index1, index2) {

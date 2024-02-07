@@ -8,15 +8,9 @@
       <option value="ELECTRIC">ELECTRIC</option>
     </select>
   </div>
-
   @if(department!==''){
   <div class="m-5">
-    <input
-      class="form-control form-control-lg w-25"
-      id="formFileLg"
-      type="file"
-      (change)="onFileUpload($event)"
-    />
+    <input class="form-control form-control-lg w-25" id="formFileLg" type="file" (change)="onFileUpload($event)" />
   </div>
   <div class="m-5">
     <button class="btn btn-primary ms-3" (click)="onSubmit()">Submit</button>
@@ -27,14 +21,8 @@
 
   <div>
     <h3>Preview</h3>
-    <hot-table
-      class="hot"
-      [colHeaders]="colHeader"
-      [hotId]="id"
-      [settings]="hotSettings"
-      licenseKey="non-commercial-and-evaluation"
-      [hidden]="!jsonData.length"
-    >
+    <hot-table class="hot" [colHeaders]="colHeader" [hotId]="id" [settings]="hotSettings"
+      licenseKey="non-commercial-and-evaluation" [hidden]="!jsonData.length">
     </hot-table>
   </div>
   }
