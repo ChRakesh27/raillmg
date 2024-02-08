@@ -1,5 +1,5 @@
 <div class="container">
-    <form [formGroup]="form" (submit)="onSubmit()">
+    <form [formGroup]="form" ngNativeValidate (submit)="onSubmit()">
         <div class="row text-center">
             <div class="col">
                 <h3>DEMAND FOR {{domainData[domain]}} BLOCK</h3>
@@ -386,9 +386,9 @@
                                                 <input type="checkbox" formControlName="locoCheckbox" />
                                                 <label>LOCO REQUIRED</label>
                                                 @if(machineFormArray.controls[i].get('locoCheckbox').value){
-                                                <input type="number" class="form-control"
-                                                    placeholder="ENTER NUMBER OF LOCO REQUIRED" formControlName="loco"
-                                                    required />
+                                                <input type="number" class="form-control" name="loco"
+                                                    placeholder="ENTER NUMBER OF LOCO REQUIRED"
+                                                    formControlName="loco" />
                                                 }
                                             </div>
                                         </div>
@@ -398,8 +398,8 @@
                                                 <label>CREW REQUIRED</label>
                                                 @if(machineFormArray.controls[i].get('crewCheckbox').value){
                                                 <input type="number" class="form-control"
-                                                    placeholder="ENTER NUMBER OF CREW REQUIRED" formControlName="crew"
-                                                    required />
+                                                    placeholder="ENTER NUMBER OF CREW REQUIRED"
+                                                    formControlName="crew" />
                                                 }
                                             </div>
                                         </div>
