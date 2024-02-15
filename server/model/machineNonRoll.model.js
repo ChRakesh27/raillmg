@@ -21,7 +21,7 @@ const machineNonRollSchema = new Schema({
     stationFrom: { type: String },
     direction: { type: String },
     lineNo: { type: String },
-    machine: { type: String },
+    machine: { type: Array },
     series: { type: String },
     dmd_duration: { type: Number },
     avl_duration: { type: Number },
