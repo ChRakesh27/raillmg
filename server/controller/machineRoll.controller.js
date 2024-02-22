@@ -41,6 +41,14 @@ router.patch("/:id", async (req, res) => {
         res.send(err)
     }
 })
-
+router.delete("/:id", async (req, res) => {
+    try {
+        const id = req.params.id;
+        const docs = await machineRoll.findByIdAndDelete(id, { new: true })
+        res.send(docs)
+    } catch (err) {
+        res.send(err)
+    }
+})
 
 module.exports = router;
