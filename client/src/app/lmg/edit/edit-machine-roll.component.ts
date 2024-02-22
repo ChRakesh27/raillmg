@@ -10,6 +10,7 @@ import { DateTime } from 'luxon';
 import { IMachineRoll } from '../../shared/model/machineRoll.model';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { columns } from '../../shared/constants/table-columns';
 
 @Component({
   selector: 'app-machine-roll',
@@ -24,8 +25,24 @@ export class EditMachineRollComponent {
   id = 'hotInstance';
   dataSet: IMachineRoll[] = [];
   domain: string;
+  columns = [
+    ...columns,
+    {
+      data: 'delete',
+      title: 'DELETE',
+      width: 100,
+      editor: false,
+      renderer: (instance, td, row, col, prop, value, cellProperties) => {
+        td.className = 'htCenter htMiddle';
+        td.innerHTML = `<button class="deleteBtn btn btn-danger form-control" (click)="onDelete()">DELETE</button>`;
+        return td;
+      },
+    },
+  ];
+
   hotSettings: Handsontable.GridSettings = {
     ...hotSettings,
+    columns: this.columns,
     height: '80vh',
     afterChange: (changes) => {
       changes?.forEach(
@@ -80,9 +97,20 @@ export class EditMachineRollComponent {
         }
       );
     },
-    // afterOnCellMouseUp: (event, coords, TD) => {
-    //   TD.className = (coords.row % 2 == 0 ? 'evenCell' : 'oddCell')
-    // },
+    afterOnCellMouseUp: (event, coords, TD) => {
+      if (event.target['classList'][0] == 'deleteBtn') {
+        const hot = this.hotRegisterer.getInstance(this.id);
+        let id = hot.getDataAtRow(coords.row)[0];
+        if (!confirm('Are you sure want to delete')) {
+          return;
+        }
+        this.service.deleteRailDetails(this.domain, id).subscribe((res) => {
+          this.dataSet = this.dataSet.filter((item) => item._id !== id);
+          hot.updateData(this.dataSet);
+          this.toastService.showSuccess('SUCCESSFULLY DELETED');
+        });
+      }
+    },
     // afterOnCellMouseDown(event, coords, TD) {
     //   TD.className = (coords.row % 2 == 0 ? 'evenCell' : 'oddCell') + ' wraptext'
     // },
@@ -105,11 +133,16 @@ export class EditMachineRollComponent {
           .getAllMachineRoll(this.domain)
           .subscribe((data: IMachineRoll[]) => {
             const hot = this.hotRegisterer.getInstance(this.id);
-            data = data.filter(
-              (item) =>
-                this.userData.department === 'OPERATING' ||
-                item.department === this.userData.department
-            );
+            data = data
+              .filter(
+                (item) =>
+                  this.userData.department === 'OPERATING' ||
+                  item.department === this.userData.department
+              )
+              .map((item) => {
+                item['delete'] = `DELETE`;
+                return item;
+              });
 
             this.dataSet = data;
             hot.updateData(data);

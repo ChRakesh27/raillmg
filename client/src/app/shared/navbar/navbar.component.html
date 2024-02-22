@@ -22,20 +22,20 @@
             </li>
             <li>
               <a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
-                [routerLink]="['demand', 'machine-non-roll']">Machine(Non-Roll)</a>
+                [routerLink]="['demand', 'machine-non-roll']">Machine(Out of Rolling Block)</a>
             </li>
             <li>
               <a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
-                [routerLink]="['demand', 'maintenance-non-roll']">maintenance(Non-Roll)</a>
+                [routerLink]="['demand', 'maintenance-non-roll']">maintenance(Out of Rolling Block)</a>
             </li>
-            <li>
+            <!-- <li>
               <a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
                 [routerLink]="['demand', 'machine-upload-file']">Machine(Upload File)</a>
             </li>
             <li>
               <a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown">maintenance(Upload
                 File)</a>
-            </li>
+            </li> -->
           </ul>
         </li>
         <li>
@@ -104,18 +104,16 @@
             </li>
             <li>
               <a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
-                [routerLink]="['edit', 'machineNonRolls']">Machine Non
-                Roll</a>
-            </li>
-            <li>
-              <a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
                 [routerLink]="['edit', 'maintenanceRolls']">Maintenance
                 Roll</a>
             </li>
             <li>
               <a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
-                [routerLink]="['edit', 'maintenanceNonRolls']">Maintenance Non
-                Roll</a>
+                [routerLink]="['edit', 'machineNonRolls']">Machine (Out of Rolling Block)</a>
+            </li>
+            <li>
+              <a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                [routerLink]="['edit', 'maintenanceNonRolls']">Maintenance (Out of Rolling Block)</a>
             </li>
           </ul>
         </li>

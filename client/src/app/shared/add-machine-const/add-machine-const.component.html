@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container rolls">
     <form [formGroup]="form" ngNativeValidate (submit)="onSubmit()">
         <div class="row text-center">
             <div class="col">
@@ -14,13 +14,18 @@
                     <select class="form-select" formControlName="department" placement="end">
                         <option value="CONSTRUCTION">CONSTRUCTION</option>
                         <option value="ENGINEERING">ENGINEERING</option>
-                        <option value="S&T">S&T</option>
-                        <option value="ELECTRIC">ELECTRIC</option>
-                        <option value="RE">RE</option>
-                        <option value="RVNL">RVNL</option>
+                        <!-- <option value="S&T">S&T</option> -->
+                        <!-- <option value="ELECTRIC">ELECTRIC</option> -->
+                        <!-- <option value="RE">RE</option> -->
+                        <!-- <option value="RVNL">RVNL</option> -->
+                        <!-- <option value="Telecom">Telecom</option> -->
                         <option value="SIGNAL">SIGNAL</option>
-                        <option value="Telecom">Telecom</option>
                         <option value="TRD">TRD</option>
+                        <option value="IRCON-PKG2 (BPB)">IRCON-PKG2 (BPB)</option>
+                        <option value="IRCON-PKG6 (LMG-FKG)">IRCON-PKG6 (LMG-FKG)</option>
+                        <option value="RITES-(LMG-BPB)">RITES-(LMG-BPB)</option>
+                        <option value="RECON-(HJI-LMG & CPK-HJI)">RECON-(HJI-LMG & CPK-HJI)</option>
+
                     </select>
                 </div>
                 }@else {
@@ -29,13 +34,19 @@
                     <select class="form-select" formControlName="department" placement="end">
                         <option value="CONSTRUCTION">CONSTRUCTION</option>
                         <option value="ENGINEERING">ENGINEERING</option>
-                        <option value="S&T">S&T</option>
+                        <option value="SIGNAL">SIGNAL</option>
+                        <option value="TRD">TRD</option>
+                        <option value="IRCON-PKG2 (BPB)">IRCON-PKG2 (BPB)</option>
+                        <option value="IRCON-PKG6 (LMG-FKG)">IRCON-PKG6 (LMG-FKG)</option>
+                        <option value="RITES-(LMG-BPB)">RITES-(LMG-BPB)</option>
+                        <option value="RECON-(HJI-LMG & CPK-HJI)">RECON-(HJI-LMG & CPK-HJI)</option>
+                        <!-- <option value="S&T">S&T</option>
                         <option value="ELECTRIC">ELECTRIC</option>
                         <option value="RE">RE</option>
                         <option value="RVNL">RVNL</option>
                         <option value="SIGNAL">SIGNAL</option>
                         <option value="Telecom">Telecom</option>
-                        <option value="TRD">TRD</option>
+                        <option value="TRD">TRD</option> -->
                     </select>
                 </div>
                 }
@@ -157,6 +168,7 @@
                                             'Avl_slot_other'){
                                             <input type="text" class="form-control" placeholder="ENTER AVAILABLE SLOT"
                                                 formControlName="avlSlotOther" />
+                                            <button class="form-control ">add</button>
                                             <div class="slotFormat">*DD/MM/YYYY HH:MM to HH:MM DAY(Capital Letters)
                                             </div>
                                             }
@@ -171,6 +183,9 @@
                                     </div>
                                     <div class="col-sm-6 col-md-3">
                                         <div class="form-group mt-3 mb-3">
+
+                                            @if(domain==='machineRolls'|| domain==='maintenanceRolls'){
+
                                             <label>WHETHER NI WORK/PNI WORK OR NON-NI WORK</label>
                                             <select class="form-select" formControlName="ni">
                                                 <option value="NON NI" selected>
@@ -179,6 +194,18 @@
                                                 <option value="PNI">PNI</option>
                                                 <option value="NI">NI</option>
                                             </select>
+
+                                            }@else{
+
+                                            <label>WHETHER EMERGENT OR OUT OF RBP WORK</label>
+                                            <select class="form-select" formControlName="ni">
+                                                <option value="EMERGENT" selected>
+                                                    EMERGENT
+                                                </option>
+                                                <option value="OUT OF RBP">OUT OF RBP</option>
+                                            </select>
+
+                                            }
                                         </div>
                                     </div>
                                     <!-- <div class="col-sm-6 col-md-3">
@@ -191,14 +218,20 @@
                                     <div class="col-sm-6 col-md-3">
                                         <div class="form-group mt-3 mb-3">
                                             <label>MACHINE TYPE</label>
-                                            <select class="form-select" formControlName="machine">
+                                            <!-- <select class="form-select" formControlName="machine">
                                                 <option value="" selected disabled>
                                                     SELECT MACHINE
                                                 </option>
                                                 @for(type of machineType; track $index){
                                                 <option value="{{ type.machine}}">{{ type.machine }}</option>
                                                 }
-                                            </select>
+                                            </select> -->
+                                            <div class="dropdown">
+                                                <ng-multiselect-dropdown [placeholder]="'Select Machine'"
+                                                    [settings]="dropdownSettings" [data]="machineType"
+                                                    formControlName="machine">
+                                                </ng-multiselect-dropdown>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-sm-6 col-md-3">
@@ -430,6 +463,13 @@
                                                             placeholder="ENTER TDC OF CAUTION" name="tdc"
                                                             (change)="cautionTDC($event,i,$index)" required />
                                                     </div>
+                                                    <!-- <div class="col-4 p-0 pe-1">
+                                                        <select>
+                                                            @for(ele of dists; track $index ){
+                                                            <option>{{ele.dist}}</option>
+                                                            }
+                                                        </select>
+                                                    </div> -->
                                                     <div class="col-3 p-0 pe-1">
                                                         <input type="number" class="form-control"
                                                             placeholder="ENTER SPEED OF CAUTION" name="speed"

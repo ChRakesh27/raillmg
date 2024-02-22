@@ -9,7 +9,7 @@ import { IUser } from '../../../shared/model/user.model';
 import { localStorageService } from '../../../shared/service/local-storage.service';
 import { ToastService } from '../../../shared/toast/toast.service';
 import { CommonModule } from '@angular/common';
-import { CautionRender } from '../../../shared/constants/table-columns';
+// import { CautionRender } from '../../../shared/constants/table-columns';
 
 @Component({
   selector: 'app-verify-demand-table',
@@ -72,11 +72,18 @@ export class VerifyDemandTableComponent implements OnInit {
     { data: 'machine', title: 'MACHINE TYPE', width: 120 },
     { data: 'quantum', title: 'QUANTUM', width: 120 },
     { data: 'typeOfWork', title: 'TYPE OF WORK', width: 120 },
+    // {
+    //   data: 'caution',
+    //   title: 'CAUTION',
+    //   width: 160,
+    //   renderer: CautionRender,
+    //   editor: false,
+    //   readOnly: true,
+    // },
     {
-      data: 'caution',
+      data: 'cautions',
       title: 'CAUTION',
       width: 160,
-      renderer: CautionRender,
       editor: false,
       readOnly: true,
     },
@@ -106,7 +113,7 @@ export class VerifyDemandTableComponent implements OnInit {
         value: ILog[],
         cellProperties: Handsontable.CellProperties
       ) => {
-        // TD.className = (row % 2 == 0 ? 'evenCell' : 'oddCell') + ' wraptext';
+        TD.className = 'wraptext';
         let text = [];
         if (!value?.length) return;
         for (let log of value) {
@@ -214,12 +221,21 @@ export class VerifyDemandTableComponent implements OnInit {
     Promise.resolve().then(() => {
       for (let url of fetchUrl) {
         this.service.getAllMachineRoll(url).subscribe((data) => {
-          data = data.map((ele) => {
-            if (ele.status == undefined || ele.status == '') {
-              ele.status = 'CHOOSE STATUS';
+          data = data.map((item) => {
+            if (item.status == undefined || item.status == '') {
+              item.status = 'CHOOSE STATUS';
             }
-            return ele;
+            let temp = '';
+
+            for (let ele of item.caution) {
+              temp += `Length: ${ele.length} |TDC: ${
+                ele.tdc ? '' : ele.tdc
+              } |Speed:  ${ele.speed}. \n`;
+            }
+            item.cautions = temp;
+            return item;
           });
+
           this.setDataToRoll(data, url);
         });
       }

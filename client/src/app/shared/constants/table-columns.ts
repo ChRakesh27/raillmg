@@ -13,7 +13,7 @@ const LogInfoRender = (
   value: ILog[],
   cellProperties: Handsontable.CellProperties
 ) => {
-  // TD.className = (row % 2 == 0 ? 'evenCell' : 'oddCell') + ' wraptext';
+  TD.className = 'wraptext';
   let text = [];
   if (!value?.length) return;
   for (let log of value) {
@@ -27,50 +27,50 @@ const LogInfoRender = (
     readOnly: true,
   };
 };
-export const CautionRender = (
-  instance: Handsontable.Core,
-  TD: HTMLTableCellElement,
-  row: number,
-  col: number,
-  prop: string | number,
-  value: any[],
-  cellProperties: Handsontable.CellProperties
-) => {
-  // TD.className = row % 2 == 0 ? 'evenCell' : 'oddCell';
-  let text = [];
-  if (!value?.length) return;
-  for (let ele of value) {
-    text.push(
-      `LENGTH : ${ele.length}| TDC : ${ele.tdc}  |  SPEED : ${ele.speed}.`
-    );
-  }
-  TD.innerHTML = text.join(' | ');
-  // cellProperties.comment = {
-  //   value: text.join('\n'),
-  //   readOnly: true,
-  // };
-};
-const IntegratedRender = (
-  instance: Handsontable.Core,
-  TD: HTMLTableCellElement,
-  row: number,
-  col: number,
-  prop: string | number,
-  value: any[],
-  cellProperties: Handsontable.CellProperties
-) => {
-  // TD.className = row % 2 == 0 ? 'evenCell' : 'oddCell';
-  let text = [];
-  if (!value?.length) return;
-  for (let ele of value) {
-    text.push(`BLOCK : ${ele.block}  |  DURATION : ${ele.duration}.`);
-  }
-  TD.innerHTML = text.join(' | ');
-  // cellProperties.comment = {
-  //   value: text.join('\n'),
-  //   readOnly: true,
-  // };
-};
+// export const CautionRender = (
+//   instance: Handsontable.Core,
+//   TD: HTMLTableCellElement,
+//   row: number,
+//   col: number,
+//   prop: string | number,
+//   value: any[],
+//   cellProperties: Handsontable.CellProperties
+// ) => {
+//   // TD.className = row % 2 == 0 ? 'evenCell' : 'oddCell';
+//   let text = [];
+//   if (!value?.length) return;
+//   for (let ele of value) {
+//     text.push(
+//       `LENGTH : ${ele.length}| TDC : ${ele.tdc}  |  SPEED : ${ele.speed}.`
+//     );
+//   }
+//   TD.innerHTML = text.join(' | ');
+//   // cellProperties.comment = {
+//   //   value: text.join('\n'),
+//   //   readOnly: true,
+//   // };
+// };
+// const IntegratedRender = (
+//   instance: Handsontable.Core,
+//   TD: HTMLTableCellElement,
+//   row: number,
+//   col: number,
+//   prop: string | number,
+//   value: any[],
+//   cellProperties: Handsontable.CellProperties
+// ) => {
+//   // TD.className = row % 2 == 0 ? 'evenCell' : 'oddCell';
+//   let text = [];
+//   if (!value?.length) return;
+//   for (let ele of value) {
+//     text.push(`BLOCK : ${ele.block}  |  DURATION : ${ele.duration}.`);
+//   }
+//   TD.innerHTML = text.join(' | ');
+//   // cellProperties.comment = {
+//   //   value: text.join('\n'),
+//   //   readOnly: true,
+//   // };
+// };
 
 export const columns: Handsontable.ColumnSettings[] = [
   { data: '_id', title: 'id' },
@@ -136,7 +136,7 @@ export const columns: Handsontable.ColumnSettings[] = [
     title: 'Machine Type',
     type: 'text',
     // selectOptions: machineType,
-    width: 110,
+    width: 150,
   },
   {
     data: 'stationTo',
@@ -178,13 +178,20 @@ export const columns: Handsontable.ColumnSettings[] = [
   // { data: 'tower', title: 'TOWER/MAT...', width: 110 },
   // { data: 'cancelTrain', title: 'TRAIN CANCEL...', width: 130 },
   {
-    data: 'integrated',
+    data: 'integrates',
     title: 'INTEGRATED',
-    width: 160,
-    renderer: IntegratedRender,
+    width: 230,
     editor: false,
     readOnly: true,
   },
+  // {
+  //   data: 'integrated',
+  //   title: 'INTEGRATED',
+  //   width: 160,
+  //   renderer: IntegratedRender,
+  //   editor: false,
+  //   readOnly: true,
+  // },
   {
     data: 'grant_status',
     title: 'GRANT STATUS',
@@ -192,19 +199,19 @@ export const columns: Handsontable.ColumnSettings[] = [
     selectOptions: ['Pending', 'Granted', 'Not Granted'],
     width: 120,
   },
-  {
-    data: 'caution',
-    title: 'CAUTION',
-    width: 160,
-    renderer: CautionRender,
-    editor: false,
-    readOnly: true,
-  },
   // {
-  //   data: 'cautionText',
+  //   data: 'caution',
   //   title: 'CAUTION',
   //   width: 160,
+  //   renderer: CautionRender,
+  //   editor: false,
+  //   readOnly: true,
   // },
+  {
+    data: 'cautions',
+    title: 'CAUTION',
+    width: 300,
+  },
   // {
   //   data: 'cautionLength',
   //   title: 'CAUTION LENGTH',

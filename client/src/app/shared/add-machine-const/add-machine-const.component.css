@@ -1,3 +1,6 @@
 .slotFormat {
   color: red;
 }
+.rolls {
+  overflow: hidden;
+}

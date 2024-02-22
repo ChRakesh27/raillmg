@@ -17,11 +17,20 @@ import { AvailableSlotsConfig } from '../constants/available-slots';
 import { IUser } from '../model/user.model';
 import { localStorageService } from '../service/local-storage.service';
 import { ToastService } from '../toast/toast.service';
-
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { ActivatedRoute, Route } from '@angular/router';
+import { Router } from 'express';
 @Component({
   selector: 'app-add-machine-const',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, NgbPopoverModule, FormsModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    NgbPopoverModule,
+    FormsModule,
+    NgMultiSelectDropDownModule,
+  ],
   templateUrl: './add-machine-const.component.html',
   styleUrl: './add-machine-const.component.css',
 })
@@ -30,8 +39,8 @@ export class AddMachineConstComponent implements OnInit {
   domainData = {
     machineRolls: 'MACHINE ROLLS',
     maintenanceRolls: 'MAINTENANCE ROLLS',
-    machineNonRolls: 'MACHINE NON ROLLS',
-    maintenanceNonRolls: 'MAINTENANCE NON ROLLS',
+    machineNonRolls: 'MACHINE OUT OF ROLLING BLOCK',
+    maintenanceNonRolls: 'MAINTENANCE OUT OF ROLLING BLOCK',
   };
   form!: FormGroup;
   userData: Partial<IUser> = {};
@@ -45,6 +54,12 @@ export class AddMachineConstComponent implements OnInit {
   value: any;
   railDetails: any[] = [];
   dataSet = [];
+  dropdownSettings: IDropdownSettings = {
+    idField: '_id',
+    textField: 'machine',
+    allowSearchFilter: true,
+    maxHeight: 118,
+  };
   get machineFormArray(): FormArray {
     return this.form.controls['machineFormArray'] as FormArray;
   }
@@ -57,10 +72,14 @@ export class AddMachineConstComponent implements OnInit {
     private fb: FormBuilder,
     private service: AppService,
     private toastService: ToastService,
-    private ls: localStorageService
+    private ls: localStorageService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
+    console.log(this.domain);
+    // machineNonRolls;maintenanceNonRolls
+
     this.userData = this.ls.getUser();
     this.form = this.fb.group({
       department: this.fb.control(
@@ -143,6 +162,11 @@ export class AddMachineConstComponent implements OnInit {
         startTime,
         'minutes'
       ).minutes;
+
+      item.machine = item.machine.map((item) => {
+        return item.machine.trim();
+      });
+
       payload.push({
         ...item,
         avl_start: splitSlot[1],
@@ -188,7 +212,7 @@ export class AddMachineConstComponent implements OnInit {
       stationFrom: [''],
       direction: [''],
       lineNo: [null],
-      machine: [''],
+      machine: [null],
       series: [null],
       typeOfWork: [null],
       dmd_duration: [null],
@@ -198,7 +222,11 @@ export class AddMachineConstComponent implements OnInit {
       deputedSupervisor: [null],
       resources: [null],
       km: [null],
-      ni: ['NON NI'],
+      ni: [
+        this.domain === 'machineRolls' || this.domain === 'maintenanceRolls'
+          ? 'NON NI'
+          : 'EMERGENT',
+      ],
       yard: [null],
       remarks: [null],
       approval: [''],

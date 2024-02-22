@@ -26,8 +26,8 @@ export class MachineRollComponent implements OnInit {
   domainData = {
     machineRolls: 'MACHINE ROLLS',
     maintenanceRolls: 'MAINTENANCE ROLLS',
-    machineNonRolls: 'MACHINE NON ROLLS',
-    maintenanceNonRolls: 'MAINTENANCE NON ROLLS',
+    machineNonRolls: 'MACHINE OUT OF ROLLING BLOCK',
+    maintenanceNonRolls: 'MAINTENANCE OUT OF ROLLING BLOCK',
     'all-rolling': 'ALL-ROLLING',
     'all-non-rolling': 'ALL-NON-ROLLING',
   };
@@ -66,6 +66,23 @@ export class MachineRollComponent implements OnInit {
         Promise.resolve().then(() => {
           this.service.getAllMachineRoll(ele).subscribe((data) => {
             const hot = this.hotRegisterer.getInstance(this.id);
+            data = data.map((item) => {
+              let Ctemp = '';
+              let Itemp = '';
+              for (let ele of item.caution) {
+                Ctemp += `Length: ${ele.length} | TDC:  ${
+                  ele.tdc !== undefined ? ele.tdc : '-'
+                } | Speed:  ${ele.speed}. \n`;
+                Itemp += `BLOCK : ${
+                  ele.block !== undefined ? ele.block : '-'
+                }  |  DURATION : ${
+                  ele.duration !== undefined ? ele.duration : '-'
+                }. \n`;
+              }
+              item.cautions = Ctemp;
+              item.integrates = Itemp;
+              return item;
+            });
             // data = data.map((item) => {
             //   let cSpeed = '';
             //   let cLength = '';
@@ -117,13 +134,17 @@ export class MachineRollComponent implements OnInit {
     });
     const workbook = XLSX.utils.book_new();
     const jsonData = Papa.parse(exportedString);
-    console.log('🚀 ~ jsonData:', jsonData.data[1]);
+    let dataSet = jsonData.data.map((ele) => {
+      ele.shift();
+      ele.pop();
+      return ele;
+    });
 
     const doc = new jsPDF('p', 'pc', [300, 500]);
     // autoTable(doc, { html: '#table-wrapper' });
     autoTable(doc, {
-      head: [jsonData.data.shift()],
-      body: jsonData.data,
+      head: [dataSet.shift()],
+      body: dataSet,
     });
     doc.save('raillmg.pdf');
   }
