@@ -1,4 +1,5 @@
 <div class="container rolls">
+    <!-- ngNativeValidate -->
     <form [formGroup]="form" ngNativeValidate (submit)="onSubmit()">
         <div class="row text-center">
             <div class="col">
@@ -53,7 +54,7 @@
             </div>
 
             <div class="col-auto">
-                <button class="btn btn-primary btn-lg me-2" (click)="onAddNewForm()">
+                <button type="button" class="btn btn-primary btn-lg me-2" (click)="onAddNewForm()">
                     Add
                 </button>
                 <button class="btn btn-success btn-lg me-2" type="submit">
@@ -71,7 +72,7 @@
                             [attr.aria-controls]="'collapse' + i">
                             {{ department.value }}-{{ i + 1 }}
                         </button>
-                        <button class="btn btn-outline-danger ms-2" (click)="onDelete(i)">
+                        <button type="button" class="btn btn-outline-danger ms-2" (click)="onDelete(i)">
                             Delete
                         </button>
                     </h2>
@@ -146,8 +147,23 @@
                                     </div>
                                     <div class="col-sm-6 col-md-3">
                                         <div class="form-group mt-3 mb-3">
-                                            <label>AVAILABLE SLOT</label>
-                                            <select class="form-select" formControlName="availableSlot" required>
+                                            <label class="d-flex justify-content-between">AVAILABLE SLOT
+                                                <!-- <div
+                                                    class="me-5"
+                                                    *ngIf="domain==='machineNonRolls' || domain ==='maintenancesNonRolls'">
+                                                    <input type="checkbox" value="Avl_slot_other"
+                                                        formControlName="availableSlot" name="Avl_slot_other">
+                                                    Others
+                                                </div>  -->
+                                            </label>
+                                            <div class="dropdown">
+                                                <ng-multiselect-dropdown [placeholder]="'Select Machine'"
+                                                    [settings]="AvlSlotSettings"
+                                                    [data]="availableSlots[ machineFormArray.controls[i].get('section').value+'_'+ machineFormArray.controls[i].get('direction').value]"
+                                                    formControlName="availableSlot">
+                                                </ng-multiselect-dropdown>
+                                            </div>
+                                            <!-- <select class="form-select" formControlName="availableSlot" required>
                                                 <option value="" selected disabled>
                                                     SELECT AVAILABLE SLOT
                                                 </option>
@@ -162,15 +178,31 @@
                                                 track $index){
                                                 <option value="{{ date }}">{{ date }}</option>
                                                 }
-                                            </select>
+                                            </select> -->
 
-                                            @if(machineFormArray.controls[i].get("availableSlot").value ===
+                                            @if(machineFormArray.controls[i].get("availableSlot").value ==
                                             'Avl_slot_other'){
-                                            <input type="text" class="form-control" placeholder="ENTER AVAILABLE SLOT"
-                                                formControlName="avlSlotOther" />
-                                            <button class="form-control ">add</button>
-                                            <div class="slotFormat">*DD/MM/YYYY HH:MM to HH:MM DAY(Capital Letters)
+                                            <div class="row justify-content-around">
+                                                <!-- @for(ele of Avl_slot_date[i]; track $index){ -->
+                                                @for(ele of machineFormArray.controls[i].get("avlSlotOther").value;
+                                                track $index){
+
+                                                <div class="col-6 mt-2 slot-data d-flex justify-content-between ">
+                                                    <div class="d-flex justify-content-center align-items-center">
+                                                        {{ele}}
+                                                    </div>
+                                                    <button type="button" class="btn btn-outline-danger"
+                                                        (click)="deleteSlot(i,$index)">X</button>
+                                                </div>
+                                                }
                                             </div>
+                                            <!-- <input type="text" class="form-control mt-1"
+                                                placeholder="ENTER AVAILABLE SLOT" formControlName="avlSlotOther" /> -->
+                                            <button type="button" class="btn btn-primary form-control mt-1"
+                                                data-bs-toggle="modal" data-bs-target="#exampleModal"
+                                                (click)="setSlotIndex(i)">Choose</button>
+                                            <!-- <div class="slotFormat">*DD/MM/YYYY HH:MM to HH:MM DAY(Capital Letters)
+                                            </div> -->
                                             }
                                         </div>
                                     </div>
@@ -503,4 +535,60 @@
             </ng-container>
         </div>
     </form>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">AVAILABLE SLOT</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row justify-content-around">
+                    @for(ele of machineFormArray.value[slotIndex]?.avlSlotOther; track $index){
+                    <div class="col-6 mt-2 slot-data d-flex justify-content-between">
+                        <div class="d-flex justify-content-center align-items-center">{{ele}}
+                        </div>
+                        <button type="button" class="btn btn-outline-danger"
+                            (click)="deleteSlot(slotIndex,$index)">X</button>
+                    </div>
+                    }
+                    <!-- <div class="col-6 slot-data  d-flex justify-content-between">
+                        <div class="d-flex justify-content-center align-items-center">12/11/2001 00:00 to 03:00 hrs
+                        </div>
+                        <button class="btn btn-outline-danger">X</button>
+                    </div> -->
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-4">
+                        <label>Date:</label>
+                        <div class="">
+                            <input type="date" class="form-control" [(ngModel)]="slot.date">
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <label>Start:</label>
+                        <ngb-timepicker [(ngModel)]="slot.startTime" />
+                    </div>
+                    <div class="col-4">
+                        <label>end:</label>
+                        <ngb-timepicker [(ngModel)]="slot.endTime" />
+                    </div>
+                </div>
+                <hr>
+                <div class="">
+                    <button type="button" class="btn btn-primary form-control" (click)="addSlot()">ADD</button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" (click)="onSubmitSlot()" data-bs-dismiss="modal">Save
+                    changes</button>
+            </div>
+        </div>
+    </div>
 </div>

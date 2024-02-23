@@ -4,3 +4,10 @@
 .rolls {
   overflow: hidden;
 }
+.slot-data {
+  color: black;
+  background: #f5f2f2;
+  border: 2px solid;
+  border-radius: 10px;
+  box-shadow: 2px;
+}

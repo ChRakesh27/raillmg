@@ -24,12 +24,12 @@ registerAllModules();
 export class MachineRollComponent implements OnInit {
   private hotRegisterer = new HotTableRegisterer();
   domainData = {
-    machineRolls: 'MACHINE ROLLS',
-    maintenanceRolls: 'MAINTENANCE ROLLS',
+    machineRolls: 'MACHINE ROLLS BLOCK',
+    maintenanceRolls: 'MAINTENANCE ROLLS BLOCK',
     machineNonRolls: 'MACHINE OUT OF ROLLING BLOCK',
     maintenanceNonRolls: 'MAINTENANCE OUT OF ROLLING BLOCK',
-    'all-rolling': 'ALL-ROLLING',
-    'all-non-rolling': 'ALL-NON-ROLLING',
+    'all-rolling': 'ALL-ROLLING BLOCK',
+    'all-non-rolling': 'ALL-NON-ROLLING BLOCK',
   };
   id = 'hotInstance';
   dataset: any = [];

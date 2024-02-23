@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
       username: new FormControl(null),
       password: new FormControl(null),
       newPassword: new FormControl(null),
-      conformPassword: new FormControl(null),
+      confirmPassword: new FormControl(null),
     });
   }
   onLogin() {
@@ -55,7 +55,7 @@ export class LoginComponent implements OnInit {
       return;
     }
     if (
-      this.userForm.value.conformPassword !== this.userForm.value.newPassword
+      this.userForm.value.confirmPassword !== this.userForm.value.newPassword
     ) {
       this.toastService.showDanger('CONFORM PASSWORD INCORRECT');
       return;

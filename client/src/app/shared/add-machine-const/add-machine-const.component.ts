@@ -1,6 +1,10 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, JsonPipe } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbNavModule,
+  NgbPopoverModule,
+  NgbTimepickerModule,
+} from '@ng-bootstrap/ng-bootstrap';
 import {
   FormGroup,
   Validators,
@@ -30,17 +34,21 @@ import { Router } from 'express';
     NgbPopoverModule,
     FormsModule,
     NgMultiSelectDropDownModule,
+    JsonPipe,
+    NgbTimepickerModule,
+    NgbNavModule,
   ],
   templateUrl: './add-machine-const.component.html',
   styleUrl: './add-machine-const.component.css',
 })
 export class AddMachineConstComponent implements OnInit {
   @Input() domain;
+
   domainData = {
     machineRolls: 'MACHINE ROLLS',
     maintenanceRolls: 'MAINTENANCE ROLLS',
-    machineNonRolls: 'MACHINE OUT OF ROLLING BLOCK',
-    maintenanceNonRolls: 'MAINTENANCE OUT OF ROLLING BLOCK',
+    machineNonRolls: 'MACHINE OUT OF ROLLING',
+    maintenanceNonRolls: 'MAINTENANCE OUT OF ROLLING',
   };
   form!: FormGroup;
   userData: Partial<IUser> = {};
@@ -54,11 +62,25 @@ export class AddMachineConstComponent implements OnInit {
   value: any;
   railDetails: any[] = [];
   dataSet = [];
+  slot: any = {
+    date: '',
+    startTime: '',
+    endTime: '',
+  };
+  slotIndex: any;
   dropdownSettings: IDropdownSettings = {
     idField: '_id',
     textField: 'machine',
     allowSearchFilter: true,
     maxHeight: 118,
+    noDataAvailablePlaceholderText: 'There is no Available Slots',
+  };
+  AvlSlotSettings: IDropdownSettings = {
+    idField: '_id',
+    textField: 'machine',
+    allowSearchFilter: true,
+    maxHeight: 118,
+    noDataAvailablePlaceholderText: 'There is no Available Slots',
   };
   get machineFormArray(): FormArray {
     return this.form.controls['machineFormArray'] as FormArray;
@@ -77,9 +99,6 @@ export class AddMachineConstComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log(this.domain);
-    // machineNonRolls;maintenanceNonRolls
-
     this.userData = this.ls.getUser();
     this.form = this.fb.group({
       department: this.fb.control(
@@ -131,55 +150,61 @@ export class AddMachineConstComponent implements OnInit {
     }
 
     let payload = [];
+
     for (let [index, item] of this.machineFormArray.value.entries()) {
-      let splitSlot = [];
-      if (item.availableSlot === 'Avl_slot_other') {
-        const regexPattern = new RegExp(
-          '\\b([0-3][0-9]/[0-1][1-2]/\\d{4}) ([0-2][0-9]:[0-2][0-9]) to ([0-2][0-9]:[0-2][0-9]) (\\b(?:MONDAY|TUESDAY|WEDNESDAY|THURSDAY|FRIDAY|SATURDAY|SUNDAY)\\b)\\b'
-        );
-        if (!regexPattern.test(item.avlSlotOther)) {
-          this.toastService.showDanger('AVAILABLE SLOT ARE INCORRECT FORMAT');
-          return;
+      console.log('🚀 ~ item.avlSlotOther):', index, item, item.avlSlotOther);
+      for (let slotItem of item.avlSlotOther) {
+        console.log('🚀 ~ slotItem:', slotItem);
+
+        let splitSlot = [];
+        if (item.availableSlot === 'Avl_slot_other') {
+          // const regexPattern = new RegExp(
+          //   '\\b([0-3][0-9]/[0-1][1-2]/\\d{4}) ([0-2][0-9]:[0-2][0-9]) to ([0-2][0-9]:[0-2][0-9]) (\\b(?:MONDAY|TUESDAY|WEDNESDAY|THURSDAY|FRIDAY|SATURDAY|SUNDAY)\\b)\\b'
+          // );
+          // if (!regexPattern.test(item.avlSlotOther)) {
+          //   this.toastService.showDanger('AVAILABLE SLOT ARE INCORRECT FORMAT');
+          //   return;
+          // }
+
+          splitSlot = slotItem.split(' ');
+        } else {
+          splitSlot = item.availableSlot.split(' ');
         }
+        if (!item.crewCheckbox || item.crew == null) {
+          item.crew = 0;
+        }
+        if (!item.locoCheckbox || item.loco == null) {
+          item.loco = 0;
+        }
+        item.caution = this.cautions[index];
+        item.integrated = this.integrates[index];
 
-        splitSlot = item.avlSlotOther.split(' ');
-      } else {
-        splitSlot = item.availableSlot.split(' ');
+        const dt = DateTime.now();
+        const startTime = DateTime.fromFormat(splitSlot[1], 'HH:mm');
+        const endTime = DateTime.fromFormat(splitSlot[3], 'HH:mm');
+        const timeDifferenceInMinutes = endTime.diff(
+          startTime,
+          'minutes'
+        ).minutes;
+
+        // item.machine = item.machine.map((item) => {
+        //   return item.machine.trim();
+        // });
+
+        payload.push({
+          ...item,
+          avl_start: splitSlot[1],
+          avl_end: splitSlot[3],
+          date: splitSlot[0],
+          department: this.department.value,
+          avl_duration: timeDifferenceInMinutes,
+          createdAt: new Date().toISOString(),
+          createdBy: this.userData.username,
+          updatedAt: new Date().toISOString(),
+          updatedBy: this.userData.username,
+          logs: [],
+        });
       }
-      if (!item.crewCheckbox || item.crew == null) {
-        item.crew = 0;
-      }
-      if (!item.locoCheckbox || item.loco == null) {
-        item.loco = 0;
-      }
-      item.caution = this.cautions[index];
-      item.integrated = this.integrates[index];
-
-      const dt = DateTime.now();
-      const startTime = DateTime.fromFormat(splitSlot[1], 'HH:mm');
-      const endTime = DateTime.fromFormat(splitSlot[3], 'HH:mm');
-      const timeDifferenceInMinutes = endTime.diff(
-        startTime,
-        'minutes'
-      ).minutes;
-
-      item.machine = item.machine.map((item) => {
-        return item.machine.trim();
-      });
-
-      payload.push({
-        ...item,
-        avl_start: splitSlot[1],
-        avl_end: splitSlot[3],
-        date: splitSlot[0],
-        department: this.department.value,
-        avl_duration: timeDifferenceInMinutes,
-        createdAt: new Date().toISOString(),
-        createdBy: this.userData.username,
-        updatedAt: new Date().toISOString(),
-        updatedBy: this.userData.username,
-        logs: [],
-      });
     }
 
     this.service.addRailDetails(this.domain, payload).subscribe((res) => {
@@ -217,7 +242,7 @@ export class AddMachineConstComponent implements OnInit {
       typeOfWork: [null],
       dmd_duration: [null],
       availableSlot: [''],
-      avlSlotOther: [''],
+      avlSlotOther: [[]],
       quantum: [null],
       deputedSupervisor: [null],
       resources: [null],
@@ -227,7 +252,7 @@ export class AddMachineConstComponent implements OnInit {
           ? 'NON NI'
           : 'EMERGENT',
       ],
-      yard: [null],
+      // yard: [null],
       remarks: [null],
       approval: [''],
       s_tStaff: [''],
@@ -343,7 +368,7 @@ export class AddMachineConstComponent implements OnInit {
 
     let dt = DateTime.now();
 
-    let avl_slot = [];
+    let avl_slot = ['Avl_slot_other'];
     for (let i = 0; i < 365; i++) {
       for (let slotDay in slotsList) {
         if (+dt.weekday == +slotDay || (+dt.weekday == 7 && +slotDay == 0)) {
@@ -356,7 +381,30 @@ export class AddMachineConstComponent implements OnInit {
     }
 
     this.availableSlots[section + '_' + direction] = avl_slot;
+    console.log('🚀 ~ avl_slot:', avl_slot);
 
     railData = {};
+  }
+
+  setSlotIndex(index) {
+    this.slotIndex = index;
+  }
+  addSlot() {
+    const parsedDate = DateTime.fromISO(this.slot.date);
+    const formattedDate = parsedDate.toFormat('dd/LL/yyyy');
+    let text = `${formattedDate} ${this.slot.startTime.hour}:${this.slot.startTime.minute} to ${this.slot.endTime.hour}:${this.slot.endTime.minute} hrs`;
+    this.machineFormArray.value[this.slotIndex].avlSlotOther.push(text);
+  }
+  deleteSlot(formIndex, slotIndex) {
+    this.machineFormArray.value[this.slotIndex].avlSlotOther.splice(
+      slotIndex,
+      1
+    );
+  }
+  onSubmitSlot() {
+    console.log(
+      '🚀 ~ this.machineFormArray.value:',
+      this.machineFormArray.value
+    );
   }
 }
