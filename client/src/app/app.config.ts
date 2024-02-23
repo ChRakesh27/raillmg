@@ -22,9 +22,9 @@ export const appConfig: ApplicationConfig = {
       useClass: HttpInterceptorService,
       multi: true,
     },
-    {
-      provide: LocationStrategy,
-      useClass: HashLocationStrategy,
-    },
+    // {
+    //   provide: LocationStrategy,
+    //   useClass: HashLocationStrategy,
+    // },
   ],
 };
