@@ -85,7 +85,7 @@
                                             <label>BOARD</label>
                                             <select class="form-select" formControlName="board"
                                                 (change)="onBoardSelect(i,$event)" required>
-                                                <option value="" selected disabled>Select Board</option>
+                                                <option value="" selected disabled>SELECT BOARD</option>
                                                 @for(item of boardList; track $index){
                                                 <option value="{{ item.board }}">{{ item.board }}</option>
                                                 }
@@ -148,16 +148,17 @@
                                     <div class="col-sm-6 col-md-3">
                                         <div class="form-group mt-3 mb-3">
                                             <label class="d-flex justify-content-between">AVAILABLE SLOT
-                                                <!-- <div
-                                                    class="me-5"
-                                                    *ngIf="domain==='machineNonRolls' || domain ==='maintenancesNonRolls'">
+                                                <div class="me-5"
+                                                    *ngIf="domain==='machineNonRolls' || domain ==='maintenanceNonRolls'">
                                                     <input type="checkbox" value="Avl_slot_other"
-                                                        formControlName="availableSlot" name="Avl_slot_other">
-                                                    Others
-                                                </div>  -->
+                                                        formControlName="avlSlotOtherCheckBox"
+                                                        name="avlSlotOtherCheckBox">
+                                                    OTHERS
+                                                </div>
                                             </label>
-                                            <div class="dropdown">
-                                                <ng-multiselect-dropdown [placeholder]="'Select Machine'"
+                                            <div class="dropdown"
+                                                *ngIf="!machineFormArray.controls[i].get('avlSlotOtherCheckBox').value">
+                                                <ng-multiselect-dropdown [placeholder]="'SELECT AVAILABLE SLOT'"
                                                     [settings]="AvlSlotSettings"
                                                     [data]="availableSlots[ machineFormArray.controls[i].get('section').value+'_'+ machineFormArray.controls[i].get('direction').value]"
                                                     formControlName="availableSlot">
@@ -180,10 +181,8 @@
                                                 }
                                             </select> -->
 
-                                            @if(machineFormArray.controls[i].get("availableSlot").value ==
-                                            'Avl_slot_other'){
+                                            @if(machineFormArray.controls[i].get("avlSlotOtherCheckBox").value){
                                             <div class="row justify-content-around">
-                                                <!-- @for(ele of Avl_slot_date[i]; track $index){ -->
                                                 @for(ele of machineFormArray.controls[i].get("avlSlotOther").value;
                                                 track $index){
 
@@ -191,7 +190,7 @@
                                                     <div class="d-flex justify-content-center align-items-center">
                                                         {{ele}}
                                                     </div>
-                                                    <button type="button" class="btn btn-outline-danger"
+                                                    <button type="button" class="btn btn-outline-light"
                                                         (click)="deleteSlot(i,$index)">X</button>
                                                 </div>
                                                 }
@@ -259,7 +258,7 @@
                                                 }
                                             </select> -->
                                             <div class="dropdown">
-                                                <ng-multiselect-dropdown [placeholder]="'Select Machine'"
+                                                <ng-multiselect-dropdown [placeholder]="'SELECT MACHINE'"
                                                     [settings]="dropdownSettings" [data]="machineType"
                                                     formControlName="machine">
                                                 </ng-multiselect-dropdown>
@@ -385,14 +384,14 @@
                                         <div class="form-group mt-3 mb-3">
                                             <label>REPERCUSSION/REMARKS</label>
                                             <input type="text" class="form-control"
-                                                placeholder="ENTER REPERCUSSION/Remarks" formControlName="remarks" />
+                                                placeholder="ENTER REPERCUSSION/REMARKS" formControlName="remarks" />
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-sm-6 col-md-4">
                                             <div class="form-group mt-3 mb-3">
                                                 <input type="checkbox" formControlName="integratedCheckbox" />
-                                                <label>Integrated Block</label>
+                                                <label>INTEGRATED BLOCK</label>
                                                 @if(machineFormArray.controls[i].get('integratedCheckbox').value){
                                                 <div class="row text-center">
                                                     <div class="col-4">BLOCK</div>
@@ -552,7 +551,7 @@
                     <div class="col-6 mt-2 slot-data d-flex justify-content-between">
                         <div class="d-flex justify-content-center align-items-center">{{ele}}
                         </div>
-                        <button type="button" class="btn btn-outline-danger"
+                        <button type="button" class="btn btn-outline-light"
                             (click)="deleteSlot(slotIndex,$index)">X</button>
                     </div>
                     }
@@ -586,8 +585,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" (click)="onSubmitSlot()" data-bs-dismiss="modal">Save
-                    changes</button>
+                <!-- <button type="button" class="btn btn-primary" (click)="onSubmitSlot()" data-bs-dismiss="modal">Save
+                    changes</button> -->
             </div>
         </div>
     </div>
