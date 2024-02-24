@@ -16,10 +16,10 @@ app.use(express.json())
 app.use(cors())
 
 app.use('/api', apiRoutes);
-// app.get('*.*', express.static(path.join(__dirname, APP_DIR)));
-// app.all('*', (req, res) => {
-//     res.sendFile(path.join(__dirname, APP_DIR, 'index.html'))
-// })
+app.get('*.*', express.static(path.join(__dirname, APP_DIR)));
+app.all('*', (req, res) => {
+    res.sendFile(path.join(__dirname, APP_DIR, 'index.html'))
+})
 
 const PORT = process.env.PORT || 3000;
 
