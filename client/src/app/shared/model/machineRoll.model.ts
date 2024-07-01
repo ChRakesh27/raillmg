@@ -7,7 +7,10 @@ export interface IMachineRoll {
   stationFrom: string;
   direction: string;
   lineNo: string;
-  machine: string;
+  machine: string[];
+  block: string;
+  duration: number;
+  section1: string;
   dmd_duration: number;
   avl_duration: number;
   avl_start: string;
@@ -19,6 +22,7 @@ export interface IMachineRoll {
   loco: number;
   board: string;
   typeOfWork: string;
+  othertypeofWork: string;
   ni: string;
   remarks: string;
   approval: string;
@@ -33,7 +37,10 @@ export interface IMachineRoll {
   updatedAt: string;
   logs: ILog[];
   series: string;
-  time_granted: string;
+  block_times: string;
+  time_granted: number;
+  time_burst: number;
+  // burst: string;
   caution: [];
   cancelTrain: string;
   integrated: any[];
@@ -43,6 +50,18 @@ export interface IMachineRoll {
   slots: string;
   output: string;
   OPTG_remarks: string;
+  mps: number;
+  sec: string;
+  len: number;
+  subsec: string[];
+  fit_time: string;
+  a: number;
+  b: number;
+  machinepurse: string[];
+  purse: string;
+  remain_purse: number;
+  block_type: string;
+  rolling_stock: string;
 }
 
 export interface ILog {

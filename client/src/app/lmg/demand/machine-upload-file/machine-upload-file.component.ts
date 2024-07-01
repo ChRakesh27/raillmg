@@ -86,7 +86,7 @@ export class MachineUploadFileComponent implements OnInit {
     private service: AppService,
     private toastService: ToastService,
     private ls: localStorageService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.userData = this.ls.getUser();
@@ -157,7 +157,6 @@ export class MachineUploadFileComponent implements OnInit {
           this.onDelete();
         });
     }
-    console.log('🚀 ~ this.dataSet:', this.dataSet);
   }
 
   onDelete() {

@@ -22,7 +22,12 @@
             "tsConfig": "tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              {
+                	"glob": "**/*",
+                	"input": "./node_modules/pspdfkit/dist/pspdfkit-lib/",
+                	"output": "./assets/pspdfkit-lib/"
+            	}
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
@@ -92,5 +97,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "29e60ace-9ec6-43f6-80aa-2e08b9dce97e"
   }
 }

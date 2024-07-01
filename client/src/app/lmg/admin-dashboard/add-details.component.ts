@@ -7,6 +7,16 @@ import { NgbNavModule, NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { IRailForm } from '../../shared/model/railForm.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { localStorageService } from '../../shared/service/local-storage.service';
+import { columns } from '../../shared/constants/table-columns';
+import Handsontable from 'handsontable';
+import { jsPDF } from 'jspdf';
+import html2canvas from 'html2canvas';
+import { DateTime } from 'luxon';
+import { HotTableModule, HotTableRegisterer } from '@handsontable/angular';
+import * as XLSX from 'xlsx';
+import { NgModule } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { index } from 'handsontable/helpers/dom';
 
 @Component({
   selector: 'app-add-details',
@@ -19,9 +29,289 @@ import { localStorageService } from '../../shared/service/local-storage.service'
     NgbNavModule,
   ],
   templateUrl: './add-details.component.html',
-  styleUrl: './add-details.component.css',
+  styleUrls: ['./add-details.component.css'],
 })
 export class AddDetailsComponent implements OnInit {
+
+
+  columns: any[] = columns; // Assign the columns array
+  dataSet: any[] = [];
+  selectedColumns: string[] = [];
+  generatedReport: any;
+  startDate: any;
+  endDate: any;
+  dataset: any;
+  filteredData: any[];
+  selectedBoard: any;
+  selectedDepartment: string;
+  departmentList: any;
+  machineAndPurseList: { _id?: string, machine: { machine: string }, purse: string }[] = [];
+  selectedMachine: { machine: string } = null;
+  purse: string = '';
+  editMachineAndPurse: any;
+  machineList: any[] = [];
+  boardList: any[] = [];
+  boardDataset: any;
+
+  constructor(
+    private service: AppService,
+    private toastService: ToastService,
+    private router: Router,
+    private ls: localStorageService,
+    private http: HttpClient
+  ) {
+    let user = this.ls.getUser();
+    if (user.department !== 'OPERATING') this.router.navigate(['/lmg']);
+  }
+
+  ngOnInit() {
+    this.loadInitialData();
+  }
+
+  loadInitialData() {
+    this.loadMachineAndPurseListFromDatabase();
+    this.service.getAllRailDetails('boards').subscribe((data) => {
+      this.boardDataset = data;
+      for (let item of data) {
+        this.boardList.push(item.board);
+      }
+    });
+    this.service.getAllRailDetails('railDetails').subscribe((data) => {
+      this.dataSet = data;
+    });
+    this.service.getAllRailDetails('machines').subscribe((data) => {
+      this.machineList = data;
+    });
+  }
+
+  onMachineSelected(): void {
+  }
+
+  addPurseForMachine(): void {
+    if (this.selectedMachine && this.purse.trim()) {
+      const newItem = {
+        machine: this.selectedMachine,
+        purse: this.purse.trim()
+      };
+      const exists = this.machineAndPurseList.some(item =>
+        item.machine.machine === newItem.machine.machine && item.purse === newItem.purse
+      );
+      if (!exists) {
+        this.machineAndPurseList.push(newItem);
+        this.purse = '';
+        this.selectedMachine = null;
+        this.saveMachineAndPurseListToDatabase();
+      } else {
+        console.log('Combination already exists. Not adding again.');
+      }
+    }
+  }
+
+  saveMachineAndPurseListToDatabase(): void {
+    const backendEndpoint = 'http://localhost:3000/api/machine-purse';
+    const data = this.machineAndPurseList.map(item => ({
+      machine: item.machine.machine,
+      purse: item.purse
+    }));
+    console.log('Sending data to backend:', data);
+    this.http.post(backendEndpoint, data)
+      .subscribe(
+        (response) => {
+          console.log('Data saved successfully:', response);
+          this.loadMachineAndPurseListFromDatabase();
+        },
+        (error) => {
+          if (error.status === 400 && error.error.message === 'Duplicate entry detected') {
+            console.error('Duplicate entry detected:', error.error);
+          } else {
+            console.error('Error saving data:', error);
+          }
+        }
+      );
+  }
+
+  loadMachineAndPurseListFromDatabase(): void {
+    const backendEndpoint = 'http://localhost:3000/api/machine-purse';
+    this.http.get<{ _id: string, machine: string, purse: string }[]>(backendEndpoint)
+      .subscribe(
+        (response) => {
+          this.machineAndPurseList = response.map(item => ({
+            _id: item._id,
+            machine: { machine: item.machine },
+            purse: item.purse
+          }));
+          console.log('Data loaded successfully:', this.machineAndPurseList);
+        },
+        (error) => {
+          console.error('Error loading data:', error);
+        }
+      );
+  }
+
+  editPurse(item: any): void {
+    const newPurse = prompt('Enter new purse value:', item.purse);
+    if (newPurse !== null && newPurse.trim() !== '') {
+      item.purse = newPurse.trim();
+      this.updateMachineAndPurse(item);
+    }
+  }
+
+  updateMachineAndPurse(item: any): void {
+    const backendEndpoint = `http://localhost:3000/api/machine-purse/${item._id}`;
+    this.http.put(backendEndpoint, { purse: item.purse })
+      .subscribe(
+        (response) => {
+          console.log('Data updated successfully:', response);
+        },
+        (error) => {
+          console.error('Error updating data:', error);
+        }
+      );
+  }
+
+  readonly standardReports = {
+    'reportType1': ['date', 'department', 'section', 'stationFrom', 'stationTo', 'typeOfWork', 'avl_start', 'avl_end', 'dmd_duration', 'time_granted', 'output', 'time_burst', 'OPTG_remarks', 'APL_remarks'],
+    'reportType2': ['date', 'department', 'section', 'stationFrom', 'stationTo', 'typeOfWork', 'avl_start', 'avl_end', 'dmd_duration', 'time_granted', 'output', 'time_burst', 'OPTG_remarks', 'APL_remarks'],
+    // Add more report types as needed
+  };
+  generateReport() {
+    console.log('Generating report with columns:', this.selectedColumns);
+    console.log('DataSet:', this.dataSet);
+    this.generatedReport = this.generateReportLogic(this.selectedColumns);
+  }
+  generateReportLogic(selectedColumns: string[], selectedDepartment?: string): any {
+    if (!this.dataSet || this.dataSet.length === 0) {
+      console.error('Dataset is empty or undefined!');
+      return; // Return or handle error appropriately
+    }
+
+    // Filter the dataset based on the selected date range and board
+    const filteredData = this.dataSet.filter(item => {
+      if (!item.date || typeof item.date !== 'string' ||
+        !item.board || typeof item.board !== 'string' ||
+        !item.department || typeof item.department !== 'string') {
+        return false;
+      }
+
+      const parsedDate = DateTime.fromFormat(item.date, 'dd/MM/yyyy');
+
+      if (
+        (this.startDate === undefined || this.startDate <= parsedDate) &&
+        (this.endDate === undefined || this.endDate >= parsedDate) &&
+        (this.selectedBoard === undefined || this.selectedBoard === item.board) &&
+        (this.selectedDepartment === undefined || this.selectedDepartment === item.department)
+      ) {
+        return true;
+      }
+
+      return false;
+    });
+
+    // Sort the filtered data before adding serial numbers
+    filteredData.sort((a, b) => {
+      const dateA = DateTime.fromFormat(a.date, 'dd/MM/yyyy');
+      const dateB = DateTime.fromFormat(b.date, 'dd/MM/yyyy');
+      return dateA.toMillis() - dateB.toMillis();
+    });
+
+    // Add serial numbers after sorting
+    const serialNumberedData = filteredData.map((item, index) => {
+      const filteredItem: any = { serialNumber: index + 1 }; // Add serial number
+
+      selectedColumns.forEach(column => {
+        if (item.hasOwnProperty(column)) {
+          filteredItem[column] = item[column];
+        }
+      });
+      return filteredItem;
+    });
+
+    const report = {
+      selectedColumns: ['serialNumber', ...selectedColumns], // Include serialNumber in selectedColumns
+      reportData: serialNumberedData
+    };
+
+    console.log("Selected Department:", selectedDepartment); // Log selected department for debugging
+
+    return report;
+  }
+
+
+
+  onColumnSelectionChange(columnTitle: string) {
+    const index = this.selectedColumns.indexOf(columnTitle);
+    if (index === -1) {
+      this.selectedColumns.push(columnTitle);
+    } else {
+      this.selectedColumns.splice(index, 1);
+    }
+  }
+  onReportTypeChange(event: Event) {
+    const reportTypeDropdown = event.target as HTMLSelectElement;
+    const selectedReportType = reportTypeDropdown.value;
+
+    if (selectedReportType && this.standardReports[selectedReportType]) {
+      this.selectedColumns = this.standardReports[selectedReportType];
+      this.generateReport();
+    }
+  }
+
+
+  downloadExcel() {
+    const reportData = this.generateReportLogic(this.selectedColumns);
+
+    if (!reportData || reportData.reportData.length === 0) {
+      console.error('No data available for download');
+      return;
+    }
+
+    // Create a new workbook
+    const wb = XLSX.utils.book_new();
+
+    // Convert column headings to uppercase
+    const uppercaseColumns = reportData.selectedColumns.map(column => column.toUpperCase());
+
+    // Convert report data to worksheet data array
+    const wsData = [uppercaseColumns, ...reportData.reportData.map(row =>
+      reportData.selectedColumns.map(column => {
+        const value = row[column];
+        // Format values as objects to handle commas and special characters
+        if (value === null) {
+          return { v: '', t: 's' }; // Leave the cell blank
+        } else {
+          return { v: value, t: typeof value === 'string' ? 's' : 'n' };
+        }
+      })
+    )];
+
+    // Convert worksheet data array to worksheet
+    const ws = XLSX.utils.aoa_to_sheet(wsData);
+
+    // Add worksheet to workbook
+    XLSX.utils.book_append_sheet(wb, ws, 'Report');
+
+    // Generate a Blob object containing the workbook data
+    const wbData = XLSX.write(wb, { type: 'array', bookType: 'xlsx' });
+
+    // Convert workbook data to a Blob object
+    const wbBlob = new Blob([wbData], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+    // Trigger download
+    const fileName = (document.getElementById('typeahead-format') as HTMLInputElement).value.trim() || 'generated_report';
+    this.saveBlob(wbBlob, `${fileName}.xlsx`);
+  }
+
+  saveBlob(blob: Blob, fileName: string) {
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.setAttribute('download', fileName);
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+
   active = 'board';
   board = '';
   section = '';
@@ -31,11 +321,10 @@ export class AddDetailsComponent implements OnInit {
   slot = '';
   sectionSelected: any = {};
   stationSelected: any = {};
-  boardList = [];
+
   sectionList = [];
-  machineList = [];
   selectIndex: number;
-  dataSet = [];
+
 
   directions = [
     {
@@ -93,41 +382,112 @@ export class AddDetailsComponent implements OnInit {
     'FRIDAY',
     'SATURDAY',
   ];
-  boardDataset = [];
-  constructor(
-    private service: AppService,
-    private toastService: ToastService,
-    private router: Router,
-    private ls: localStorageService
-  ) {
-    let user = this.ls.getUser();
-    if (user.department !== 'OPERATING') this.router.navigate(['/lmg']);
+
+  createReport: any;
+
+  OnSelectRolling(e) {
+    console.log(e.target.value)
+    let title = e.target.value
+    let domain = [];
+    this.dataSet = [];
+    if (title === 'MACHINE') {
+      domain = ['machineRolls', 'machineNonRolls'];
+    } else if (title === 'MAINTENANCE') {
+      domain = ['maintenanceRolls', 'maintenanceNonRolls'];
+    } else if (title === 'ROLLING') {
+      domain = ['machineRolls', 'maintenanceRolls'];
+    } else if (title === 'NON-ROLLING') {
+      domain = ['maintenanceNonRolls', 'machineNonRolls'];
+    } else if (title === 'ROLLING / NON-ROLLING') {
+      domain = ['machineRolls', 'maintenanceRolls', 'maintenanceNonRolls', 'machineNonRolls'];
+    }
+    for (let ele of domain) {
+      Promise.resolve().then(() => {
+        this.service.getAllMachineRoll(ele).subscribe((data) => {
+          data = data.map((item) => {
+
+            // Integrate values into 'item.integrates'
+            let Itemp = '';
+            for (let ele of item.integrated) {
+              Itemp += `BLOCK: ${ele.block !== undefined ? ele.block : '-'} | SECTION: ${ele.section1 !== undefined ? ele.section1 : '-'} | DURATION: ${ele.duration !== undefined ? ele.duration : '-'}\n`;
+            }
+            item.integrates = Itemp;
+
+            // Process caution data
+            let cSpeed = '';
+            let cLength = '';
+            let cTdc = '';
+            let cTimeLoss = '';
+            for (let ele of item.caution) {
+              cLength += `${ele.length}\n`;
+              cSpeed += `${ele.speed}\n`;
+              cTdc += `${ele.tdc}\n`;
+              cTimeLoss += ele.timeloss ? `${ele.timeloss} \n` : '';
+            }
+            item.cautionLength = cLength;
+            item.cautionSpeed = cSpeed;
+            item.cautionTdc = cTdc;
+            item.cautionTimeLoss = cTimeLoss;
+            return item;
+          });
+
+          // Update dataset and Handsontable
+          this.dataSet.push(...data);
+
+        });
+      });
+    }
+    console.log('data---', this.dataSet)
+
   }
 
-  ngOnInit() {
-    Promise.resolve().then(() => {
-      this.service.getAllRailDetails('boards').subscribe((data) => {
-        this.boardDataset = data;
-        for (let item of data) {
-          this.boardList.push(item.board);
-        }
-      });
-    });
-    Promise.resolve().then(() => {
-      this.service.getAllRailDetails('railDetails').subscribe((data) => {
-        this.dataSet = data;
-      });
-    });
-    Promise.resolve().then(() => {
-      this.service.getAllRailDetails('machines').subscribe((data) => {
-        this.machineList = data;
-      });
-    });
+  selectStartDate(e) {
+    this.startDate = DateTime.fromISO(e.target.value);
+  }
+  selectEndDate(e) {
+    this.endDate = DateTime.fromISO(e.target.value);
   }
 
+  filterDataWithDate() {
+    if (!this.startDate && !this.endDate) {
+      return;
+    }
+
+    if (!Array.isArray(this.dataSet)) {
+      console.error("Dataset is not an array.");
+      return;
+    }
+
+    const data = this.dataSet.filter((item) => {
+      // Ensure the 'date' property exists and is valid
+      if (!item.date || typeof item.date !== 'string') {
+        return false;
+      }
+
+      const parsedDate = DateTime.fromFormat(item.date, 'dd/MM/yyyy');
+
+      // Check if the parsedDate falls within the selected date range
+      if (
+        (this.startDate === undefined || this.startDate <= parsedDate) &&
+        (this.endDate === undefined || this.endDate >= parsedDate)
+      ) {
+        return true;
+      }
+
+      return false;
+    });
+
+    // Update the dataset with filtered data
+    this.filteredData = data;
+  }
+
+  ResetData() {
+    window.location.reload();
+  }
   onSelectBoard(e) {
     this.board = e.target.value;
     this.sectionList = [];
+    this.selectedBoard = e.target.value;
 
     for (let item of this.dataSet) {
       if (item.board === this.board) {
@@ -135,6 +495,19 @@ export class AddDetailsComponent implements OnInit {
       }
     }
     this.onSelectSection(this.sectionList[0]);
+  }
+  onSelectDepartment(event: Event): void {
+    const target = event.target as HTMLSelectElement;
+    // Update the selected department
+    this.selectedDepartment = target.value;
+    console.log("Selected department:", this.selectedDepartment);
+    if (this.selectedDepartment === "") {
+      // If "All Department" is selected, pass an empty string to generateReportLogic
+      this.generateReportLogic(this.selectedColumns);
+    } else {
+      // Otherwise, pass the selected department to generateReportLogic
+      this.generateReportLogic(this.selectedColumns, this.selectedDepartment);
+    }
   }
 
   onSelectSection(e) {
@@ -372,7 +745,7 @@ export class AddDetailsComponent implements OnInit {
       if (ele.board == data.board) {
         this.service
           .deleteRailDetails('railDetails', ele._id)
-          .subscribe((res) => {});
+          .subscribe((res) => { });
       }
     }
 
@@ -488,7 +861,6 @@ export class AddDetailsComponent implements OnInit {
           });
       }
     }
-    console.log('🚀 ~ dataSet:', this.dataSet);
 
     this.service
       .updateRailDetails('boards', data._id, { board: renameBoard })
@@ -505,7 +877,6 @@ export class AddDetailsComponent implements OnInit {
           }
           return ele;
         });
-        console.log('🚀 ~ boardDataset:', this.boardDataset);
         this.toastService.showSuccess('successfully Updated');
       });
   }
@@ -633,4 +1004,15 @@ export class AddDetailsComponent implements OnInit {
     ];
     this.sectionSelected = {};
   }
+}
+function generateReportLogic(selectedColumns: string[]): any {
+  throw new Error('Function not implemented.');
+}
+
+function downloadPDF() {
+  throw new Error('Function not implemented.');
+}
+
+function saveAs(blob: Blob, arg1: string) {
+  throw new Error('Function not implemented.');
 }

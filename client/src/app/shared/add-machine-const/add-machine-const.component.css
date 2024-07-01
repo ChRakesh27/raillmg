@@ -10,3 +10,12 @@
   border-radius: 10px;
   box-shadow: 2px;
 }
+.required::after {
+  content: '*';
+  color: red; 
+}
+/* Ensure the default placeholder is visible */
+select.form-select option[disabled] {
+  display: initial;
+  color: #6c757d; /* Adjust color as needed */
+}

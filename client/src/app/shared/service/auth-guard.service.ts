@@ -5,7 +5,9 @@ import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from
 @Injectable({ providedIn: "root" })
 export class authGuard implements CanActivate {
     constructor(private router: Router, private ls: localStorageService) { }
-
+    getUserDepartment(): string {
+        return 'ENGINEERING';
+    }
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         if (this.ls.getUser()) {
             return true

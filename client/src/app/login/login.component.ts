@@ -43,11 +43,21 @@ export class LoginComponent implements OnInit {
           this.ls.setUser(data);
           this.router.navigate(['/lmg']);
         },
+       
         error: (err) => {
           this.service.isLoading$.next(false);
           this.toastService.showDanger('failed to login');
         },
       });
+      // if(this.userForm.value.userDepartment === 'ENGINEERING'){
+      //   document.addEventListener('DOMContentLoaded', function() {
+      //     const showAlert: string | null = sessionStorage.getItem('showAlert');
+      //     if (showAlert === 'true') {
+      //         alert('You are required for the block demand');
+      //         sessionStorage.removeItem('showAlert'); // Remove the item from session storage after displaying the alert
+      //     }
+      // });
+      // }
   }
   resetPassword() {
     if (!this.userForm.valid) {

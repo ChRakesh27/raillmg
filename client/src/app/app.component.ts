@@ -7,6 +7,8 @@ import { ToastComponent } from './shared/toast/toast.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 import { ReportComponent } from './lmg/report/report.component';
 import { AddMachineConstComponent } from './shared/add-machine-const/add-machine-const.component';
+import { MachineNonRollComponent } from './lmg/demand/machine-non-roll/machine-non-roll.component';
+
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -20,7 +22,11 @@ import { AddMachineConstComponent } from './shared/add-machine-const/add-machine
     NavbarComponent,
     ReportComponent,
     AddMachineConstComponent,
+    MachineNonRollComponent
+   
+
   ],
+  providers: [],
 })
 export class AppComponent implements OnInit {
   isLoading = false;

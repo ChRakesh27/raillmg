@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
 })
 export class NavbarComponent implements OnInit {
   userData = {}
+  selectedFileName: any;
   constructor(
     private ls: localStorageService,
     private router: Router
@@ -19,6 +20,7 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
     this.userData = this.ls.getUser()
   }
+  
   onLogout() {
     this.ls.removeUser()
     this.router.navigate(['/login'])

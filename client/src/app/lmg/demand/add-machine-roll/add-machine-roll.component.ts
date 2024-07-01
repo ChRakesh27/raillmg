@@ -7,4 +7,6 @@ import { AddMachineConstComponent } from '../../../shared/add-machine-const/add-
   styleUrl: './add-machine-roll.component.css',
   imports: [AddMachineConstComponent],
 })
-export class AddMachineRollComponent {}
+export class AddMachineRollComponent {
+  
+}

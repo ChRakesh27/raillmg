@@ -25,6 +25,15 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { ActivatedRoute, Route } from '@angular/router';
 import { Router } from 'express';
+import { PopupService } from '@ng-bootstrap/ng-bootstrap/util/popup';
+import { Injectable } from '@angular/core';
+import { authGuard } from '../service/auth-guard.service'
+import { cautionTimeLoss } from '../constants/cautioncalculation';
+import { MachinePurseService } from '../constants/machine-purse.service';
+import { ListItem } from 'ng-multiselect-dropdown/multiselect.model';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { workTypeList } from '../constants/workTypeList';
+
 @Component({
   selector: 'app-add-machine-const',
   standalone: true,
@@ -37,10 +46,16 @@ import { Router } from 'express';
     JsonPipe,
     NgbTimepickerModule,
     NgbNavModule,
+
   ],
   templateUrl: './add-machine-const.component.html',
   styleUrl: './add-machine-const.component.css',
 })
+
+@Injectable({
+  providedIn: 'root'
+})
+
 export class AddMachineConstComponent implements OnInit {
   @Input() domain;
 
@@ -50,6 +65,10 @@ export class AddMachineConstComponent implements OnInit {
     machineNonRolls: 'MACHINE OUT OF ROLLING',
     maintenanceNonRolls: 'MAINTENANCE OUT OF ROLLING',
   };
+
+  machineAndPurseList: { machine: string, purse: string }[] = [];
+  selectedMachine: string = '';
+  purse: string = '';
   form!: FormGroup;
   userData: Partial<IUser> = {};
   availableSlots = {};
@@ -66,6 +85,8 @@ export class AddMachineConstComponent implements OnInit {
     date: '',
     startTime: '',
     endTime: '',
+    timeLoss: 0,
+
   };
   slotIndex: any;
   dropdownSettings: IDropdownSettings = {
@@ -82,6 +103,16 @@ export class AddMachineConstComponent implements OnInit {
     maxHeight: 118,
     noDataAvailablePlaceholderText: 'There is no Available Slots',
   };
+  isSlotSelected: boolean = false;
+  toastr: any;
+  myForm: FormGroup;
+  cautionMps: any;
+  index: any;
+
+  onSlotSelect(event: any) {
+    // You can adjust the condition based on the event to determine if a slot is selected.
+    this.isSlotSelected = event && event.length > 0;
+  }
   get machineFormArray(): FormArray {
     return this.form.controls['machineFormArray'] as FormArray;
   }
@@ -89,18 +120,55 @@ export class AddMachineConstComponent implements OnInit {
   get department(): FormControl {
     return this.form.controls['department'] as FormControl;
   }
+  workTypeList = [
+    'PQRS WORK',
+    'MACHINE TAMPING',
+    'M/C PACKING',
+    'RAIL CARRYING',
+    'CTR WORK',
+    'PACKING',
+    'MFI WORK',
+    'TAMPING WORK',
+    'DSMG WORK OF POINT,TRACK, BPAC & SIGNAL',
+    'POST BCM',
+    'POINT PACKING WORK',
+    'CROSS OVER',
+    'RAIL LOADING WORK',
+    'RAIL UNLOADING WORK',
+    'RAIL LOADING & UNLOADING',
+    'LOCAL ADJUSTMENT OF CURVE AND ALLIGNMENT',
+    'OTHERS'
+  ];
 
+  isOtherSelected: boolean = false;
+
+  onWorkTypeChange(event: any) {
+    const selectedValue = event.target.value;
+    this.isOtherSelected = selectedValue === 'OTHERS';
+  }
   constructor(
     private fb: FormBuilder,
     private service: AppService,
     private toastService: ToastService,
     private ls: localStorageService,
-    private route: ActivatedRoute
-  ) {}
+    private route: ActivatedRoute,
+    private authGuard: authGuard,
+    private machinePurseService: MachinePurseService,
+    // private modalService: NgbModal // Inject the NgbModal service
+  ) {
+
+    this.myForm = this.fb.group({
+      avlSlotOtherCheckBox: ['', Validators.required]
+    });
+
+  }
 
   ngOnInit(): void {
-    console.log(this.domain);
 
+    this.loadMachineAndPurseList();
+    this.initializeForm();
+    // this.initializeForm();
+    // Initialize the properties
     this.userData = this.ls.getUser();
     this.form = this.fb.group({
       department: this.fb.control(
@@ -129,6 +197,74 @@ export class AddMachineConstComponent implements OnInit {
     });
   }
 
+  loadMachineAndPurseList(): void {
+    Promise.resolve().then(() => {
+      // this.service.getAllRailDetails('machines').subscribe((data) => {
+      //   this.machineAndPurseList = data
+      // });
+      this.service.getAllRailDetails('machine-purse').subscribe((data) => {
+        this.machineAndPurseList = data.map(item => ({
+          machine: item.machine,
+          purse: item.purse
+        }));
+      });
+    });
+  }
+  onMachineSelected(item: ListItem): void {
+    const machineName = item.toString();
+    const selectedCombo = this.machineAndPurseList.find(combo => combo.machine === machineName);
+    if (selectedCombo) {
+      this.machinePurseService.machinePurseData.push(selectedCombo);
+      this.form.get('machine')?.setValue(selectedCombo.machine);
+      this.form.get('purse')?.setValue(selectedCombo.purse);
+      this.updatePurseInput(selectedCombo.purse);
+    }
+    // this.toastService.showAlert(`Machine: ${selectedCombo.machine} Purse : ${selectedCombo.purse}`);
+  }
+
+  onMachineDeselected(item: ListItem): void {
+    const machineName = item.toString();
+    const index = this.machinePurseService.machinePurseData.findIndex(combo => combo.machine === machineName);
+    if (index !== -1) {
+      const deselectedCombo = this.machinePurseService.machinePurseData[index];
+      this.machinePurseService.machinePurseData.splice(index, 1);
+      this.form.get('machine')?.setValue('');
+      this.form.get('purse')?.setValue('');
+      this.removePurseFromInput(deselectedCombo.purse);
+      // this.toastService.showAlert(`Machine: ${deselectedCombo.machine} Purse: ${deselectedCombo.purse} removed`);
+    }
+  }
+
+  updatePurseInput(purse: string): void {
+    const purseInput = document.getElementById('purse') as HTMLInputElement;
+    purseInput.value += purse + ', ';
+  }
+
+  removePurseFromInput(purse: string): void {
+    const purseInput = document.getElementById('purse') as HTMLInputElement;
+    const purses = purseInput.value.split(',').map(p => p.trim()).filter(p => p !== purse && p !== '');
+    purseInput.value = purses.join(', ') + (purses.length > 0 ? ', ' : '');
+  }
+
+  // Assuming you have a form initialization method
+  initializeForm(): void {
+    this.form = this.fb.group({
+      machine: ['', Validators.required],
+      purse: [''],
+      machineFormArray: this.fb.array([this.createMachineFormGroup()])
+    });
+  }
+
+  createMachineFormGroup(): FormGroup {
+    return this.fb.group({
+      purse: ['']
+    });
+  }
+
+  getMachineNames(): string[] {
+    return this.machineAndPurseList.map(item => item.machine);
+  }
+
   onBoardSelect(index, event) {
     this.service
       .getAllRailDetails('railDetails?board=' + event.target.value)
@@ -142,12 +278,41 @@ export class AddMachineConstComponent implements OnInit {
     let data = this.dataSet.filter((ele) => ele.section === event.target.value);
     this.railDetails[index] = data[0];
   }
+  onStationSelect(index, event) {
+    this.service
+      .getAllRailDetails('stations?stations=' + event.target.value)
+      .subscribe((res) => {
+        console.log(index, res);
+
+        // Check if machineFormArray and caution at index exist
+        if (this.machineFormArray && this.machineFormArray.value[index]?.caution) {
+          // Update caution's mps
+          this.machineFormArray.value[index].caution.mps = res[0]?.mps || 0;
+          this.cautionMps = res[0]?.mps || 0; // Assigning the mps value to cautionMps property
+          console.log(this.machineFormArray.value[index].caution);
+        } else {
+          console.error(`Invalid index or caution object at index ${index}`);
+        }
+      });
+    console.log(event.target.value);
+  }
 
   onSubmit() {
     if (this.machineFormArray.value.length === 0 || !this.form.valid) {
       this.toastService.showWarning('Please fill all details');
       return;
     }
+    //  add for Alert at tpc staff required
+
+    // const userDepartment = this.authGuard.getUserDepartment();
+
+    // const hasTPCStaff = this.machineFormArray.value.some(item => item.tpcStaff === "Yes");
+    // const hasS_TStaff = this.machineFormArray.value.some(item => item.s_tStaff === "Yes");
+
+    // if (hasTPCStaff || hasS_TStaff) {
+    //     sessionStorage.setItem('showAlert', 'true');
+    // }
+
 
     let payload = [];
 
@@ -187,12 +352,14 @@ export class AddMachineConstComponent implements OnInit {
 
         const dt = DateTime.now();
         const startTime = DateTime.fromFormat(splitSlot[1], 'HH:mm');
-        const endTime = DateTime.fromFormat(splitSlot[3], 'HH:mm');
-        const timeDifferenceInMinutes = endTime.diff(
-          startTime,
-          'minutes'
-        ).minutes;
+        let endTime = DateTime.fromFormat(splitSlot[3], 'HH:mm');
+        if (endTime < startTime) {
+          // Add a day to endTime if it is less than startTime
+          endTime = endTime.plus({ days: 1 });
+        }
 
+        let timeDifferenceInMinutes = endTime.diff(startTime, 'minutes').minutes;
+        timeDifferenceInMinutes = Math.max(timeDifferenceInMinutes, 0);
         // item.machine = item.machine.map((item) => {
         //   return item.machine.trim();
         // });
@@ -208,11 +375,11 @@ export class AddMachineConstComponent implements OnInit {
           createdBy: this.userData.username,
           updatedAt: new Date().toISOString(),
           updatedBy: this.userData.username,
+
           logs: [],
         });
       }
     }
-    // console.log('🚀 ~ payload:', payload);
     // return;
     this.service.addRailDetails(this.domain, payload).subscribe((res) => {
       for (let index = this.machineFormArray.length - 1; index >= 0; index--) {
@@ -233,6 +400,7 @@ export class AddMachineConstComponent implements OnInit {
       board: '',
       section: '',
       mps: 0,
+      timeloss: 0,
       slots: [],
       directions: [],
       stations: [],
@@ -245,8 +413,10 @@ export class AddMachineConstComponent implements OnInit {
       direction: [''],
       lineNo: [null],
       machine: [null],
+      purse: [null],
       series: [null],
       typeOfWork: [null],
+      othertypeofWork: [null],
       dmd_duration: [null],
       availableSlot: [[]],
       avlSlotOther: [[]],
@@ -271,15 +441,15 @@ export class AddMachineConstComponent implements OnInit {
       crewCheckbox: [false],
       loco: [null],
       cautionCheckbox: [false],
-      caution: [{ length: '', tdc: '', speed: 0 }],
+      caution: [{ length: '', tdc: '', speed: 0, mps: 0, id: '', timeloss: 0 }],
       locoCheckbox: [false],
       // cancelTrain: [null],
       cancelTrainCheckbox: [false],
       integratedCheckbox: [false],
-      integrated: [{ block: '', section: '', duration: 0 }],
+      integrated: [{ block: '', section1: '', duration: 0 }],
     });
-    this.cautions.push([{ length: '', tdc: '', speed: 0 }]);
-    this.integrates.push([{ block: '', section: '', duration: 0 }]);
+    this.cautions.push([{ length: '', tdc: '', speed: 0, mps: 0, id: '', timeloss: 0 }]);
+    this.integrates.push([{ block: '', section1: '', duration: 0 }]);
     this.machineFormArray.push(machineForm);
 
     const selectCtrl = machineForm.controls['section'] as FormControl;
@@ -296,11 +466,11 @@ export class AddMachineConstComponent implements OnInit {
   }
 
   addCaution(index) {
-    this.cautions[index].push({ length: '', tdc: '', speed: 0 });
+    this.cautions[index].push({ length: '', tdc: '', speed: 0, mps: 0, id: '', timeloss: 0 });
   }
 
   addIntegrated(index) {
-    this.integrates[index].push({ block: '', section: '', duration: 0 });
+    this.integrates[index].push({ block: '', section1: '', duration: 0 });
   }
 
   deleteCaution(i, index) {
@@ -325,10 +495,12 @@ export class AddMachineConstComponent implements OnInit {
 
   cautionLength($event, index1, index2) {
     this.cautions[index1][index2]['length'] = $event.target.value;
+    this.calculateTimeLoss(this.cautions[index1][index2], index1, index2)
   }
 
   cautionSpeed($event, index1, index2) {
     this.cautions[index1][index2]['speed'] = $event.target.value;
+    this.calculateTimeLoss(this.cautions[index1][index2], index1, index2)
   }
 
   cautionTDC($event, index1, index2) {
@@ -337,13 +509,37 @@ export class AddMachineConstComponent implements OnInit {
     var month = parts[1];
     var day = parts[2];
     this.cautions[index1][index2]['tdc'] = day + '/' + month + '/' + year;
+    this.calculateTimeLoss(this.cautions[index1][index2], index1, index2)
   }
+
+
+  // Function to generate ID
+  calculateTimeLoss(caution, index1, index2) {
+    console.log(caution, index1, index2)
+    if (this.cautionMps == 0 || caution.speed == 0 || caution.length == 0) {
+      return
+    }
+    const id = this.cautionMps + '/' + caution.speed + '/' + (caution.length / 100)
+    console.log('Requested ID for Time Loss:', id);
+    const entry = cautionTimeLoss.find(item => item.ID === id);
+    console.log('Time Loss Entry:', entry);
+    this.cautions[index1][index2]['timeloss'] = entry.Time_Loss
+    console.log('-----', entry.Time_Loss, entry)
+    // return entry ? entry.Time_Loss : 0; // Return 0 if ID not found
+  }
+
+  // Function to generate ID
+
+  // Function to generate ID and calculate time loss
+
+
+
 
   integratedBlock($event, index1, index2) {
     this.integrates[index1][index2]['block'] = $event.target.value;
   }
   integratedSection($event, index1, index2) {
-    this.integrates[index1][index2]['section'] = $event.target.value;
+    this.integrates[index1][index2]['section1'] = $event.target.value;
   }
 
   integratedDuration($event, index1, index2) {

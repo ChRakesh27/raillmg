@@ -3,3 +3,17 @@
   overflow-y: scroll;
   scroll-behavior: smooth;
 }
+
+  .table-header th {
+    background-color: blue;
+    color : #fff;
+  }
+  .fixTableHead{
+
+    overflow-y: auto;
+
+  }
+  .fixTableHead thead th {
+    position: sticky;
+    top: 0;
+  }

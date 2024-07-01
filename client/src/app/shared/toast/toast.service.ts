@@ -8,8 +8,15 @@ export interface Toast {
 
 @Injectable({ providedIn: 'root' })
 export class ToastService {
+    showError(arg0: string) {
+      throw new Error('Method not implemented.');
+    }
+    
     toasts: Toast[] = [];
 
+    showAlert(template: string) {
+        this.toasts.push({ template, classname: 'bg-alert text-success', delay: 5000 });
+    }
 
     remove(toast) {
         this.toasts = this.toasts.filter((t) => t !== toast);
@@ -28,7 +35,7 @@ export class ToastService {
     }
 
     showWarning(template: String) {
-        this.toasts.push({ template, classname: 'bg-warning text-success', delay: 5000 });
+        this.toasts.push({ template, classname: 'bg-warning text-success', delay: 10000 });
     }
 
 
