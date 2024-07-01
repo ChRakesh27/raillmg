@@ -344,6 +344,7 @@ export class VerifyDemandTableComponent implements OnInit {
         this.service.getAllMachineRoll(url).subscribe((data) => {
           const purseValueMap: { [key: string]: number } = {};
           data = data.map((item) => {
+            item.block = url
             if (item.status == undefined || item.status == '') {
               item.status = 'CHOOSE STATUS';
             }
@@ -475,12 +476,47 @@ export class VerifyDemandTableComponent implements OnInit {
     //   return ele;
     // });
 
-    const doc = new jsPDF("l", "pc", "a4");
+    const doc = new jsPDF("l", "px", "a4");
     // autoTable(doc, { html: '#table-wrapper' });
+    // autoTable(doc, {
+    //   head: [data.shift()],
+    //   body: data,
+    // });
+
     autoTable(doc, {
-      head: [data.shift()],
-      body: data,
+      theme: 'grid',
+      columnStyles: {
+        "department": { cellWidth: 70 },
+        "board": { cellWidth: 48 },
+        'section': { cellWidth: 54 },
+        'direction': { cellWidth: 48 },
+        'km': { cellWidth: 52 },
+        'typeOfWork': { cellWidth: 60 },
+        'avl_start': { cellWidth: 32 },
+        'avl_end': { cellWidth: 32 },
+        's_tStaff': { cellWidth: 32 },
+        'tpcStaff': { cellWidth: 32 },
+        'remarks': { cellWidth: 60 },
+        'block': { cellWidth: 70 },
+      },
+      body: this.dataSet,
+      columns: [
+        { header: 'DEPARTMENT', dataKey: 'department' },
+        { header: 'BOARD', dataKey: 'board' },
+        { header: 'SECTION', dataKey: 'section' },
+        { header: 'DIRECTION', dataKey: 'direction' },
+        { header: 'KILOMETER', dataKey: 'km' },
+        { header: 'WORK TYPE', dataKey: 'typeOfWork' },
+        { header: 'SLOT START', dataKey: 'avl_start' },
+        { header: 'SLOT END', dataKey: 'avl_end' },
+        { header: 'S&T  STAFF', dataKey: 's_tStaff' },
+        { header: 'TRD  STAFF', dataKey: 'tpcStaff' },
+        { header: 'REMARKS', dataKey: 'remarks' },
+        { header: 'ROLLING/NON-ROLLING', dataKey: 'block' },
+      ],
     });
+
+
     doc.save('raillmg.pdf');
 
   }

@@ -16,9 +16,9 @@ export class AppService {
     throw new Error('Method not implemented.');
   }
   // API_HOST = 'https://raillmg-server.onrender.com/api';
-  // API_HOST = '/api';
+  API_HOST = '/api';
   // API_HOST = 'http://localhost:3000/api';
-  API_HOST = 'https://blocks.raillmg.in/api';
+  // API_HOST = 'https://blocks.raillmg.in/api';
 
   isLoading$ = new Subject<boolean>();
   http: any;

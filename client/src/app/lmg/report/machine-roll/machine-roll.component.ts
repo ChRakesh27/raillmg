@@ -212,55 +212,57 @@ export class MachineRollComponent implements OnInit {
     });
     const workbook = XLSX.utils.book_new();
     const jsonData = Papa.parse(exportedString);
-    let departmentIndex = jsonData.data[0].indexOf('DEPARTMENT')
-    let boardIndex = jsonData.data[0].indexOf('BOARD')
-    let sectionIndex = jsonData.data[0].indexOf('SECTION')
-    let directionIndex = jsonData.data[0].indexOf('DIRECTION')
-    let kmIndex = jsonData.data[0].indexOf('KILOMETER')
-    let workIndex = jsonData.data[0].indexOf('WORK TYPE')
-    let slotStartIndex = jsonData.data[0].indexOf('SLOT START')
-    let slotEndIndex = jsonData.data[0].indexOf('SLOT END')
-    let stStaffIndex = jsonData.data[0].indexOf('S&T STAFF')
-    let trdStaffIndex = jsonData.data[0].indexOf('TRD STAFF')
-    let remarkIndex = jsonData.data[0].indexOf('REMARKS')
-
-    let block = jsonData.data[0].indexOf('ROLLING/NON-ROLLING')
-
-
-    let selectedIndex = [departmentIndex, boardIndex, sectionIndex, directionIndex, kmIndex, workIndex, slotStartIndex, slotEndIndex, stStaffIndex, trdStaffIndex, remarkIndex, block]
-    // let dataSet = jsonData.data.map((ele) => {
-    //   ele.shift();
-    //   ele.pop();
-    //   return ele;
-    // });
-    let dataSet = []
-    for (let ele of jsonData.data) {
-      let result = []
-      for (let i of selectedIndex) {
-        result.push(ele[i])
-      }
-      dataSet.push(result)
-    }
-
-
 
     // const img = new Image();
     // img.src = '/assets/cover_page.jpg'; // Replace 'path_to_your_image.jpg' with the actual path to your JPG image
     // const doc = new jsPDF('p', 'pc', [80, 500]);
 
-    // const doc = new jsPDF("l", "pc", [80, 80]);
-    const doc = new jsPDF("l", "mm", [350, 210]);
+    // const doc = new jsPDF("l", "mm", [350, 210]);
+    const doc = new jsPDF("l", 'px', 'a4');
 
     // doc.autoTable({
     //   startY: doc.lastAutoTable.finalY + 10, // 10 margin
     //   //...
     // })
     doc.setFontSize(22)
-
     autoTable(doc, {
-      head: [dataSet.shift()],
-      body: dataSet,
+      theme: 'grid',
+      columnStyles: {
+        "department": { cellWidth: 70 },
+        "board": { cellWidth: 48 },
+        'section': { cellWidth: 54 },
+        'direction': { cellWidth: 48 },
+        'km': { cellWidth: 52 },
+        'typeOfWork': { cellWidth: 60 },
+        'avl_start': { cellWidth: 32 },
+        'avl_end': { cellWidth: 32 },
+        's_tStaff': { cellWidth: 32 },
+        'tpcStaff': { cellWidth: 32 },
+        'remarks': { cellWidth: 60 },
+        'block': { cellWidth: 70 },
+      },
+      body: this.dataset,
+      columns: [
+        { header: 'DEPARTMENT', dataKey: 'department' },
+        { header: 'BOARD', dataKey: 'board' },
+        { header: 'SECTION', dataKey: 'section' },
+        { header: 'DIRECTION', dataKey: 'direction' },
+        { header: 'KILOMETER', dataKey: 'km' },
+        { header: 'WORK TYPE', dataKey: 'typeOfWork' },
+        { header: 'SLOT START', dataKey: 'avl_start' },
+        { header: 'SLOT END', dataKey: 'avl_end' },
+        { header: 'S&T  STAFF', dataKey: 's_tStaff' },
+        { header: 'TRD  STAFF', dataKey: 'tpcStaff' },
+        { header: 'REMARKS', dataKey: 'remarks' },
+        { header: 'ROLLING/NON-ROLLING', dataKey: 'block' },
+      ],
     });
+    // autoTable(doc, {
+    //   head: [dataSet.shift()],
+    //   body: dataSet,
+    // });
+
+
     doc.save('merged_document.pdf');
 
     // img.onload = function () {
