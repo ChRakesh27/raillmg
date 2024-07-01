@@ -41,9 +41,10 @@ export class MachineRollComponent implements OnInit {
   endDate: any;
   title: any;
   hotSettings: Handsontable.GridSettings = {
+    ...hotSettings,
+    // columns: [],
     editor: false,
     readOnly: true,
-    ...hotSettings,
     height: '74vh',
   };
 
@@ -210,8 +211,8 @@ export class MachineRollComponent implements OnInit {
       exportHiddenRows: true,
       rowDelimiter: '\r\n',
     });
-    const workbook = XLSX.utils.book_new();
-    const jsonData = Papa.parse(exportedString);
+    // const workbook = XLSX.utils.book_new();
+    const jsonData = Papa.parse(exportedString, { header: true });
 
     // const img = new Image();
     // img.src = '/assets/cover_page.jpg'; // Replace 'path_to_your_image.jpg' with the actual path to your JPG image
@@ -228,42 +229,42 @@ export class MachineRollComponent implements OnInit {
     autoTable(doc, {
       theme: 'grid',
       columnStyles: {
-        "department": { cellWidth: 70 },
-        "board": { cellWidth: 48 },
-        'section': { cellWidth: 54 },
-        'direction': { cellWidth: 48 },
-        'km': { cellWidth: 52 },
-        'typeOfWork': { cellWidth: 60 },
-        'avl_start': { cellWidth: 32 },
-        'avl_end': { cellWidth: 32 },
-        's_tStaff': { cellWidth: 32 },
-        'tpcStaff': { cellWidth: 32 },
-        'remarks': { cellWidth: 60 },
-        'block': { cellWidth: 70 },
+        "DEPARTMENT": { cellWidth: 70 },
+        "BOARD": { cellWidth: 48 },
+        'SECTION': { cellWidth: 54 },
+        'DIRECTION': { cellWidth: 48 },
+        'KILOMETER': { cellWidth: 52 },
+        'WORK TYPE': { cellWidth: 60 },
+        'SLOT START': { cellWidth: 32 },
+        'SLOT END': { cellWidth: 32 },
+        'S&T STAFF': { cellWidth: 32 },
+        'TRD STAFF': { cellWidth: 32 },
+        'REMARKS': { cellWidth: 60 },
+        'ROLLING/NON-ROLLING': { cellWidth: 70 },
       },
-      body: this.dataset,
+      body: jsonData.data,
       columns: [
-        { header: 'DEPARTMENT', dataKey: 'department' },
-        { header: 'BOARD', dataKey: 'board' },
-        { header: 'SECTION', dataKey: 'section' },
-        { header: 'DIRECTION', dataKey: 'direction' },
-        { header: 'KILOMETER', dataKey: 'km' },
-        { header: 'WORK TYPE', dataKey: 'typeOfWork' },
-        { header: 'SLOT START', dataKey: 'avl_start' },
-        { header: 'SLOT END', dataKey: 'avl_end' },
-        { header: 'S&T  STAFF', dataKey: 's_tStaff' },
-        { header: 'TRD  STAFF', dataKey: 'tpcStaff' },
-        { header: 'REMARKS', dataKey: 'remarks' },
-        { header: 'ROLLING/NON-ROLLING', dataKey: 'block' },
+        { header: 'DEPARTMENT', dataKey: 'DEPARTMENT' },
+        { header: 'BOARD', dataKey: 'BOARD' },
+        { header: 'SECTION', dataKey: 'SECTION' },
+        { header: 'DIRECTION', dataKey: 'DIRECTION' },
+        { header: 'KILOMETER', dataKey: 'KILOMETER' },
+        { header: 'WORK TYPE', dataKey: 'WORK TYPE' },
+        { header: 'SLOT START', dataKey: 'SLOT START' },
+        { header: 'SLOT END', dataKey: 'SLOT END' },
+        { header: 'S&T STAFF', dataKey: 'S&T STAFF' },
+        { header: 'TRD STAFF', dataKey: 'TRD STAFF' },
+        { header: 'REMARKS', dataKey: 'REMARKS' },
+        { header: 'ROLLING/NON-ROLLING', dataKey: 'ROLLING/NON-ROLLING' },
       ],
     });
     // autoTable(doc, {
     //   head: [dataSet.shift()],
     //   body: dataSet,
     // });
-
-
+    // ---------------------------------------------------------------
     doc.save('merged_document.pdf');
+
 
     // img.onload = function () {
     //   // Calculate the aspect ratio to maintain the image's proportions

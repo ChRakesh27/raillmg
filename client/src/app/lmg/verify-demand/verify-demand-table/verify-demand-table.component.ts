@@ -113,7 +113,7 @@ export class VerifyDemandTableComponent implements OnInit {
     { data: 'crew', title: 'CREW', width: 70 },
     { data: 's_tStaff', title: 'S&T STAFF', width: 90 },
     { data: 'tpcStaff', title: 'TRD STAFF', width: 90 },
-    { data: 'remarks', title: ' REMARKS', width: 90 },
+    { data: 'remarks', title: 'REMARKS', width: 90 },
     //  {
     //    data: 'burst',
     //    title: 'BLOCK DETAILS',
@@ -444,31 +444,10 @@ export class VerifyDemandTableComponent implements OnInit {
 
     });
 
-    const jsonData = Papa.parse(exportedString);
-
-    let departmentIndex = jsonData.data[0].indexOf('DEPARTMENT')
-    let boardIndex = jsonData.data[0].indexOf('BOARD')
-    let sectionIndex = jsonData.data[0].indexOf('SECTION')
-    let directionIndex = jsonData.data[0].indexOf('DIRECTION')
-    let kmIndex = jsonData.data[0].indexOf('KILOMETER')
-    let workIndex = jsonData.data[0].indexOf('WORK TYPE')
-    let slotStartIndex = jsonData.data[0].indexOf('SLOT START')
-    let slotEndIndex = jsonData.data[0].indexOf('SLOT END')
-    let stStaffIndex = jsonData.data[0].indexOf('S&T STAFF')
-    let trdStaffIndex = jsonData.data[0].indexOf('TRD STAFF')
-    let block = jsonData.data[0].indexOf('ROLL FROM')
+    const jsonData = Papa.parse(exportedString, { header: true });
+    console.log("🚀 ~ VerifyDemandTableComponent ~ onPdfDownload ~ jsonData:", jsonData)
 
 
-    let selectedIndex = [departmentIndex, boardIndex, sectionIndex, directionIndex, kmIndex, workIndex, slotStartIndex, slotEndIndex, stStaffIndex, trdStaffIndex, block]
-
-    let data = []
-    for (let ele of jsonData.data) {
-      let result = []
-      for (let i of selectedIndex) {
-        result.push(ele[i])
-      }
-      data.push(result)
-    }
 
     // let data = jsonData.data.map((ele) => {
     //   ele.shift();
@@ -486,33 +465,33 @@ export class VerifyDemandTableComponent implements OnInit {
     autoTable(doc, {
       theme: 'grid',
       columnStyles: {
-        "department": { cellWidth: 70 },
-        "board": { cellWidth: 48 },
-        'section': { cellWidth: 54 },
-        'direction': { cellWidth: 48 },
-        'km': { cellWidth: 52 },
-        'typeOfWork': { cellWidth: 60 },
-        'avl_start': { cellWidth: 32 },
-        'avl_end': { cellWidth: 32 },
-        's_tStaff': { cellWidth: 32 },
-        'tpcStaff': { cellWidth: 32 },
-        'remarks': { cellWidth: 60 },
-        'block': { cellWidth: 70 },
+        "DEPARTMENT": { cellWidth: 70 },
+        "BOARD": { cellWidth: 48 },
+        'SECTION': { cellWidth: 54 },
+        'DIRECTION': { cellWidth: 48 },
+        'KILOMETER': { cellWidth: 52 },
+        'TYPE OF WORK': { cellWidth: 60 },
+        'SLOT START': { cellWidth: 32 },
+        'SLOT END': { cellWidth: 32 },
+        'S&T STAFF': { cellWidth: 32 },
+        'TRD STAFF': { cellWidth: 32 },
+        'REMARKS': { cellWidth: 60 },
+        'ROLL FROM': { cellWidth: 70 },
       },
-      body: this.dataSet,
+      body: jsonData.data,
       columns: [
-        { header: 'DEPARTMENT', dataKey: 'department' },
-        { header: 'BOARD', dataKey: 'board' },
-        { header: 'SECTION', dataKey: 'section' },
-        { header: 'DIRECTION', dataKey: 'direction' },
-        { header: 'KILOMETER', dataKey: 'km' },
-        { header: 'WORK TYPE', dataKey: 'typeOfWork' },
-        { header: 'SLOT START', dataKey: 'avl_start' },
-        { header: 'SLOT END', dataKey: 'avl_end' },
-        { header: 'S&T  STAFF', dataKey: 's_tStaff' },
-        { header: 'TRD  STAFF', dataKey: 'tpcStaff' },
-        { header: 'REMARKS', dataKey: 'remarks' },
-        { header: 'ROLLING/NON-ROLLING', dataKey: 'block' },
+        { header: 'DEPARTMENT', dataKey: 'DEPARTMENT' },
+        { header: 'BOARD', dataKey: 'BOARD' },
+        { header: 'SECTION', dataKey: 'SECTION' },
+        { header: 'DIRECTION', dataKey: 'DIRECTION' },
+        { header: 'KILOMETER', dataKey: 'KILOMETER' },
+        { header: 'WORK TYPE', dataKey: 'TYPE OF WORK' },
+        { header: 'SLOT START', dataKey: 'SLOT START' },
+        { header: 'SLOT END', dataKey: 'SLOT END' },
+        { header: 'S&T STAFF', dataKey: 'S&T STAFF' },
+        { header: 'TRD STAFF', dataKey: 'TRD STAFF' },
+        { header: 'REMARKS', dataKey: 'REMARKS' },
+        { header: 'ROLLING/NON-ROLLING', dataKey: 'ROLL FROM' },
       ],
     });
 
