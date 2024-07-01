@@ -42,10 +42,24 @@ export class MachineRollComponent implements OnInit {
   title: any;
   hotSettings: Handsontable.GridSettings = {
     ...hotSettings,
-    // columns: [],
+    columns: [
+      { data: '_id', title: '_id' },
+      { data: 'date', title: 'DATE', width: 100 },
+      { data: 'department', title: 'DEPARTMENT', width: 120 },
+      { data: 'board', title: 'BOARD', width: 105 },
+      { data: 'section', title: 'SECTION', width: 105 },
+      { data: 'direction', title: 'DIRECTION', width: 100 },
+      { data: 'km', title: 'KILOMETER', width: 120 },
+      { data: 'typeOfWork', title: 'TYPE OF WORK', width: 120 },
+      { data: 'avl_start', title: 'SLOT START', width: 100, editor: 'false', readOnly: true },
+      { data: 'avl_end', title: 'SLOT END', width: 100, editor: 'false', readOnly: true },
+      { data: 's_tStaff', title: 'S&T STAFF', width: 100 },
+      { data: 'tpcStaff', title: 'TRD STAFF', width: 100 },
+      { data: 'remarks', title: 'REMARKS', width: 150 },
+      { data: 'block', title: 'ROLL FROM', width: 130 }],
     editor: false,
     readOnly: true,
-    height: '74vh',
+    height: '62vh',
   };
 
   constructor(
