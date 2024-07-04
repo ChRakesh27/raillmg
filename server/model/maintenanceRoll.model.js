@@ -1,18 +1,22 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 
-const Schema = mongoose.Schema
+const Schema = mongoose.Schema;
 
-const LogSchema = new Schema({
+const LogSchema = new Schema(
+  {
     updatedBy: { type: String },
     updatedAt: { type: Date },
     field: { type: String },
     oldValue: { type: String },
-    newValue: { type: String }
-}, {
-    versionKey: false
-})
+    newValue: { type: String },
+  },
+  {
+    versionKey: false,
+  }
+);
 
-const maintenanceRollSchema = new Schema({
+const maintenanceRollSchema = new Schema(
+  {
     _id: { type: mongoose.Types.ObjectId, auto: true },
     date: { type: String },
     department: { type: String },
@@ -42,10 +46,10 @@ const maintenanceRollSchema = new Schema({
     // point: { type: String },
     // tower: { type: String },
     //burst: { type: String, default: 'Block Ended on Time' },
-    grant_status: { type: String, default: 'Pending' },
-    block_times: {type: String},
-    time_granted: { type: Number},
-    time_burst: {type: Number},
+    grant_status: { type: String, default: "Pending" },
+    block_times: { type: String },
+    time_granted: { type: String },
+    time_burst: { type: Number },
     status: { type: String },
     Avl_status: { type: Boolean, default: true },
     createdBy: { type: String },
@@ -64,17 +68,20 @@ const maintenanceRollSchema = new Schema({
     logs: { type: [LogSchema], default: [] },
     sec: { type: String },
     len: { type: Number },
-    fit_time: { type: String},
+    fit_time: { type: String },
     a: { type: Number },
     purse: { type: String },
     remain_purse: { type: Number },
     block_type: { type: String },
-    rolling_stock: { type: String }
-}, {
-    versionKey: false
-})
+    rolling_stock: { type: String },
+  },
+  {
+    versionKey: false,
+  }
+);
 
-
-
-const maintenanceRoll = mongoose.model("maintenanceRoll", maintenanceRollSchema);
-module.exports = maintenanceRoll
+const maintenanceRoll = mongoose.model(
+  "maintenanceRoll",
+  maintenanceRollSchema
+);
+module.exports = maintenanceRoll;
